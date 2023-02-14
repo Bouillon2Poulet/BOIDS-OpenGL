@@ -31,10 +31,12 @@ public:
 
     void update(p6::Context& ctx)
     {
+        // First version
         // auto move = rotated_by(_dir, glm::vec2(_speed,0.f));
+        // rotated_by(_dir, glm::vec2(_speed,0.f));
+
         auto vectorSquareToMouse = (ctx.mouse() - _pos) * _speed;
         _dir                     = p6::Angle(vectorSquareToMouse);
-        // rotated_by(_dir, glm::vec2(_speed,0.f));
         _pos += vectorSquareToMouse;
     }
 };
