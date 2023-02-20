@@ -1,5 +1,6 @@
 #include <p6/p6.h>
 #include "SimplexNoise.h"
+#include "internal.h"
 #include <vcruntime.h>
 #include <cmath>
 #include <cstdlib>
@@ -19,7 +20,7 @@ private:
 
 public:
     explicit Fish(float aspect_ratio)
-        : _pos(glm::vec2(p6::random::number(-aspect_ratio, aspect_ratio), p6::random::number(-1, 1))), _destination({-_pos.x, -_pos.y}), _direction(p6::Angle(_destination)+p6::Angle(p6::Radians(p6::PI))), _speed(p6::random::number() / 100), _radius(p6::random::number(0.2f, 0.3f)) {}
+        : _pos(glm::vec2(p6::random::number(-aspect_ratio, aspect_ratio), p6::random::number(-1, 1))), _destination(glm::vec2(static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-aspect_ratio, aspect_ratio), static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-1, 1))), _direction(p6::Angle(_destination-_pos)), _speed(p6::random::number() / 100), _radius(p6::random::number(0.2f, 0.3f)) {}
 
     void draw(p6::Context& ctx) const
     {
@@ -54,20 +55,29 @@ public:
             p6::Point2D(glm::vec2((5.f / 3.f) * diagonalOfSquare, -1 * diagonalOfSquare)),
             p6::Point2D(glm::vec2((4.f / 3.f) * diagonalOfSquare, 0))
         );
-
-        // ctx.pop_transform();
         ctx.pop_transform();
+
+        // Destination
+        ctx.square(
+            p6::Center{_destination.x, _destination.y},
+            p6::Radius{0.1f}
+        );
     }
 
-    void update()
+    void update(float aspect_ratio)
     {
         float noise = SimplexNoise::noise(_pos.x,_pos.y); //btw 0 and 1
-        p6::Angle angle((p6::Radians((noise*p6::PI)-p6::PI))/20.f); //btw -pi/20 and pi/20
+        p6::Angle angle((p6::Radians((noise*p6::PI)-p6::PI))/20.f); //btw -pi/20 and pi/20 ????
 
-        _direction = p6::Angle(_destination) + angle;
+        _direction = p6::Angle(_destination-_pos) + angle;
 
-        auto move = rotated_by(p6::Angle(_destination), glm::vec2(_speed, 0.f));
+        auto move = (_destination-_pos)*_speed;
         _pos += move;
+
+        if (glm::length(_destination-_pos)<0.3)
+        {
+            _destination = (glm::vec2(static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-aspect_ratio, aspect_ratio), static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-1, 1)));
+        }
     }
 };
 
@@ -91,7 +101,7 @@ int main(int argc, char* argv[])
     // Declare your infinite update loop.
     ctx.update = [&]() {
         ctx.background(p6::NamedColor::Blue);
-        test.update();
+        test.update(ctx.aspect_ratio());
         test.draw(ctx);
     };
 
