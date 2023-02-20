@@ -6,8 +6,8 @@ project(maxiprogs4)
 
 # ---Declare source files---
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS src/*)
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_include_directories(${PROJECT_NAME} PRIVATE src)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} lib/SimplexNoise/SimplexNoise.cpp)
+target_include_directories(${PROJECT_NAME} PRIVATE src lib/SimplexNoise)
 
 # ---Choose C++ version---
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
