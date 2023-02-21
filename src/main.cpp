@@ -10,17 +10,28 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
 
+bool isInside(glm::vec2 vec, float aspect_ratio){
+    if (vec.x > -aspect_ratio && vec.x<aspect_ratio){
+        if (vec.y>-1.f && vec.y<1.f){
+            return true;
+        }
+    }
+    return false;
+}
+
 class Fish {
 private:
     glm::vec2 _pos = glm::vec2(0., 0.);
     glm::vec2 _destination{};
     p6::Angle _direction{};
     float     _speed  = 1.f;
-    float     _radius = 0.2f;
+    float     _radius = 0.1f;
 
 public:
     explicit Fish(float aspect_ratio)
-        : _pos(glm::vec2(p6::random::number(-aspect_ratio, aspect_ratio), p6::random::number(-1, 1))), _destination(glm::vec2(static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-aspect_ratio, aspect_ratio), static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-1, 1))), _direction(p6::Angle(_destination-_pos)), _speed(p6::random::number() / 100), _radius(p6::random::number(0.2f, 0.3f)) {}
+        : _pos(glm::vec2(p6::random::number(-aspect_ratio, aspect_ratio),
+            p6::random::number(-1, 1))),
+            _destination(_pos+p6::rotated_by(p6::Angle(p6::Radians(p6::random::number(2.f*p6::PI))), glm::vec2(1.f,.0f))){}
 
     void draw(p6::Context& ctx) const
     {
@@ -67,17 +78,41 @@ public:
     void update(float aspect_ratio)
     {
         float noise = SimplexNoise::noise(_pos.x,_pos.y); //btw 0 and 1
-        p6::Angle angle((p6::Radians((noise*p6::PI)-p6::PI))/20.f); //btw -pi/20 and pi/20 ????
+        p6::Angle angle((p6::Radians((noise*p6::PI)))/100.f); //btw -pi/20 and pi/20 ????
 
-        _direction = p6::Angle(_destination-_pos) + angle;
+        _destination = _pos+p6::rotated_by(p6::Angle(_destination-_pos)+angle, glm::vec2(1.f,.0f));
+        
+        //Bounding box
+        if (!isInside(_destination, aspect_ratio)){
+            glm::vec2 destinationOnLeft(_destination);
+            glm::vec2 destinationOnRight(_destination);
+            p6::Angle angleTemp;
+            do {
+                //Increment on right and left to choose which angle is closer to come back in the box
+                angleTemp=p6::Angle(p6::Radians(p6::PI/12.f));
+                destinationOnLeft=_pos+p6::rotated_by(p6::Angle(destinationOnLeft-_pos)+angle, glm::vec2(1.f,.0f));
+                destinationOnRight=_pos+p6::rotated_by(p6::Angle(destinationOnRight-_pos)-angle, glm::vec2(1.f,.0f));
 
-        auto move = (_destination-_pos)*_speed;
-        _pos += move;
-
-        if (glm::length(_destination-_pos)<0.3)
-        {
-            _destination = (glm::vec2(static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-aspect_ratio, aspect_ratio), static_cast<float>(internal::sign(_pos.x)*-1)*p6::random::number(-1, 1)));
+                _destination = (isInside(destinationOnRight,aspect_ratio))?  destinationOnRight:destinationOnLeft;
+            } while (!isInside(_destination, aspect_ratio));
         }
+        p6::Angle destinationAsAngle(_destination);
+        
+        p6::Angle deltaAngle((_destination-_pos) - p6::rotated_by(_direction, glm::vec2(1.f,.0f)));
+        if (deltaAngle.as_radians()>p6::PI){
+                std::cout<<deltaAngle.as_degrees()<<std::endl;
+        }
+        //_direction = p6::Angle(_destination-_pos);
+        p6::Angle rotation = ((p6::Angle(_destination-_pos) - _direction)/5.f);
+        // if((p6::Angle(_destination-_pos) - _direction).as_radians()>p6::PI){
+        //     std::cout<<"!!\n";
+        //     rotation=p6::Angle(p6::Radians(-(2.f*p6::PI)-rotation.as_radians()));
+        // }
+        _direction += rotation;
+        // std::cout<<deltaAngle.as_radians()<<"\n";
+
+        auto move = (_destination-_pos)/50.f;
+        _pos += move;
     }
 };
 
