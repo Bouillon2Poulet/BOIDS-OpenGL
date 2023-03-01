@@ -1,18 +1,22 @@
 #include <p6/p6.h>
-#include "SimplexNoise.h"
-#include "internal.h"
 #include <vcruntime.h>
 #include <cmath>
 #include <cstdlib>
+#include <functional>
 #include <vector>
+#include "SimplexNoise.h"
 #include "glm/fwd.hpp"
+#include "internal.h"
 
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
 
-bool isInside(glm::vec2 vec, float aspect_ratio){
-    if (vec.x > -aspect_ratio && vec.x<aspect_ratio){
-        if (vec.y>-1.f && vec.y<1.f){
+bool isInside(glm::vec2 vec, float aspect_ratio)
+{
+    if (vec.x > -aspect_ratio && vec.x < aspect_ratio)
+    {
+        if (vec.y > -1.f && vec.y < 1.f)
+        {
             return true;
         }
     }
@@ -29,16 +33,13 @@ private:
 
 public:
     explicit Fish(float aspect_ratio)
-        : _pos(glm::vec2(p6::random::number(-aspect_ratio, aspect_ratio),
-            p6::random::number(-1, 1))),
-            _destination(_pos+p6::rotated_by(p6::Angle(p6::Radians(p6::random::number(2.f*p6::PI))), glm::vec2(1.f,.0f))){}
+        : _pos(glm::vec2(p6::random::number(-aspect_ratio, aspect_ratio), p6::random::number(-1, 1))), _destination(_pos + p6::rotated_by(p6::Angle(p6::Radians(p6::random::number(2.f * p6::PI))), glm::vec2(1.f, .0f))) {}
 
     void draw(p6::Context& ctx) const
     {
         ctx.push_transform();
 
         ctx.translate({_pos.x, _pos.y});
-        ctx.rotate(p6::Angle(p6::Radians(p6::PI)));
         ctx.rotate(_direction);
 
         ctx.fill       = {1.f, 0.7f, 0.2f};
@@ -46,9 +47,9 @@ public:
 
         float diagonalOfSquare = sqrt((_radius * _radius) * 2);
         // Direction vector
-        ctx.line(glm::vec2(-diagonalOfSquare,.0f), glm::vec2(-diagonalOfSquare-0.2f, .0f));
+        ctx.line(glm::vec2(diagonalOfSquare, .0f), glm::vec2(diagonalOfSquare + 0.1f, .0f));
 
-        ctx.use_fill=false;
+        ctx.use_fill   = false;
         ctx.use_stroke = true;
         // FISH SHAPE
         ctx.square(
@@ -57,14 +58,14 @@ public:
             p6::Rotation{p6::Radians(p6::PI / 4)}
         );
         ctx.triangle(
-            p6::Point2D(glm::vec2(_radius, 0)),
-            p6::Point2D(glm::vec2((5.f / 3.f) * diagonalOfSquare, diagonalOfSquare)),
-            p6::Point2D(glm::vec2((4.f / 3.f) *diagonalOfSquare, 0))
+            p6::Point2D(glm::vec2(-1.f * _radius, 0)),
+            p6::Point2D(-1.f * glm::vec2((5.f / 3.f) * diagonalOfSquare, diagonalOfSquare)),
+            p6::Point2D(-1.f * glm::vec2((4.f / 3.f) * diagonalOfSquare, 0))
         );
         ctx.triangle(
-            p6::Point2D(glm::vec2(_radius, 0)),
-            p6::Point2D(glm::vec2((5.f / 3.f) * diagonalOfSquare, -1 * diagonalOfSquare)),
-            p6::Point2D(glm::vec2((4.f / 3.f) * diagonalOfSquare, 0))
+            p6::Point2D(glm::vec2(-1.f * _radius, 0)),
+            p6::Point2D(-1.f * glm::vec2((5.f / 3.f) * diagonalOfSquare, -1 * diagonalOfSquare)),
+            p6::Point2D(-1.f * glm::vec2((4.f / 3.f) * diagonalOfSquare, 0))
         );
         ctx.pop_transform();
 
@@ -77,41 +78,59 @@ public:
 
     void update(float aspect_ratio)
     {
-        float noise = SimplexNoise::noise(_pos.x,_pos.y); //btw 0 and 1
-        p6::Angle angle((p6::Radians((noise*p6::PI)))/100.f); //btw -pi/20 and pi/20 ????
+        float     noise = SimplexNoise::noise(_pos.x, _pos.y);    // btw 0 and 1
+        p6::Angle angle((p6::Radians((noise * p6::PI))) / 100.f); // btw -pi/20 and pi/20 ????
 
-        _destination = _pos+p6::rotated_by(p6::Angle(_destination-_pos)+angle, glm::vec2(1.f,.0f));
-        
-        //Bounding box
-        if (!isInside(_destination, aspect_ratio)){
+        _destination = _pos + p6::rotated_by(p6::Angle(_destination - _pos) + angle, glm::vec2(1.f, .0f));
+
+        // Bounding box - A REVOIR CAR PAS BESOIN DE FAIRE DES DEUX COTES, ON PEUT JUSTE PASSER PAR LA NORMALE
+        if (!isInside(_destination, aspect_ratio))
+        {
             glm::vec2 destinationOnLeft(_destination);
             glm::vec2 destinationOnRight(_destination);
             p6::Angle angleTemp;
-            do {
-                //Increment on right and left to choose which angle is closer to come back in the box
-                angleTemp=p6::Angle(p6::Radians(p6::PI/12.f));
-                destinationOnLeft=_pos+p6::rotated_by(p6::Angle(destinationOnLeft-_pos)+angle, glm::vec2(1.f,.0f));
-                destinationOnRight=_pos+p6::rotated_by(p6::Angle(destinationOnRight-_pos)-angle, glm::vec2(1.f,.0f));
+            do
+            {
+                // Increment on right and left to choose which angle is closer to come back in the box
+                angleTemp          = p6::Angle(p6::Radians(p6::PI / 12.f));
+                destinationOnLeft  = _pos + p6::rotated_by(p6::Angle(destinationOnLeft - _pos) + angle, glm::vec2(1.f, .0f));
+                destinationOnRight = _pos + p6::rotated_by(p6::Angle(destinationOnRight - _pos) - angle, glm::vec2(1.f, .0f));
 
-                _destination = (isInside(destinationOnRight,aspect_ratio))?  destinationOnRight:destinationOnLeft;
+                _destination = (isInside(destinationOnRight, aspect_ratio)) ? destinationOnRight : destinationOnLeft;
             } while (!isInside(_destination, aspect_ratio));
         }
-        p6::Angle destinationAsAngle(_destination);
-        
-        p6::Angle deltaAngle((_destination-_pos) - p6::rotated_by(_direction, glm::vec2(1.f,.0f)));
-        if (deltaAngle.as_radians()>p6::PI){
-                std::cout<<deltaAngle.as_degrees()<<std::endl;
-        }
-        //_direction = p6::Angle(_destination-_pos);
-        p6::Angle rotation = ((p6::Angle(_destination-_pos) - _direction)/5.f);
-        // if((p6::Angle(_destination-_pos) - _direction).as_radians()>p6::PI){
-        //     std::cout<<"!!\n";
-        //     rotation=p6::Angle(p6::Radians(-(2.f*p6::PI)-rotation.as_radians()));
-        // }
-        _direction += rotation;
-        // std::cout<<deltaAngle.as_radians()<<"\n";
 
-        auto move = (_destination-_pos)/50.f;
+        p6::Angle destinationAsAngle(_destination - _pos);
+        p6::Angle deltaAngle(destinationAsAngle - _direction);
+        if (std::abs(deltaAngle.as_radians()) > p6::PI)
+        {
+            std::cout<<destinationAsAngle.as_degrees()<<"\n";
+            std::cout<<deltaAngle.as_degrees()<<"::"<<_direction.as_degrees()<<std::endl;
+            if (deltaAngle.as_degrees() < _direction.as_degrees())
+            {
+                deltaAngle = p6::Angle(p6::Radians(deltaAngle.as_radians()+2.f*p6::PI));
+            }
+            else
+            {
+                _direction = p6::Angle(p6::Radians(_direction.as_radians()+2.f*p6::PI));
+            }
+            std::cout<<"    "<<deltaAngle.as_degrees()<<"::"<<_direction.as_degrees()<<std::endl;
+        }
+
+        // if (internal::sign(destinationAsAngle.as_radians()) != internal::sign(_direction.as_radians()))
+        // {
+        //     destinationAsAngle = p6::Angle(p6::Radians(destinationAsAngle.as_radians()+(2.f*p6::PI)));
+        // }
+        // // if (_direction.as_radians()<=0)
+        // // {
+        // //     std::cout<<"!!"<<_direction.as_radians()<<std::endl;
+        // //     _direction=p6::Angle(p6::Radians(_direction.as_radians()+(2.f*p6::PI)));
+        // // }
+
+        p6::Angle rotation = deltaAngle / 5.f;
+        _direction += rotation;
+
+        auto move = (_destination - _pos) / 50.f;
         _pos += move;
     }
 };
