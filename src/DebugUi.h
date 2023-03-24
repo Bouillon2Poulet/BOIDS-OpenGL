@@ -7,38 +7,46 @@
 #include "displayDebugUiParameters.h"
 
 class DebugUiVariables {
-    glm::vec2*    _position;
-    glm::vec2*    _velocity;
-    float*        _protectedRange;
-    float*        _visibleRange;
-    unsigned int* _neighboringFishes;
+    glm::vec2&    _position;
+    glm::vec2&    _velocity;
+    float&        _protectedRange;
+    float&        _visibleRange;
+    unsigned int& _neighboringFishes;
 
 public:
-    DebugUiVariables(DebugUiVariables& toCopy) = default;
+    DebugUiVariables(const DebugUiVariables& toCopy) = default;
+    inline void operator()(const DebugUiVariables& toCopy)
+    {
+        _position          = toCopy._position;
+        _velocity          = toCopy._velocity;
+        _protectedRange    = toCopy._protectedRange;
+        _visibleRange      = toCopy._visibleRange;
+        _neighboringFishes = toCopy._neighboringFishes;
+    }
 
     inline DebugUiVariables(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy)
-        : _position(mvtToCopy.positionPtr()), _velocity(mvtToCopy.velocityPtr()), _protectedRange(bhvToCopy.protectedRangePtr()), _visibleRange(bhvToCopy.visibleRangePtr()), _neighboringFishes(bhvToCopy.neighboringFishesPtr()){};
+        : _position(*(mvtToCopy.positionPtr())), _velocity(*(mvtToCopy.velocityPtr())), _protectedRange(*(bhvToCopy.protectedRangePtr())), _visibleRange(*(bhvToCopy.visibleRangePtr())), _neighboringFishes(*(bhvToCopy.neighboringFishesPtr())){};
 
     inline glm::vec2 position() const
     {
-        return *_position;
+        return _position;
     }
 
     inline glm::vec2 velocity() const
     {
-        return *_velocity;
+        return _velocity;
     }
     inline float protectedRange() const
     {
-        return *_protectedRange;
+        return _protectedRange;
     }
     inline float visibleRange() const
     {
-        return *_visibleRange;
+        return _visibleRange;
     }
     inline unsigned int neighboringFishes() const
     {
-        return *_neighboringFishes;
+        return _neighboringFishes;
     }
 };
 
@@ -51,11 +59,12 @@ public:
     DebugUi(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy)
         : _variables(mvtToCopy, bhvToCopy){};
 
-    DebugUi(DebugUi& toCopy) = default;
+    DebugUi(const DebugUi& toCopy) = default;
+
     inline void copy(DebugUi& toCopy)
     {
         _parameters = toCopy._parameters;
-        _variables  = toCopy._variables;
+        _variables(toCopy._variables);
     }
     inline displayDebugUiParameters parameters() const { return _parameters; };
 
@@ -64,6 +73,7 @@ public:
     void drawVelocityVector(p6::Context& ctx) const;
     void drawProximityNbr(p6::Context& ctx) const;
 
+    inline DebugUiVariables variables() { return _variables; };
     // DebugUi debugUi();
     // DebugUi* debugUiPtr();
 };

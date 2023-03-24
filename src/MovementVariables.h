@@ -14,7 +14,7 @@ public:
         : _position(randomPosInBoundingBox(maxDistanceFromCenter)), _velocity(glm::vec2(p6::random::number(.2f) - .1f, p6::random::number(.2f) - .1f))
     {}
 
-    inline MovementVariables(MovementVariables& toCopy) = default;
+    inline MovementVariables(const MovementVariables& toCopy) = default;
 
     inline void copy(MovementVariables& toCopy)
     {

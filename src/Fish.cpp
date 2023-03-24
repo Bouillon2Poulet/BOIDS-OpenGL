@@ -33,6 +33,7 @@ DebugUi* Fish::debugUiPtr()
 
 void Fish::draw(p6::Context& ctx) const
 {
+    std::cout << "DRAWFISH :" << _mvtVariables.position().x << std::endl;
     drawFish(ctx);
     if (_debugUi.parameters().displayProtectedRange())
         _debugUi.drawProtectedCircle(ctx);
@@ -164,19 +165,7 @@ void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
 
 void Fish::transferTemplateArguments(Fish& fishTemplate)
 {
-    _mvtVariables.copy(fishTemplate._mvtVariables);
+    //_mvtVariables.copy(fishTemplate._mvtVariables); DEBUG
     _bhvVariables.copy(fishTemplate._bhvVariables);
-    _debugUi.copy(fishTemplate._debugUi);
-    // _bhvVariables.protectedRange(fishTemplate._bhvVariables.protectedRange());
-    // _bhvVariables.visibleRange(fishTemplate._bhvVariables.visibleRange());
-    // _bhvVariables.avoidFactor(fishTemplate._bhvVariables.avoidFactor());
-    // _bhvVariables.matchingFactor(fishTemplate._bhvVariables.matchingFactor());
-    // _bhvVariables.centeringFactor(fishTemplate._bhvVariables.centeringFactor());
-    // _bhvVariables.turnFactor(fishTemplate._bhvVariables.turnFactor());
-    // _bhvVariables.maxSpeed(fishTemplate._bhvVariables.maxSpeed());
-    // _bhvVariables.minSpeed(fishTemplate._bhvVariables.minSpeed());
-    // _debugUiParameters.displayProtectedRange(fishTemplate._debugUiParameters.displayProtectedRange());
-    // _debugUiParameters.displayVisibleRange(fishTemplate._debugUiParameters.displayVisibleRange());
-    // _debugUiParameters.displayVelocityVector(fishTemplate._debugUiParameters.displayVelocityVector());
-    // _debugUiParameters.displayProximityNbr(fishTemplate._debugUiParameters.displayProximityNbr());
+    //_debugUi.copy(fishTemplate._debugUi); DEBUG
 }

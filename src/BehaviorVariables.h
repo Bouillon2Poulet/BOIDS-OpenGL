@@ -14,10 +14,10 @@ private:
     float        _minSpeed          = 0.01f;
 
 public:
-    BehaviorVariables()                          = default;
-    BehaviorVariables(BehaviorVariables& toCopy) = default;
+    BehaviorVariables()                                = default;
+    BehaviorVariables(const BehaviorVariables& toCopy) = default;
 
-    inline void copy(BehaviorVariables& toCopy)
+    inline void copy(const BehaviorVariables& toCopy)
     {
         _protectedRange = toCopy._protectedRange;
         _visibleRange   = toCopy._visibleRange;
