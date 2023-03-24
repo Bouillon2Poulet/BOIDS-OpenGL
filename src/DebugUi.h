@@ -61,11 +61,17 @@ public:
 
     DebugUi(const DebugUi& toCopy) = default;
 
-    inline void copy(DebugUi& toCopy)
+    inline void operator()(DebugUi& toCopy)
     {
         _parameters = toCopy._parameters;
         _variables(toCopy._variables);
     }
+    inline void copy(DebugUi& toCopy)
+    {
+        _parameters(toCopy._parameters);
+        _variables(toCopy._variables);
+    }
+    inline void                     copyParameters(DebugUi& toCopy) { _parameters(toCopy._parameters); };
     inline displayDebugUiParameters parameters() const { return _parameters; };
 
     void drawProtectedCircle(p6::Context& ctx) const;

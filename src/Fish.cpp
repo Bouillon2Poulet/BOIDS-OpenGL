@@ -81,10 +81,6 @@ void Fish::update(float aspect_ratio, glm::vec2& maxDistanceFromCenter)
     {
         averageVelocity /= _bhvVariables.neighboringFishes();
         _mvtVariables.velocity(_mvtVariables.velocity() + (averageVelocity - _mvtVariables.velocity()) * _bhvVariables.matchingFactor());
-        // _velocity += (averageVelocity - _velocity) * _bhvVariables.matchingFactor();
-
-        // averagePosition /= neighboringFishes;
-        // _velocity += (averagePosition - _position) * _bhvVariables.centeringFactor();
     }
 
     handleScreenBorders(maxDistanceFromCenter);
@@ -92,15 +88,12 @@ void Fish::update(float aspect_ratio, glm::vec2& maxDistanceFromCenter)
     // Min and Max speed
     float speed = std::sqrt(std::pow(_mvtVariables.velocity().x, 2.f) + std::pow(_mvtVariables.velocity().y, 2.f));
     if (speed > _bhvVariables.maxSpeed())
-        // _velocity = (_velocity / speed) * _bhvVariables.maxSpeed();
         _mvtVariables.velocity((_mvtVariables.velocity() / speed) * _bhvVariables.maxSpeed());
 
     if (speed < _bhvVariables.minSpeed())
-        // _velocity = (_velocity / speed) * _bhvVariables.minSpeed();
         _mvtVariables.velocity((_mvtVariables.velocity() / speed) * _bhvVariables.minSpeed());
 
     // Position update
-    // _position += _velocity / 10.f;
     _mvtVariables.position(_mvtVariables.position() + (_mvtVariables.velocity() / 10.f));
 }
 
@@ -165,7 +158,6 @@ void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
 
 void Fish::transferTemplateArguments(Fish& fishTemplate)
 {
-    //_mvtVariables.copy(fishTemplate._mvtVariables); DEBUG
     _bhvVariables.copy(fishTemplate._bhvVariables);
-    //_debugUi.copy(fishTemplate._debugUi); DEBUG
+    _debugUi.copyParameters(fishTemplate._debugUi);
 }

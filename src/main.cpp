@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     auto maxDistanceFromCenter = glm::vec2(ctx.aspect_ratio() - .3f, 1.f - .2f);
 
     std::vector<Fish> Fishes;
-    for (unsigned int i = 0; i < 20; i++)
+    for (unsigned int i = 0; i < 15; i++)
     {
         Fishes.emplace_back(maxDistanceFromCenter);
         Fishes.back().linkArrayToFish(&Fishes);
@@ -54,9 +54,12 @@ int main(int argc, char* argv[])
 
         // Fishes
         std::vector<Fish>::iterator it;
+        int                         count = 0;
         for (it = Fishes.begin(); it != Fishes.end(); it++)
         {
-            //std::cout << "BOUCLE DE RENDU" << it->mvtVariablesPtr()->position().x << "\n";
+            count++;
+            std::cout << count << std::endl;
+            // std::cout << "BOUCLE DE RENDU" << it->mvtVariablesPtr()->position().x << "\n";
             it->transferTemplateArguments(FishTemplate);
             it->update(ctx.aspect_ratio(), maxDistanceFromCenter);
             it->draw(ctx);

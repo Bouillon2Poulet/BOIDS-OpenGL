@@ -9,6 +9,14 @@ private:
     bool _displayProximityNbr   = false;
 
 public:
+    inline void operator()(displayDebugUiParameters& toCopy)
+    {
+        _displayProtectedRange = toCopy._displayProtectedRange;
+        _displayVisibleRange   = toCopy._displayVisibleRange;
+        _displayVelocityVector = toCopy._displayVelocityVector;
+        _displayProximityNbr   = toCopy._displayProximityNbr;
+    }
+
     void  displayProtectedRange(bool input);
     bool  displayProtectedRange() const;
     bool* displayProtectedRangePtr();
