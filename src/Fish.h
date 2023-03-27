@@ -1,13 +1,13 @@
-#ifndef __FISH__HPP
-#define __FISH__HPP
+#pragma once
 
 #include <p6/p6.h>
 #include <vector>
 #include "DebugUi.h"
+#include "DebugUiParameters.h"
 #include "MovementVariables.h"
 #include "behaviorVariables.h"
-#include "DebugUiParameters.h"
 #include "glm/fwd.hpp"
+
 
 class Fish {
 private:
@@ -54,5 +54,3 @@ public:
 
     DebugUi* debugUiPtr();
 };
-
-#endif

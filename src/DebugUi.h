@@ -1,12 +1,10 @@
-#ifndef __DEBUGUI__HPP
-#define __DEBUGUI__HPP
+#pragma once
 
 #include <p6/p6.h>
 #include "DebugUiParameters.h"
 #include "DebugUiVariable.h"
 #include "MovementVariables.h"
 #include "behaviorVariables.h"
-
 
 class DebugUi {
 private:
@@ -52,5 +50,3 @@ public:
         return &_parameters;
     }
 };
-
-#endif

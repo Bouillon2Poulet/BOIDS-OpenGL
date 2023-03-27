@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <p6/p6.h>
 #include "MovementVariables.h"
 #include "behaviorVariables.h"
@@ -16,7 +18,7 @@ public:
     void operator()(const DebugUiVariables& toCopy);
 
     DebugUiVariables(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy);
-    
+
     glm::vec2 position() const;
 
     glm::vec2 velocity() const;

@@ -1,5 +1,4 @@
-#ifndef __MOVEMENTVARIABLES__HPP
-#define __MOVEMENTVARIABLES__HPP
+#pragma once
 
 #include <p6/p6.h>
 #include "glm/fwd.hpp"
@@ -31,5 +30,3 @@ public:
     glm::vec2  velocity() const;
     glm::vec2* velocityPtr();
 };
-
-#endif

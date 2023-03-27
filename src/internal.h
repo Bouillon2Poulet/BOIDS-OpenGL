@@ -1,10 +1,8 @@
-#ifndef __INTERNAL__HPP
-#define __INTERNAL__HPP
+#pragma once
 
 #include <codecvt>
 #include <locale>
 #include <string>
-
 
 namespace internal {
 /// \brief return the sign of val or zero if val is equal to zero
@@ -23,4 +21,3 @@ inline std::u16string to_u16string(int const& i)
     return conv.from_bytes(std::to_string(i));
 }
 } // namespace internal
-#endif

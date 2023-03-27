@@ -1,5 +1,4 @@
-#ifndef __BEHAVIORVARIABLES__HPP
-#define __BEHAVIORVARIABLES__HPP
+#pragma once
 
 class BehaviorVariables {
 private:
@@ -66,4 +65,3 @@ public:
     float  minSpeed() const;
     float* minSpeedPtr();
 };
-#endif

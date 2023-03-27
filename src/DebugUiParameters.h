@@ -1,5 +1,4 @@
-#ifndef __DISPLAYDEBUGUIPARAMETERS__HPP
-#define __DISPLAYDEBUGUIPARAMETERS__HPP
+#pragma once
 
 class DebugUiParameters {
 private:
@@ -27,5 +26,3 @@ public:
     bool  displayProximityNbr() const;
     bool* displayProximityNbrPtr();
 };
-
-#endif
