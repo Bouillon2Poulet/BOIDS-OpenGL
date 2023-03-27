@@ -2,7 +2,7 @@
 
 #include "ImGuiHandler.h"
 
-static void setDebugVariables(Fish& FishTemplate)
+void ImGuiHandler::setDebugVariables(Fish& FishTemplate)
 {
     ImGui::SliderFloat("Protected range", FishTemplate.bhvVariablesPtr()->protectedRangePtr(), 0.f, 1.f);
     ImGui::SliderFloat("Visible range", FishTemplate.bhvVariablesPtr()->visibleRangePtr(), 0.f, 1.f);
@@ -13,7 +13,7 @@ static void setDebugVariables(Fish& FishTemplate)
     ImGui::SliderFloat("Max speed", FishTemplate.bhvVariablesPtr()->maxSpeedPtr(), 0.f, 5.f);
     ImGui::SliderFloat("Min speed", FishTemplate.bhvVariablesPtr()->minSpeedPtr(), 0.f, 2.f);
 }
-static void setDebugParameters(Fish& fishTemplate)
+void ImGuiHandler::setDebugParameters(Fish& fishTemplate)
 {
     ImGui::Checkbox("Display visible range", fishTemplate.debugUiPtr()->parametersPtr()->displayVisibleRangePtr());
     ImGui::Checkbox("Display protected range", fishTemplate.debugUiPtr()->parametersPtr()->displayProtectedRangePtr());
@@ -21,15 +21,21 @@ static void setDebugParameters(Fish& fishTemplate)
     ImGui::Checkbox("Display proximity number", fishTemplate.debugUiPtr()->parametersPtr()->displayProximityNbrPtr());
 }
 
-void imGuiManager(Scene& scene)
+void ImGuiHandler::setBoundingBox(Scene& scene)
+{
+    ImGui::Checkbox("Display bounding box", scene.displayBoundingBoxPtr());
+    ImGui::SliderFloat("BoundingBox width", &(scene.maxDistanceFromCenterPtr()->x), 0.f, 2.f);
+    ImGui::SliderFloat("BoundingBox height", &(scene.maxDistanceFromCenterPtr()->y), 0.f, 2.f);
+}
+
+void ImGuiHandler::displayImGuiManager(Scene& scene)
 {
     // Show a simple window
     ImGui::Begin("BOIDs variables");
 
-    setDebugVariables(scene.fishTemplate());
-    setDebugParameters(scene.fishTemplate());
-
-    ImGui::Checkbox("Display bounding box", scene.displayBoundingBoxPtr());
+    ImGuiHandler::setDebugVariables(scene.fishTemplate());
+    ImGuiHandler::setDebugParameters(scene.fishTemplate());
+    ImGuiHandler::setBoundingBox(scene);
 
     ImGui::End();
     // // Show the official ImGui demo window

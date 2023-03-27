@@ -147,6 +147,7 @@ void Fish::handleCohesion(Fish& OtherFish, glm::vec2& averagePosition)
 
 void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
 {
+    std::cout << "1.3 - maxDistanceFromCenter.x : " << maxDistanceFromCenter.x << "\n";
     glm::vec2 bordersForces{};
     float     rightBorderForce = -1.f / (std::pow(maxDistanceFromCenter.x - _mvtVariables.position().x, 2.f));
     float     leftBorderForce  = 1.f / (std::pow(-maxDistanceFromCenter.x - _mvtVariables.position().x, 2.f));
@@ -157,7 +158,7 @@ void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
     bordersForces.x = rightBorderForce + leftBorderForce;
     bordersForces.y = topBorderForce + botBorderForce;
 
-    _mvtVariables.velocity(_mvtVariables.velocity() + (bordersForces / 100.f));
+    _mvtVariables.velocity(_mvtVariables.velocity() + (bordersForces / 10000000.f));
 }
 
 void Fish::transferTemplateArguments(Fish& fishTemplate)

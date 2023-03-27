@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <functional>
 #include <vector>
-#include "../lib/SimplexNoise/src/SimplexNoise.h"
+// #include "../lib/SimplexNoise/src/SimplexNoise.h"
 #include "Fish.h"
 #include "ImGuiHandler.h"
 #include "Scene.h"
@@ -35,14 +35,11 @@ int main(int argc, char* argv[])
     auto maxDistanceFromCenter = glm::vec2(ctx.aspect_ratio() - .3f, 1.f - .2f);
 
     Scene scene(150, maxDistanceFromCenter);
-
-    Fish fishTemplate(maxDistanceFromCenter);
-
     // Declare your infinite update loop.
     ctx.update = [&]() {
         ctx.background(p6::NamedColor::Blue);
 
-        imGuiManager(scene);
+        ImGuiHandler::displayImGuiManager(scene);
         if (scene.displayBoundingBox())
             scene.drawBoundingBox(ctx);
 

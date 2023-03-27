@@ -1,13 +1,15 @@
 #include "Scene.h"
 
 Scene::Scene(unsigned int nbFishes, glm::vec2 maxDistanceFromCenter)
-    : _maxDistanceFromCenter(maxDistanceFromCenter), _fishTemplate(_maxDistanceFromCenter)
+    : _maxDistanceFromCenter(maxDistanceFromCenter), _fishTemplate(maxDistanceFromCenter)
 {
+    std::cout << "1.1\n";
     for (unsigned int i = 0; i < nbFishes; i++)
     {
         _fishes.emplace_back(_maxDistanceFromCenter);
         _fishes.back().linkArrayToFish(&_fishes);
     }
+    std::cout << "1.2 - maxDistanceFromCenter.x : " << _maxDistanceFromCenter.x << "\n";
 }
 
 void Scene::drawBoundingBox(p6::Context& ctx)
@@ -52,4 +54,9 @@ Fish& Scene::fishTemplate()
 bool* Scene::displayBoundingBoxPtr()
 {
     return &_displayBoundingBox;
+}
+
+glm::vec2* Scene::maxDistanceFromCenterPtr()
+{
+    return &_maxDistanceFromCenter;
 }

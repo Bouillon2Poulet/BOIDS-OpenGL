@@ -14,8 +14,10 @@ public:
 
     void drawBoundingBox(p6::Context& ctx);
 
-    void drawFishes(p6::Context& ctx);
-    bool displayBoundingBox();
+    void  drawFishes(p6::Context& ctx);
+    bool  displayBoundingBox();
     Fish& fishTemplate();
     bool* displayBoundingBoxPtr();
+
+    glm::vec2* maxDistanceFromCenterPtr();
 };
