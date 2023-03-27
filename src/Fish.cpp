@@ -17,10 +17,6 @@ float* Fish::screenAspectRatioPtr()
     return &_screenAspectRatio;
 }
 
-// void Fish::bhvVariables(BehaviorVariables input)
-// {
-//     _bhvVariables = input;
-// }
 BehaviorVariables* Fish::bhvVariablesPtr()
 {
     return &_bhvVariables;
@@ -33,16 +29,24 @@ DebugUi* Fish::debugUiPtr()
 
 void Fish::draw(p6::Context& ctx) const
 {
-    std::cout << "DRAWFISH :" << _mvtVariables.position().x << std::endl;
-    drawFish(ctx);
     if (_debugUi.parameters().displayProtectedRange())
+    {
         _debugUi.drawProtectedCircle(ctx);
+    }
     if (_debugUi.parameters().displayVisibleRange())
         _debugUi.drawVisibleCircle(ctx);
     if (_debugUi.parameters().displayVelocityVector())
         _debugUi.drawVelocityVector(ctx);
     if (_debugUi.parameters().displayProximityNbr())
         _debugUi.drawProximityNbr(ctx);
+    drawFish(ctx);
+}
+
+static void handleBehaviors(Fish& actualFish, Fish& otherFish, glm::vec2 closeSum, glm::vec2& averageVelocity, glm::vec2& averagePosition, glm::vec2& maxDistanceFromCenter)
+{
+    actualFish.handleSeparation(otherFish, closeSum);
+    actualFish.handleAlignment(otherFish, averageVelocity);
+    actualFish.handleCohesion(otherFish, averagePosition);
 }
 
 void Fish::update(float aspect_ratio, glm::vec2& maxDistanceFromCenter)
@@ -67,9 +71,7 @@ void Fish::update(float aspect_ratio, glm::vec2& maxDistanceFromCenter)
         {
             continue;
         }
-        handleSeparation(*it, closeSum);
-        handleAlignment(*it, averageVelocity);
-        handleCohesion(*it, averagePosition);
+        handleBehaviors(*this, *it, closeSum, averageVelocity, averagePosition, maxDistanceFromCenter);
     }
 
     // Velocity update
@@ -95,13 +97,15 @@ void Fish::update(float aspect_ratio, glm::vec2& maxDistanceFromCenter)
 
     // Position update
     _mvtVariables.position(_mvtVariables.position() + (_mvtVariables.velocity() / 10.f));
+
+    _debugUi = DebugUi(_mvtVariables, _bhvVariables, _debugUi);
 }
 
 void Fish::drawFish(p6::Context& ctx) const
 {
     ctx.push_transform();
     ctx.translate({_mvtVariables.position().x, _mvtVariables.position().y});
-    ctx.fill       = {1.f, 0.7f, 0.2f};
+    ctx.fill       = {1.f, 0.7f, 0.2f, 1.f};
     ctx.use_fill   = true;
     ctx.use_stroke = false;
     ctx.square(

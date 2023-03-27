@@ -6,7 +6,7 @@
 #include "DebugUi.h"
 #include "MovementVariables.h"
 #include "behaviorVariables.h"
-#include "displayDebugUiParameters.h"
+#include "DebugUiParameters.h"
 #include "glm/fwd.hpp"
 
 class Fish {
@@ -24,7 +24,6 @@ public:
     explicit Fish(glm::vec2& maxDistanceFromCenter)
         : _mvtVariables(maxDistanceFromCenter), _debugUi(_mvtVariables, _bhvVariables)
     {
-        std::cout << "Fish Constructor, position.x :" << _mvtVariables.position().x << ", debugUI.variables.position.x :" << _debugUi.variables().position().x << std::endl;
     }
 
     void draw(p6::Context& ctx) const;

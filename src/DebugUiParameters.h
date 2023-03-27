@@ -1,21 +1,15 @@
 #ifndef __DISPLAYDEBUGUIPARAMETERS__HPP
 #define __DISPLAYDEBUGUIPARAMETERS__HPP
 
-class displayDebugUiParameters {
+class DebugUiParameters {
 private:
-    bool _displayProtectedRange = true;
-    bool _displayVisibleRange   = true;
-    bool _displayVelocityVector = true;
+    bool _displayProtectedRange = false;
+    bool _displayVisibleRange   = false;
+    bool _displayVelocityVector = false;
     bool _displayProximityNbr   = false;
 
 public:
-    inline void operator()(displayDebugUiParameters& toCopy)
-    {
-        _displayProtectedRange = toCopy._displayProtectedRange;
-        _displayVisibleRange   = toCopy._displayVisibleRange;
-        _displayVelocityVector = toCopy._displayVelocityVector;
-        _displayProximityNbr   = toCopy._displayProximityNbr;
-    }
+    void operator()(DebugUiParameters& toCopy);
 
     void  displayProtectedRange(bool input);
     bool  displayProtectedRange() const;

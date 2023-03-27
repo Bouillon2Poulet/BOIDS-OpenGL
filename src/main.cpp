@@ -34,11 +34,10 @@ int main(int argc, char* argv[])
     auto maxDistanceFromCenter = glm::vec2(ctx.aspect_ratio() - .3f, 1.f - .2f);
 
     std::vector<Fish> Fishes;
-    for (unsigned int i = 0; i < 15; i++)
+    for (unsigned int i = 0; i < 200; i++)
     {
         Fishes.emplace_back(maxDistanceFromCenter);
         Fishes.back().linkArrayToFish(&Fishes);
-        // std::cout<<Fishes.back().mvtVariablesPtr()->position().x<<","<<Fishes.back().mvtVariablesPtr()->position().y<<"\n";
     }
 
     Fish FishTemplate(maxDistanceFromCenter);
@@ -58,8 +57,7 @@ int main(int argc, char* argv[])
         for (it = Fishes.begin(); it != Fishes.end(); it++)
         {
             count++;
-            std::cout << count << std::endl;
-            // std::cout << "BOUCLE DE RENDU" << it->mvtVariablesPtr()->position().x << "\n";
+            // std::cout << "N°" << count << std::endl;
             it->transferTemplateArguments(FishTemplate);
             it->update(ctx.aspect_ratio(), maxDistanceFromCenter);
             it->draw(ctx);
@@ -83,10 +81,12 @@ void imGuiManager(Fish& FishTemplate, bool* displayBoundingBox)
     ImGui::SliderFloat("Turn factor", FishTemplate.bhvVariablesPtr()->turnFactorPtr(), 0.f, 1.f);
     ImGui::SliderFloat("Max speed", FishTemplate.bhvVariablesPtr()->maxSpeedPtr(), 0.f, 5.f);
     ImGui::SliderFloat("Min speed", FishTemplate.bhvVariablesPtr()->minSpeedPtr(), 0.f, 2.f);
-    ImGui::Checkbox("Display visible range", FishTemplate.debugUiPtr()->parameters().displayVisibleRangePtr());
-    ImGui::Checkbox("Display protected range", FishTemplate.debugUiPtr()->parameters().displayProtectedRangePtr());
-    ImGui::Checkbox("Display velocity vector", FishTemplate.debugUiPtr()->parameters().displayVelocityVectorPtr());
-    ImGui::Checkbox("Display proximity number", FishTemplate.debugUiPtr()->parameters().displayProximityNbrPtr());
+
+    // DEBUG
+    ImGui::Checkbox("Display visible range", FishTemplate.debugUiPtr()->parametersPtr()->displayVisibleRangePtr());
+    ImGui::Checkbox("Display protected range", FishTemplate.debugUiPtr()->parametersPtr()->displayProtectedRangePtr());
+    ImGui::Checkbox("Display velocity vector", FishTemplate.debugUiPtr()->parametersPtr()->displayVelocityVectorPtr());
+    ImGui::Checkbox("Display proximity number", FishTemplate.debugUiPtr()->parametersPtr()->displayProximityNbrPtr());
     ImGui::Checkbox("Display bounding box", displayBoundingBox);
 
     ImGui::End();

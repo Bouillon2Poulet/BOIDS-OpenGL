@@ -3,9 +3,9 @@
 
 class BehaviorVariables {
 private:
-    float        _protectedRange    = 0.3f;
+    float        _protectedRange    = 0.1f;
     float        _visibleRange      = 0.4f;
-    float        _avoidFactor       = 0.2f;
+    float        _avoidFactor       = 0.4f;
     float        _matchingFactor    = 0.02f;
     float        _centeringFactor   = 0.1f;
     float        _turnFactor        = 0.05f;
