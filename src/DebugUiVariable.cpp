@@ -2,15 +2,14 @@
 
 void DebugUiVariables::operator()(const DebugUiVariables& toCopy)
 {
-    _position          = toCopy._position;
-    _velocity          = toCopy._velocity;
-    _protectedRange    = toCopy._protectedRange;
-    _visibleRange      = toCopy._visibleRange;
-    _neighboringFishes = toCopy._neighboringFishes;
+    _position       = toCopy._position;
+    _velocity       = toCopy._velocity;
+    _protectedRange = toCopy._protectedRange;
+    _visibleRange   = toCopy._visibleRange;
 }
 
 DebugUiVariables::DebugUiVariables(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy)
-    : _position(*(mvtToCopy.positionPtr())), _velocity(*(mvtToCopy.velocityPtr())), _protectedRange(*(bhvToCopy.protectedRangePtr())), _visibleRange(*(bhvToCopy.visibleRangePtr())), _neighboringFishes(*(bhvToCopy.neighboringFishesPtr())){};
+    : _position(*(mvtToCopy.positionPtr())), _velocity(*(mvtToCopy.velocityPtr())), _protectedRange(*(bhvToCopy.protectedRangePtr())), _visibleRange(*(bhvToCopy.visibleRangePtr())){};
 
 glm::vec2 DebugUiVariables::position() const
 {
@@ -30,9 +29,4 @@ float DebugUiVariables::protectedRange() const
 float DebugUiVariables::visibleRange() const
 {
     return _visibleRange;
-}
-
-unsigned int DebugUiVariables::neighboringFishes() const
-{
-    return _neighboringFishes;
 }

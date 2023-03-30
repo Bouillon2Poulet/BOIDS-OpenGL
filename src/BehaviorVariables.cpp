@@ -78,23 +78,6 @@ float* BehaviorVariables::turnFactorPtr()
     return &_turnFactor;
 }
 
-void BehaviorVariables::neighboringFishesReset()
-{
-    _neighboringFishes = 0;
-}
-void BehaviorVariables::neighboringFishesIncrement()
-{
-    _neighboringFishes += 1;
-}
-unsigned int BehaviorVariables::neighboringFishes() const
-{
-    return _neighboringFishes;
-}
-unsigned int* BehaviorVariables::neighboringFishesPtr()
-{
-    return &_neighboringFishes;
-}
-
 void BehaviorVariables::maxSpeed(float input)
 {
     _maxSpeed = input;

@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Fish.h"
+#include "FishTemplate.h"
 
 class Scene {
 private:
     std::vector<Fish> _fishes{};
-    Fish              _fishTemplate;
+    FishTemplate      _fishTemplate;
     glm::vec2         _maxDistanceFromCenter;
     bool              _displayBoundingBox = false;
 
@@ -14,10 +15,10 @@ public:
 
     void drawBoundingBox(p6::Context& ctx);
 
-    void  drawFishes(p6::Context& ctx);
-    bool  displayBoundingBox();
-    Fish& fishTemplate();
-    bool* displayBoundingBoxPtr();
+    void          drawFishes(p6::Context& ctx);
+    bool          displayBoundingBox();
+    FishTemplate& fishTemplate();
+    bool*         displayBoundingBoxPtr();
 
     glm::vec2* maxDistanceFromCenterPtr();
 };

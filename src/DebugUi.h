@@ -12,6 +12,7 @@ private:
     DebugUiVariables  _variables;
 
 public:
+    DebugUi() = default;
     DebugUi(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy)
         : _variables(mvtToCopy, bhvToCopy){};
 
@@ -30,9 +31,9 @@ public:
         _parameters(toCopy._parameters);
         _variables(toCopy._variables);
     }
-    inline void copyParameters(DebugUi& toCopy)
+    inline void copyParameters(DebugUi* toCopy)
     {
-        _parameters = toCopy._parameters;
+        _parameters = toCopy->_parameters;
     };
     inline void              copyVariables(){};
     inline DebugUiParameters parameters() const { return _parameters; };
@@ -40,7 +41,7 @@ public:
     void drawProtectedCircle(p6::Context& ctx) const;
     void drawVisibleCircle(p6::Context& ctx) const;
     void drawVelocityVector(p6::Context& ctx) const;
-    void drawProximityNbr(p6::Context& ctx) const;
+    void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx) const;
 
     inline DebugUiVariables variables() { return _variables; };
     // DebugUi debugUi();

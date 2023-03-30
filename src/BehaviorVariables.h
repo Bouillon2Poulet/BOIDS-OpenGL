@@ -2,15 +2,15 @@
 
 class BehaviorVariables {
 private:
-    float        _protectedRange    = 0.1f;
-    float        _visibleRange      = 0.4f;
-    float        _avoidFactor       = 0.4f;
-    float        _matchingFactor    = 0.02f;
-    float        _centeringFactor   = 0.1f;
-    float        _turnFactor        = 0.05f;
-    unsigned int _neighboringFishes = 0;
-    float        _maxSpeed          = 0.1f;
-    float        _minSpeed          = 0.01f;
+    float _protectedRange  = 0.1f;
+    float _visibleRange    = 0.2f;
+    float _avoidFactor     = 0.4f;
+    float _matchingFactor  = 0.01f;
+    float _centeringFactor = 0.001f;
+    float _turnFactor      = 0.05f;
+    // unsigned int _neighboringFishes = 0;
+    float _maxSpeed = 0.3f;
+    float _minSpeed = 0.1f;
 
 public:
     BehaviorVariables()                                = default;
@@ -22,10 +22,10 @@ public:
         _visibleRange   = toCopy._visibleRange;
         _avoidFactor    = toCopy._avoidFactor;
         _matchingFactor = toCopy._matchingFactor, _centeringFactor = toCopy._centeringFactor;
-        _turnFactor        = toCopy._turnFactor;
-        _neighboringFishes = toCopy._neighboringFishes;
-        _maxSpeed          = toCopy._maxSpeed;
-        _minSpeed          = toCopy._minSpeed;
+        _turnFactor = toCopy._turnFactor;
+        //_neighboringFishes = toCopy._neighboringFishes;
+        _maxSpeed = toCopy._maxSpeed;
+        _minSpeed = toCopy._minSpeed;
     }
 
     void   protectedRange(float input);
@@ -51,11 +51,6 @@ public:
     void   turnFactor(float input);
     float  turnFactor() const;
     float* turnFactorPtr();
-
-    void          neighboringFishesReset();
-    void          neighboringFishesIncrement();
-    unsigned int  neighboringFishes() const;
-    unsigned int* neighboringFishesPtr();
 
     void   maxSpeed(float input);
     float  maxSpeed() const;

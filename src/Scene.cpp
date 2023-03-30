@@ -1,12 +1,14 @@
 #include "Scene.h"
+#include "Fish.h"
+#include "FishTemplate.h"
 
 Scene::Scene(unsigned int nbFishes, glm::vec2 maxDistanceFromCenter)
-    : _maxDistanceFromCenter(maxDistanceFromCenter), _fishTemplate(maxDistanceFromCenter)
+    : _maxDistanceFromCenter(maxDistanceFromCenter), _fishTemplate(*new FishTemplate())
 {
     std::cout << "1.1\n";
     for (unsigned int i = 0; i < nbFishes; i++)
     {
-        _fishes.emplace_back(_maxDistanceFromCenter);
+        _fishes.emplace_back(_fishTemplate, _maxDistanceFromCenter);
         _fishes.back().linkArrayToFish(&_fishes);
     }
     std::cout << "1.2 - maxDistanceFromCenter.x : " << _maxDistanceFromCenter.x << "\n";
@@ -35,8 +37,8 @@ void Scene::drawFishes(p6::Context& ctx)
     {
         // count++;
         // std::cout << "N°" << count << std::endl;
-        it->transferTemplateArguments(_fishTemplate);
-        it->update(ctx.aspect_ratio(), _maxDistanceFromCenter);
+        it->transferTemplateArguments(_fishTemplate); // FIX : class fishTemplate et class Fish pour pas avoir avoir à copier les variables 200 fois
+        it->update(_fishTemplate, ctx.aspect_ratio(), _maxDistanceFromCenter);
         it->draw(ctx);
     }
 }
@@ -46,7 +48,7 @@ bool Scene::displayBoundingBox()
     return _displayBoundingBox;
 };
 
-Fish& Scene::fishTemplate()
+FishTemplate& Scene::fishTemplate()
 {
     return _fishTemplate;
 }

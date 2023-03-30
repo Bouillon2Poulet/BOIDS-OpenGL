@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
         ctx.background(p6::NamedColor::Blue);
 
         ImGuiHandler::displayImGuiManager(scene);
+
         if (scene.displayBoundingBox())
             scene.drawBoundingBox(ctx);
 

@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ImGuiHandler.h"
+#include "FishTemplate.h"
 
-void ImGuiHandler::setDebugVariables(Fish& FishTemplate)
+void ImGuiHandler::setDebugVariables(FishTemplate& FishTemplate)
 {
     ImGui::SliderFloat("Protected range", FishTemplate.bhvVariablesPtr()->protectedRangePtr(), 0.f, 1.f);
     ImGui::SliderFloat("Visible range", FishTemplate.bhvVariablesPtr()->visibleRangePtr(), 0.f, 1.f);
@@ -13,7 +14,7 @@ void ImGuiHandler::setDebugVariables(Fish& FishTemplate)
     ImGui::SliderFloat("Max speed", FishTemplate.bhvVariablesPtr()->maxSpeedPtr(), 0.f, 5.f);
     ImGui::SliderFloat("Min speed", FishTemplate.bhvVariablesPtr()->minSpeedPtr(), 0.f, 2.f);
 }
-void ImGuiHandler::setDebugParameters(Fish& fishTemplate)
+void ImGuiHandler::setDebugParameters(FishTemplate& fishTemplate)
 {
     ImGui::Checkbox("Display visible range", fishTemplate.debugUiPtr()->parametersPtr()->displayVisibleRangePtr());
     ImGui::Checkbox("Display protected range", fishTemplate.debugUiPtr()->parametersPtr()->displayProtectedRangePtr());

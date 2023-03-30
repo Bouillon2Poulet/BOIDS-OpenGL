@@ -6,13 +6,13 @@
 #include "behaviorVariables.h"
 
 class DebugUiVariables {
-    glm::vec2    _position;
-    glm::vec2    _velocity;
-    float        _protectedRange;
-    float        _visibleRange;
-    unsigned int _neighboringFishes;
+    glm::vec2 _position;
+    glm::vec2 _velocity;
+    float     _protectedRange;
+    float     _visibleRange;
 
 public:
+    DebugUiVariables()                               = default;
     DebugUiVariables(const DebugUiVariables& toCopy) = default;
 
     void operator()(const DebugUiVariables& toCopy);

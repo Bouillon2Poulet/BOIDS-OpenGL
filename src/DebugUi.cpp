@@ -44,7 +44,7 @@ void DebugUi::drawVelocityVector(p6::Context& ctx) const
     ctx.pop_transform();
 }
 
-void DebugUi::drawProximityNbr(p6::Context& ctx) const
+void DebugUi::drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx) const
 {
     ctx.push_transform();
     ctx.translate({_variables.position().x + 0.04f, _variables.position().y});
@@ -52,7 +52,7 @@ void DebugUi::drawProximityNbr(p6::Context& ctx) const
     ctx.stroke_weight                    = .01f;
     ctx.use_fill                         = false;
     ctx.use_stroke                       = true;
-    const std::u16string proximityNumber = internal::to_u16string(static_cast<int>(_variables.neighboringFishes()));
+    const std::u16string proximityNumber = internal::to_u16string(static_cast<int>(neighboringFishes));
     ctx.text(
         proximityNumber,
         p6::Center{},
