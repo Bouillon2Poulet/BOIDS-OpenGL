@@ -1,25 +1,33 @@
 #pragma once
 
 #include "ImGuiHandler.h"
-#include "FishTemplate.h"
+#include "FishGang.h"
 
-void ImGuiHandler::setDebugVariables(FishTemplate& FishTemplate)
+void ImGuiHandler::setDebugVariables(FishGang& FishGang)
 {
-    ImGui::SliderFloat("Protected range", FishTemplate.bhvVariablesPtr()->protectedRangePtr(), 0.f, 1.f);
-    ImGui::SliderFloat("Visible range", FishTemplate.bhvVariablesPtr()->visibleRangePtr(), 0.f, 1.f);
-    ImGui::SliderFloat("Avoid factor", FishTemplate.bhvVariablesPtr()->avoidFactorPtr(), 0.f, 1.f);
-    ImGui::SliderFloat("Matching factor", FishTemplate.bhvVariablesPtr()->matchingFactorPtr(), 0.f, 1.f);
-    ImGui::SliderFloat("Centering factor", FishTemplate.bhvVariablesPtr()->centeringFactorPtr(), 0.f, 1.f);
-    ImGui::SliderFloat("Turn factor", FishTemplate.bhvVariablesPtr()->turnFactorPtr(), 0.f, 1.f);
-    ImGui::SliderFloat("Max speed", FishTemplate.bhvVariablesPtr()->maxSpeedPtr(), 0.f, 5.f);
-    ImGui::SliderFloat("Min speed", FishTemplate.bhvVariablesPtr()->minSpeedPtr(), 0.f, 2.f);
+    ImGui::SliderFloat("Protected range", FishGang
+.bhvVariablesPtr()->protectedRangePtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Visible range", FishGang
+.bhvVariablesPtr()->visibleRangePtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Avoid factor", FishGang
+.bhvVariablesPtr()->avoidFactorPtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Matching factor", FishGang
+.bhvVariablesPtr()->matchingFactorPtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Centering factor", FishGang
+.bhvVariablesPtr()->centeringFactorPtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Turn factor", FishGang
+.bhvVariablesPtr()->turnFactorPtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Max speed", FishGang
+.bhvVariablesPtr()->maxSpeedPtr(), 0.f, 5.f);
+    ImGui::SliderFloat("Min speed", FishGang
+.bhvVariablesPtr()->minSpeedPtr(), 0.f, 2.f);
 }
-void ImGuiHandler::setDebugParameters(FishTemplate& fishTemplate)
+void ImGuiHandler::setDebugParameters(FishGang& fishGang)
 {
-    ImGui::Checkbox("Display visible range", fishTemplate.debugUiParametersPtr()->displayVisibleRangePtr());
-    ImGui::Checkbox("Display protected range", fishTemplate.debugUiParametersPtr()->displayProtectedRangePtr());
-    ImGui::Checkbox("Display velocity vector", fishTemplate.debugUiParametersPtr()->displayVelocityVectorPtr());
-    ImGui::Checkbox("Display proximity number", fishTemplate.debugUiParametersPtr()->displayProximityNbrPtr());
+    ImGui::Checkbox("Display visible range", fishGang.debugUiParametersPtr()->displayVisibleRangePtr());
+    ImGui::Checkbox("Display protected range", fishGang.debugUiParametersPtr()->displayProtectedRangePtr());
+    ImGui::Checkbox("Display velocity vector", fishGang.debugUiParametersPtr()->displayVelocityVectorPtr());
+    ImGui::Checkbox("Display proximity number", fishGang.debugUiParametersPtr()->displayProximityNbrPtr());
 }
 
 void ImGuiHandler::setBoundingBox(Scene& scene)
@@ -34,7 +42,7 @@ void ImGuiHandler::displayImGuiManager(Scene& scene)
     // Show a simple window
     ImGui::Begin("BOIDs variables");
 
-    for (auto it = scene.fishTemplatesPtr()->begin(); it != scene.fishTemplatesPtr()->end(); it++)
+    for (auto it = scene.fishGangsPtr()->begin(); it != scene.fishGangsPtr()->end(); it++)
     {
         ImGuiHandler::setDebugVariables(it[0]);
         ImGuiHandler::setDebugParameters(it[0]);

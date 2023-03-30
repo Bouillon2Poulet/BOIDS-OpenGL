@@ -4,7 +4,7 @@
 #include "BehaviorVariables.h"
 #include "DebugUi.h"
 #include "DebugUiParameters.h"
-#include "FishTemplate.h"
+#include "FishGang.h"
 #include "glm/fwd.hpp"
 #include "internal.h"
 
@@ -42,14 +42,14 @@ void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, Behavior
     drawFish(ctx);
 }
 
-static void handleBehaviors(Fish& actualFish, FishTemplate& fishTemplate, Fish& otherFish, glm::vec2 closeSum, glm::vec2& averageVelocity, glm::vec2& averagePosition, glm::vec2& maxDistanceFromCenter)
+static void handleBehaviors(Fish& actualFish, FishGang& fishTemplate, Fish& otherFish, glm::vec2 closeSum, glm::vec2& averageVelocity, glm::vec2& averagePosition, glm::vec2& maxDistanceFromCenter)
 {
     actualFish.handleSeparation(otherFish, closeSum, fishTemplate.bhvVariablesPtr()->protectedRange());
     actualFish.handleAlignment(otherFish, averageVelocity, fishTemplate.bhvVariablesPtr()->visibleRange());
     actualFish.handleCohesion(otherFish, averagePosition, fishTemplate.bhvVariablesPtr()->visibleRange());
 }
 
-void Fish::update(FishTemplate& fishTemplate, float aspect_ratio, glm::vec2& maxDistanceFromCenter)
+void Fish::update(FishGang& fishTemplate, float aspect_ratio, glm::vec2& maxDistanceFromCenter)
 {
     screenAspectRatio(aspect_ratio);
     neighboringFishesReset();
@@ -161,7 +161,7 @@ void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
     _mvtVariables.velocity(_mvtVariables.velocity() + (bordersForces / 10000.f));
 }
 
-// void Fish::transferTemplateArguments(FishTemplate& fishTemplate)
+// void Fish::transferTemplateArguments(FishGang& fishTemplate)
 // {
 //     _debugUi.copyParameters(fishTemplate.debugUiPtr());
 // }

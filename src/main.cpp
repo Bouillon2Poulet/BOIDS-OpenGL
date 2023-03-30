@@ -15,7 +15,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
 
-void imGuiManager(Fish& FishTemplate, bool* displayBoundingBox);
+void imGuiManager(Fish& FishGang, bool* displayBoundingBox);
 
 int main(int argc, char* argv[])
 {

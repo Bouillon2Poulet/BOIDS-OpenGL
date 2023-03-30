@@ -4,7 +4,7 @@
 #include <vector>
 #include "DebugUi.h"
 #include "DebugUiParameters.h"
-#include "FishTemplate.h"
+#include "FishGang.h"
 #include "MovementVariables.h"
 #include "behaviorVariables.h"
 #include "glm/fwd.hpp"
@@ -29,7 +29,7 @@ public:
 
     void draw(p6::Context& ctx, DebugUiParameters& templateDebugUi, BehaviorVariables& behaviorVariables) const;
 
-    void update(FishTemplate& fishTemplate, float aspect_ratio, glm::vec2& maxDistanceFromCenter);
+    void update(FishGang& FishGang, float aspect_ratio, glm::vec2& maxDistanceFromCenter);
 
     void drawFish(p6::Context& ctx) const;
 
@@ -43,7 +43,7 @@ public:
 
     void handleScreenBorders(glm::vec2& maxDistanceFromCenter);
 
-    void transferTemplateArguments(FishTemplate& fishTemplate);
+    void transferTemplateArguments(FishGang& FishGang);
 
     void   screenAspectRatio(float input);
     float  screenAspectRatio() const;

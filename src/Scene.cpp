@@ -1,15 +1,15 @@
 #include "Scene.h"
 #include "Fish.h"
-#include "FishTemplate.h"
+#include "FishGang.h"
 
 Scene::Scene(unsigned int nbFishes, glm::vec2 maxDistanceFromCenter)
     : _maxDistanceFromCenter(maxDistanceFromCenter)
 {
     std::cout << "1.1\n";
-    FishTemplate test;
-    _fishTemplates.emplace_back();
+    FishGang test;
+    _fishGangs.emplace_back();
     std::cout << "1.2\n";
-    _fishTemplates.emplace_back();
+    _fishGangs.emplace_back();
     for (unsigned int i = 0; i < nbFishes; i++)
     {
         _fishes.emplace_back(_maxDistanceFromCenter);
@@ -41,9 +41,9 @@ void Scene::drawFishes(p6::Context& ctx)
     {
         // count++;
         // std::cout << "N°" << count << std::endl;
-        it->update(_fishTemplates[0], ctx.aspect_ratio(), _maxDistanceFromCenter);
-        it->draw(ctx, *(_fishTemplates[0].debugUiParametersPtr()), *(_fishTemplates[0].bhvVariablesPtr()));
-        // std::cout << "/"<<_fishTemplates[0].debugUiPtr()->variables().protectedRange();
+        it->update(_fishGangs[0], ctx.aspect_ratio(), _maxDistanceFromCenter);
+        it->draw(ctx, *(_fishGangs[0].debugUiParametersPtr()), *(_fishGangs[0].bhvVariablesPtr()));
+        // std::cout << "/"<<_fishGangs[0].debugUiPtr()->variables().protectedRange();
         ;
     }
 }
@@ -53,9 +53,9 @@ bool Scene::displayBoundingBox()
     return _displayBoundingBox;
 };
 
-std::vector<FishTemplate>* Scene::fishTemplatesPtr()
+std::vector<FishGang>* Scene::fishGangsPtr()
 {
-    return &_fishTemplates;
+    return &_fishGangs;
 }
 
 bool* Scene::displayBoundingBoxPtr()

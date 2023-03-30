@@ -5,7 +5,7 @@
 #include "DebugUi.h"
 #include "DebugUiParameters.h"
 
-class FishTemplate {
+class FishGang {
 private:
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
@@ -15,7 +15,7 @@ private:
     p6::Color   _color{};
 
 public:
-    inline FishTemplate()
+    inline FishGang()
         : _bhvVariables(1), _name("koi"), _type(1)
     {
         std::cout << "1.15 -> " << _bhvVariables.avoidFactor() << "<_n";
@@ -28,5 +28,5 @@ public:
         // std::abort();
     };
     BehaviorVariables* bhvVariablesPtr();
-    DebugUiParameters*  debugUiParametersPtr();
+    DebugUiParameters* debugUiParametersPtr();
 };
