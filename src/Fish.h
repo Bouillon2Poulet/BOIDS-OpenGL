@@ -17,17 +17,17 @@ private:
     MovementVariables _mvtVariables;
     // BehaviorVariables _bhvVariables{};
     unsigned int _neighboringFishes = 0;
-    DebugUi      _debugUi;
+    // DebugUi      _debugUi;
 
     std::vector<Fish>* _allFishes{};
 
 public:
-    explicit Fish(FishTemplate& fishTemplate, glm::vec2& maxDistanceFromCenter)
-        : _mvtVariables(maxDistanceFromCenter), _debugUi(_mvtVariables, *(fishTemplate.bhvVariablesPtr()))
+    Fish(glm::vec2& maxDistanceFromCenter)
+        : _mvtVariables(maxDistanceFromCenter)
     {
     }
 
-    void draw(p6::Context& ctx) const;
+    void draw(p6::Context& ctx, DebugUiParameters& templateDebugUi, BehaviorVariables& behaviorVariables) const;
 
     void update(FishTemplate& fishTemplate, float aspect_ratio, glm::vec2& maxDistanceFromCenter);
 
@@ -58,5 +58,5 @@ public:
     BehaviorVariables* bhvVariablesPtr();
     MovementVariables* mvtVariablesPtr();
 
-    DebugUi* debugUiPtr();
+    // DebugUi* debugUiPtr();
 };

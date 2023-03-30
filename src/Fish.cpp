@@ -1,6 +1,9 @@
 #include "Fish.h"
 #include <cmath>
 #include <string>
+#include "BehaviorVariables.h"
+#include "DebugUi.h"
+#include "DebugUiParameters.h"
 #include "FishTemplate.h"
 #include "glm/fwd.hpp"
 #include "internal.h"
@@ -18,23 +21,24 @@ float* Fish::screenAspectRatioPtr()
     return &_screenAspectRatio;
 }
 
-DebugUi* Fish::debugUiPtr()
-{
-    return &_debugUi;
-}
+// DebugUi* Fish::debugUiPtr()
+// {
+//     return &_debugUi;
+// }
 
-void Fish::draw(p6::Context& ctx) const
+void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, BehaviorVariables& behaviorVariables) const
 {
-    if (_debugUi.parameters().displayProtectedRange())
+    if (debugUiParameters.displayProtectedRange())
     {
-        _debugUi.drawProtectedCircle(ctx);
+        std::cout << "*" << behaviorVariables.protectedRange();
+        drawProtectedCircle(ctx, behaviorVariables.protectedRange(), _mvtVariables.position());
     }
-    if (_debugUi.parameters().displayVisibleRange())
-        _debugUi.drawVisibleCircle(ctx);
-    if (_debugUi.parameters().displayVelocityVector())
-        _debugUi.drawVelocityVector(ctx);
-    if (_debugUi.parameters().displayProximityNbr())
-        _debugUi.drawProximityNbr(_neighboringFishes, ctx);
+    if (debugUiParameters.displayVisibleRange())
+        drawVisibleCircle(ctx, behaviorVariables.visibleRange(), _mvtVariables.position());
+    if (debugUiParameters.displayVelocityVector())
+        drawVelocityVector(ctx, _mvtVariables);
+    if (debugUiParameters.displayProximityNbr())
+        drawProximityNbr(_neighboringFishes, ctx, _mvtVariables.position());
     drawFish(ctx);
 }
 
@@ -93,8 +97,6 @@ void Fish::update(FishTemplate& fishTemplate, float aspect_ratio, glm::vec2& max
 
     // Position update
     _mvtVariables.position(_mvtVariables.position() + (_mvtVariables.velocity() / 10.f));
-
-    _debugUi = DebugUi(_mvtVariables, *(fishTemplate.bhvVariablesPtr()), _debugUi);
 }
 
 void Fish::drawFish(p6::Context& ctx) const
@@ -120,8 +122,8 @@ void Fish::handleSeparation(Fish& OtherFish, glm::vec2& closeSum, float protecte
 {
     if (glm::length(OtherFish._mvtVariables.position() - _mvtVariables.position()) <= protectedRange)
     {
-        //std::cout << "! - " << protectedRange << "\n"
-                //   << std::endl;
+        // std::cout << "! - " << protectedRange << "\n"
+        //    << std::endl;
         closeSum += (_mvtVariables.position() - OtherFish._mvtVariables.position());
     }
 }
@@ -145,7 +147,7 @@ void Fish::handleCohesion(Fish& OtherFish, glm::vec2& averagePosition, float vis
 
 void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
 {
-    std::cout << "1.3 - maxDistanceFromCenter.x : " << maxDistanceFromCenter.x << "\n";
+    // std::cout << "1.3 - maxDistanceFromCenter.x : " << maxDistanceFromCenter.x << "\n";
     glm::vec2 bordersForces{};
     float     rightBorderForce = -1.f / (std::pow(maxDistanceFromCenter.x - _mvtVariables.position().x, 2.f));
     float     leftBorderForce  = 1.f / (std::pow(-maxDistanceFromCenter.x - _mvtVariables.position().x, 2.f));
@@ -159,10 +161,10 @@ void Fish::handleScreenBorders(glm::vec2& maxDistanceFromCenter)
     _mvtVariables.velocity(_mvtVariables.velocity() + (bordersForces / 10000.f));
 }
 
-void Fish::transferTemplateArguments(FishTemplate& fishTemplate)
-{
-    _debugUi.copyParameters(fishTemplate.debugUiPtr());
-}
+// void Fish::transferTemplateArguments(FishTemplate& fishTemplate)
+// {
+//     _debugUi.copyParameters(fishTemplate.debugUiPtr());
+// }
 
 void Fish::neighboringFishesReset()
 {

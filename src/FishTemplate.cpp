@@ -1,11 +1,12 @@
 #include "FishTemplate.h"
+#include "DebugUiParameters.h"
 
 BehaviorVariables* FishTemplate::bhvVariablesPtr()
 {
     return &_bhvVariables;
 }
 
-DebugUi* FishTemplate::debugUiPtr()
+DebugUiParameters* FishTemplate::debugUiParametersPtr()
 {
-    return &_debugUi;
+    return &_debugUiParameters;
 }

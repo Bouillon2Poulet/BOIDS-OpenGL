@@ -1,19 +1,54 @@
 #pragma once
 
+#include <stdlib.h>
+#include <iostream>
+#include <string>
 class BehaviorVariables {
 private:
-    float _protectedRange  = 0.1f;
-    float _visibleRange    = 0.2f;
-    float _avoidFactor     = 0.4f;
-    float _matchingFactor  = 0.01f;
-    float _centeringFactor = 0.001f;
-    float _turnFactor      = 0.05f;
+    float _protectedRange;
+    float _visibleRange;
+    float _avoidFactor;
+    float _matchingFactor;
+    float _centeringFactor;
+    float _turnFactor;
     // unsigned int _neighboringFishes = 0;
-    float _maxSpeed = 0.3f;
-    float _minSpeed = 0.1f;
+    float _maxSpeed;
+    float _minSpeed;
 
 public:
-    BehaviorVariables()                                = default;
+    inline BehaviorVariables() = default;
+    inline BehaviorVariables(int type)
+    {
+        std::cout << "!!1.15 : 1\n";
+        if (type == 1)
+        {
+            _protectedRange  = 0.1f;
+            _visibleRange    = 0.2f;
+            _avoidFactor     = 0.4f;
+            _matchingFactor  = 0.;
+            _centeringFactor = 0.001;
+            _turnFactor      = 0.05;
+            _maxSpeed        = 0.3;
+            _minSpeed        = 0.1;
+        }
+        else if (type == 2)
+        {
+            std::cout << "!!1.16\n";
+            _protectedRange  = 0.1f;
+            _visibleRange    = 0.2f;
+            _avoidFactor     = 0.4f;
+            _matchingFactor  = 0.;
+            _centeringFactor = 0.001;
+            _turnFactor      = 0.05;
+            _maxSpeed        = 0.3;
+            _minSpeed        = 0.1;
+        }
+        else
+        {
+            std::cout << "!!1.17\n";
+            // std::abort();
+        };
+    };
     BehaviorVariables(const BehaviorVariables& toCopy) = default;
 
     inline void copy(const BehaviorVariables& toCopy)

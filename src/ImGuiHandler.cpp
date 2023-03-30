@@ -16,10 +16,10 @@ void ImGuiHandler::setDebugVariables(FishTemplate& FishTemplate)
 }
 void ImGuiHandler::setDebugParameters(FishTemplate& fishTemplate)
 {
-    ImGui::Checkbox("Display visible range", fishTemplate.debugUiPtr()->parametersPtr()->displayVisibleRangePtr());
-    ImGui::Checkbox("Display protected range", fishTemplate.debugUiPtr()->parametersPtr()->displayProtectedRangePtr());
-    ImGui::Checkbox("Display velocity vector", fishTemplate.debugUiPtr()->parametersPtr()->displayVelocityVectorPtr());
-    ImGui::Checkbox("Display proximity number", fishTemplate.debugUiPtr()->parametersPtr()->displayProximityNbrPtr());
+    ImGui::Checkbox("Display visible range", fishTemplate.debugUiParametersPtr()->displayVisibleRangePtr());
+    ImGui::Checkbox("Display protected range", fishTemplate.debugUiParametersPtr()->displayProtectedRangePtr());
+    ImGui::Checkbox("Display velocity vector", fishTemplate.debugUiParametersPtr()->displayVelocityVectorPtr());
+    ImGui::Checkbox("Display proximity number", fishTemplate.debugUiParametersPtr()->displayProximityNbrPtr());
 }
 
 void ImGuiHandler::setBoundingBox(Scene& scene)
@@ -34,8 +34,12 @@ void ImGuiHandler::displayImGuiManager(Scene& scene)
     // Show a simple window
     ImGui::Begin("BOIDs variables");
 
-    ImGuiHandler::setDebugVariables(scene.fishTemplate());
-    ImGuiHandler::setDebugParameters(scene.fishTemplate());
+    for (auto it = scene.fishTemplatesPtr()->begin(); it != scene.fishTemplatesPtr()->end(); it++)
+    {
+        ImGuiHandler::setDebugVariables(it[0]);
+        ImGuiHandler::setDebugParameters(it[0]);
+    }
+
     ImGuiHandler::setBoundingBox(scene);
 
     ImGui::End();
