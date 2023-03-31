@@ -20,28 +20,30 @@ public:
     inline BehaviorVariables(int type)
     {
         std::cout << "!!1.15 : 1\n";
-        if (type == 1)
+        if (type == 0)
         {
-            _protectedRange  = 0.1f;
+            _protectedRange  = 0.03f;
             _visibleRange    = 0.2f;
-            _avoidFactor     = 0.4f;
-            _matchingFactor  = 0.;
+            _avoidFactor     = 0.1f;
+            _matchingFactor  = 0.05;
             _centeringFactor = 0.001;
             _turnFactor      = 0.05;
-            _maxSpeed        = 0.3;
-            _minSpeed        = 0.1;
+
+            _maxSpeed = 0.1;
+            _minSpeed = 0.05;
         }
-        else if (type == 2)
+        else if (type == 1)
         {
             std::cout << "!!1.16\n";
             _protectedRange  = 0.1f;
             _visibleRange    = 0.2f;
-            _avoidFactor     = 0.4f;
-            _matchingFactor  = 0.;
+            _avoidFactor     = 0.2f;
+            _matchingFactor  = 0.001;
             _centeringFactor = 0.001;
             _turnFactor      = 0.05;
-            _maxSpeed        = 0.3;
-            _minSpeed        = 0.1;
+
+            _maxSpeed = 0.05;
+            _minSpeed = 0.01;
         }
         else
         {

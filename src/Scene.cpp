@@ -1,21 +1,31 @@
 #include "Scene.h"
+#include <string.h>
 #include "Fish.h"
 #include "FishGang.h"
 
-Scene::Scene(unsigned int nbFishes, glm::vec2 maxDistanceFromCenter)
-    : _maxDistanceFromCenter(maxDistanceFromCenter)
+void Scene::draw(p6::Context& ctx)
+{
+    ctx.background(_backgroundColor);
+    //First update Fishes
+    //Second update Foods
+    for (auto it = _fishGangs.begin(); it != _fishGangs.end(); it++)
+    {
+        // std::cout << "DRAWING SCENE, fishGang : ";
+        // it->printName();
+        // std::cout << std::endl;
+
+        it->draw(ctx, _maxDistanceFromCenter);
+    }
+}
+
+Scene::Scene(float aspect_ratio)
+    : _maxDistanceFromCenter(*new glm::vec2(aspect_ratio - .3f, 1.f - .2f))
 {
     std::cout << "1.1\n";
-    FishGang test;
-    _fishGangs.emplace_back();
-    std::cout << "1.2\n";
-    _fishGangs.emplace_back();
-    for (unsigned int i = 0; i < nbFishes; i++)
-    {
-        _fishes.emplace_back(_maxDistanceFromCenter);
-        _fishes.back().linkArrayToFish(&_fishes);
-    }
-    std::cout << "1.2 - maxDistanceFromCenter.x : " << _maxDistanceFromCenter.x << "\n";
+    _fishGangs.emplace_back(0, 50, _maxDistanceFromCenter); // Bug
+    _fishGangs.emplace_back(1, 10, _maxDistanceFromCenter); // Working
+    // for (unsigned int i = 0; i < 50; i++)
+    //     std::cout << "1.2 - maxDistanceFromCenter.x : " << _maxDistanceFromCenter.x << "\n";
 }
 
 void Scene::drawBoundingBox(p6::Context& ctx)
@@ -31,21 +41,6 @@ void Scene::drawBoundingBox(p6::Context& ctx)
         p6::Rotation{}
     );
     ctx.pop_transform();
-}
-
-void Scene::drawFishes(p6::Context& ctx)
-{
-    std::vector<Fish>::iterator it;
-    // int                         count = 0;
-    for (it = _fishes.begin(); it != _fishes.end(); it++)
-    {
-        // count++;
-        // std::cout << "N°" << count << std::endl;
-        it->update(_fishGangs[0], ctx.aspect_ratio(), _maxDistanceFromCenter);
-        it->draw(ctx, *(_fishGangs[0].debugUiParametersPtr()), *(_fishGangs[0].bhvVariablesPtr()));
-        // std::cout << "/"<<_fishGangs[0].debugUiPtr()->variables().protectedRange();
-        ;
-    }
 }
 
 bool Scene::displayBoundingBox()
@@ -66,4 +61,9 @@ bool* Scene::displayBoundingBoxPtr()
 glm::vec2* Scene::maxDistanceFromCenterPtr()
 {
     return &_maxDistanceFromCenter;
+}
+
+glm::vec2 Scene::randomPosInBoundingBox()
+{
+    return {p6::random::number(_maxDistanceFromCenter.x, _maxDistanceFromCenter.x), p6::random::number(_maxDistanceFromCenter.y, _maxDistanceFromCenter.y)};
 }

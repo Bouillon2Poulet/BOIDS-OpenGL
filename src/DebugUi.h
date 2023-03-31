@@ -1,10 +1,11 @@
 #pragma once
 
 #include <p6/p6.h>
-#include "DebugUiParameters.h"
-#include "DebugUiVariable.h"
+#include "glm/fwd.hpp"
+// #include "DebugUiParameters.h"
+// #include "DebugUiVariable.h"
 #include "MovementVariables.h"
-#include "behaviorVariables.h"
+// #include "behaviorVariables.h"
 
 // class DebugUi {
 // private:

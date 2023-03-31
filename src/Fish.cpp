@@ -8,25 +8,7 @@
 #include "glm/fwd.hpp"
 #include "internal.h"
 
-void Fish::screenAspectRatio(float input)
-{
-    _screenAspectRatio = input;
-}
-float Fish::screenAspectRatio() const
-{
-    return _screenAspectRatio;
-}
-float* Fish::screenAspectRatioPtr()
-{
-    return &_screenAspectRatio;
-}
-
-// DebugUi* Fish::debugUiPtr()
-// {
-//     return &_debugUi;
-// }
-
-void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, BehaviorVariables& behaviorVariables) const
+void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, BehaviorVariables& behaviorVariables, p6::Color& color, float radius) const
 {
     if (debugUiParameters.displayProtectedRange())
     {
@@ -39,19 +21,18 @@ void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, Behavior
         drawVelocityVector(ctx, _mvtVariables);
     if (debugUiParameters.displayProximityNbr())
         drawProximityNbr(_neighboringFishes, ctx, _mvtVariables.position());
-    drawFish(ctx);
+    drawFish(ctx, color, radius);
 }
 
-static void handleBehaviors(Fish& actualFish, FishGang& fishTemplate, Fish& otherFish, glm::vec2 closeSum, glm::vec2& averageVelocity, glm::vec2& averagePosition, glm::vec2& maxDistanceFromCenter)
+static void handleBehaviors(Fish& actualFish, BehaviorVariables& bhvVariables, Fish& otherFish, glm::vec2& closeSum, glm::vec2& averageVelocity, glm::vec2& averagePosition)
 {
-    actualFish.handleSeparation(otherFish, closeSum, fishTemplate.bhvVariablesPtr()->protectedRange());
-    actualFish.handleAlignment(otherFish, averageVelocity, fishTemplate.bhvVariablesPtr()->visibleRange());
-    actualFish.handleCohesion(otherFish, averagePosition, fishTemplate.bhvVariablesPtr()->visibleRange());
+    actualFish.handleSeparation(otherFish, closeSum, bhvVariables.protectedRange());
+    actualFish.handleAlignment(otherFish, averageVelocity, bhvVariables.visibleRange());
+    actualFish.handleCohesion(otherFish, averagePosition, bhvVariables.visibleRange());
 }
 
-void Fish::update(FishGang& fishTemplate, float aspect_ratio, glm::vec2& maxDistanceFromCenter)
+void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes)
 {
-    screenAspectRatio(aspect_ratio);
     neighboringFishesReset();
 
     // Separation variable
@@ -62,60 +43,54 @@ void Fish::update(FishGang& fishTemplate, float aspect_ratio, glm::vec2& maxDist
 
     // Cohesion _bhvVariables
     glm::vec2 averagePosition(.0f, .0f);
-
     // Behaviors
     std::vector<Fish>::iterator it;
-    for (it = _allFishes->begin(); it != _allFishes->end(); it++)
+    for (it = allFishes.begin(); it != allFishes.end(); it++)
     {
-        if (this == &(*it))
+        if (&(*it) == this)
         {
             continue;
         }
-        handleBehaviors(*this, fishTemplate, *it, closeSum, averageVelocity, averagePosition, maxDistanceFromCenter);
+        handleBehaviors(*this, bhvVariables, *it, closeSum, averageVelocity, averagePosition);
     }
 
     // Velocity update
     // Separation
-    _mvtVariables.velocity(_mvtVariables.velocity() + closeSum * fishTemplate.bhvVariablesPtr()->avoidFactor());
+    _mvtVariables.velocity(_mvtVariables.velocity() + closeSum * bhvVariables.avoidFactor());
 
     // Alignment and Cohesion
     if (neighboringFishes() != 0)
     {
         averageVelocity /= neighboringFishes();
-        _mvtVariables.velocity(_mvtVariables.velocity() + (averageVelocity - _mvtVariables.velocity()) * fishTemplate.bhvVariablesPtr()->matchingFactor());
+        _mvtVariables.velocity(_mvtVariables.velocity() + (averageVelocity - _mvtVariables.velocity()) * bhvVariables.matchingFactor());
     }
 
     handleScreenBorders(maxDistanceFromCenter);
 
     // Min and Max speed
     float speed = std::sqrt(std::pow(_mvtVariables.velocity().x, 2.f) + std::pow(_mvtVariables.velocity().y, 2.f));
-    if (speed > fishTemplate.bhvVariablesPtr()->maxSpeed())
-        _mvtVariables.velocity((_mvtVariables.velocity() / speed) * fishTemplate.bhvVariablesPtr()->maxSpeed());
+    if (speed > bhvVariables.maxSpeed())
+        _mvtVariables.velocity((_mvtVariables.velocity() / speed) * bhvVariables.maxSpeed());
 
-    if (speed < fishTemplate.bhvVariablesPtr()->minSpeed())
-        _mvtVariables.velocity((_mvtVariables.velocity() / speed) * fishTemplate.bhvVariablesPtr()->minSpeed());
+    if (speed < bhvVariables.minSpeed())
+        _mvtVariables.velocity((_mvtVariables.velocity() / speed) * bhvVariables.minSpeed());
 
     // Position update
     _mvtVariables.position(_mvtVariables.position() + (_mvtVariables.velocity() / 10.f));
 }
 
-void Fish::drawFish(p6::Context& ctx) const
+void Fish::drawFish(p6::Context& ctx, p6::Color& color, float radius) const
 {
     ctx.push_transform();
     ctx.translate({_mvtVariables.position().x, _mvtVariables.position().y});
-    ctx.fill       = {1.f, 0.7f, 0.2f, 1.f};
+    ctx.fill       = color;
     ctx.use_fill   = true;
     ctx.use_stroke = false;
     ctx.square(
         p6::Center{.0f, .0f},
-        p6::Radius{_radius}
+        p6::Radius{radius}
     );
     ctx.pop_transform();
-}
-
-void Fish::linkArrayToFish(std::vector<Fish>* array)
-{
-    _allFishes = array;
 }
 
 void Fish::handleSeparation(Fish& OtherFish, glm::vec2& closeSum, float protectedRange)

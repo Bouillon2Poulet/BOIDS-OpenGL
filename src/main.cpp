@@ -32,19 +32,15 @@ int main(int argc, char* argv[])
     auto ctx = p6::Context{{.title = "maxiprogs4"}};
     ctx.maximize_window();
 
-    auto maxDistanceFromCenter = glm::vec2(ctx.aspect_ratio() - .3f, 1.f - .2f);
-
-    Scene scene(150, maxDistanceFromCenter);
+    Scene scene(ctx.aspect_ratio());
     // Declare your infinite update loop.
     ctx.update = [&]() {
-        ctx.background(p6::NamedColor::Blue);
-
-        ImGuiHandler::displayImGuiManager(scene);
-
         if (scene.displayBoundingBox())
             scene.drawBoundingBox(ctx);
 
-        scene.drawFishes(ctx);
+        scene.draw(ctx);
+
+        ImGuiHandler::displayImGuiManager(scene);
     };
 
     // Should be done last. It starts the infinite loop.

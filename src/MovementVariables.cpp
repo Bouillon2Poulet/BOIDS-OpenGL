@@ -1,11 +1,6 @@
 #include "MovementVariables.h"
 #include <p6/p6.h>
 
-glm::vec2 MovementVariables::randomPosInBoundingBox(glm::vec2 radii)
-{
-    return {p6::random::number(-radii.x, radii.x), p6::random::number(-radii.y, radii.y)};
-}
-
 void MovementVariables::position(glm::vec2 input)
 {
     _position = input;

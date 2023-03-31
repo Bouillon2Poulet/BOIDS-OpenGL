@@ -1,19 +1,16 @@
 #pragma once
 
+#pragma once
+
 #include <p6/p6.h>
 #include <vector>
-#include "DebugUi.h"
 #include "DebugUiParameters.h"
-#include "FishGang.h"
 #include "MovementVariables.h"
 #include "behaviorVariables.h"
 #include "glm/fwd.hpp"
 
 class Fish {
 private:
-    float _radius            = 0.01f;
-    float _screenAspectRatio = .0f;
-
     MovementVariables _mvtVariables;
     // BehaviorVariables _bhvVariables{};
     unsigned int _neighboringFishes = 0;
@@ -22,16 +19,20 @@ private:
     std::vector<Fish>* _allFishes{};
 
 public:
-    Fish(glm::vec2& maxDistanceFromCenter)
-        : _mvtVariables(maxDistanceFromCenter)
+    Fish(glm::vec2& maxDistanceFromCenter, std::vector<Fish>* allFishes)
+        : _mvtVariables(maxDistanceFromCenter), _allFishes(allFishes)
     {
     }
 
-    void draw(p6::Context& ctx, DebugUiParameters& templateDebugUi, BehaviorVariables& behaviorVariables) const;
+    bool operator==(const Fish& other) const
+    {
+        return this == &other;
+    }
+    void draw(p6::Context& ctx, DebugUiParameters& templateDebugUi, BehaviorVariables& behaviorVariables, p6::Color& color, float radius) const;
 
-    void update(FishGang& FishGang, float aspect_ratio, glm::vec2& maxDistanceFromCenter);
+    void update(BehaviorVariables& bvhVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes);
 
-    void drawFish(p6::Context& ctx) const;
+    void drawFish(p6::Context& ctx, p6::Color& color, float radius) const;
 
     void linkArrayToFish(std::vector<Fish>* array);
 
@@ -42,12 +43,6 @@ public:
     void handleCohesion(Fish& OtherFish, glm::vec2& averagePosition, float visibleRange);
 
     void handleScreenBorders(glm::vec2& maxDistanceFromCenter);
-
-    void transferTemplateArguments(FishGang& FishGang);
-
-    void   screenAspectRatio(float input);
-    float  screenAspectRatio() const;
-    float* screenAspectRatioPtr();
 
     void          neighboringFishesReset();
     void          neighboringFishesIncrement();

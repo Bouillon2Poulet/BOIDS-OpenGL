@@ -1,31 +1,31 @@
 
-#pragma once
+// #pragma once
 
-#include <p6/p6.h>
-#include "MovementVariables.h"
-#include "behaviorVariables.h"
+// #include <p6/p6.h>
+// #include "MovementVariables.h"
+// #include "behaviorVariables.h"
 
-class DebugUiVariables {
-    glm::vec2 _position;
-    glm::vec2 _velocity;
-    float     _protectedRange;
-    float     _visibleRange;
+// class DebugUiVariables {
+//     glm::vec2 _position;
+//     glm::vec2 _velocity;
+//     float     _protectedRange;
+//     float     _visibleRange;
 
-public:
-    DebugUiVariables()                               = default;
-    DebugUiVariables(const DebugUiVariables& toCopy) = default;
+// public:
+//     DebugUiVariables()                               = default;
+//     DebugUiVariables(const DebugUiVariables& toCopy) = default;
 
-    void operator()(const DebugUiVariables& toCopy);
+//     void operator()(const DebugUiVariables& toCopy);
 
-    DebugUiVariables(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy);
+//     DebugUiVariables(MovementVariables& mvtToCopy, BehaviorVariables& bhvToCopy);
 
-    glm::vec2 position() const;
+//     glm::vec2 position() const;
 
-    glm::vec2 velocity() const;
+//     glm::vec2 velocity() const;
 
-    float protectedRange() const;
+//     float protectedRange() const;
 
-    float visibleRange() const;
+//     float visibleRange() const;
 
-    unsigned int neighboringFishes() const;
-};
+//     unsigned int neighboringFishes() const;
+// };

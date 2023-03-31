@@ -1,8 +1,11 @@
 #pragma once
 
+#include <p6/p6.h>
 #include <codecvt>
 #include <locale>
 #include <string>
+#include "Scene.h"
+#include "glm/fwd.hpp"
 
 namespace internal {
 /// \brief return the sign of val or zero if val is equal to zero
