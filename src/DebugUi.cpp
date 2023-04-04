@@ -4,9 +4,22 @@
 #include "glm/fwd.hpp"
 #include "internal.h"
 
+void drawLinkToNearestFood(p6::Context& ctx, glm::vec2 fishPosition, glm::vec2 nearestFoodLocation)
+{
+    ctx.push_transform();
+    ctx.stroke        = {.1f, .5f, 0.f, 1.f};
+    ctx.stroke_weight = .001f;
+    ctx.use_fill      = false;
+    ctx.use_stroke    = true;
+    ctx.line(
+        fishPosition,
+        nearestFoodLocation
+    );
+    ctx.pop_transform();
+}
+
 void drawProtectedCircle(p6::Context& ctx, float protectedRange, glm::vec2 position)
 {
-    std::cout << "??" << protectedRange;
     ctx.push_transform();
     ctx.translate({position.x, position.y});
     ctx.stroke     = {1.f, .0f, .0f, 0.4f};

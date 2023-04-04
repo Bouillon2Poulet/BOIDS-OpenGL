@@ -2,11 +2,13 @@
 
 #include "Fish.h"
 #include "FishGang.h"
+#include "FoodKind.h"
 
 class Scene {
 private:
     // std::vector<Fish>     _fishes{};
     std::vector<FishGang> _fishGangs{};
+    std::vector<FoodKind> _allFoods{};
     bool                  _displayBoundingBox = false;
     glm::vec2             _maxDistanceFromCenter{};
     p6::Color             _backgroundColor = p6::NamedColor::Blue;
@@ -16,7 +18,10 @@ public:
 
     void drawBoundingBox(p6::Context& ctx);
 
+    void createFishGangAndFoods(int type, int nbFishes);
+
     void                   draw(p6::Context& ctx);
+    void                   update();
     bool                   displayBoundingBox();
     std::vector<FishGang>* fishGangsPtr();
     bool*                  displayBoundingBoxPtr();

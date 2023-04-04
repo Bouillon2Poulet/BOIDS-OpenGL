@@ -5,14 +5,17 @@
 #include "DebugUi.h"
 #include "DebugUiParameters.h"
 #include "FishGang.h"
+#include "MovementVariables.h"
+#include "glm/ext/quaternion_geometric.hpp"
 #include "glm/fwd.hpp"
 #include "internal.h"
 
 void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, BehaviorVariables& behaviorVariables, p6::Color& color, float radius) const
 {
+    drawLinkToNearestFood(ctx, _mvtVariables.position(), _nearestFoodLocation);
     if (debugUiParameters.displayProtectedRange())
     {
-        std::cout << "*" << behaviorVariables.protectedRange();
+        // std::cout << "*" << behaviorVariables.protectedRange();
         drawProtectedCircle(ctx, behaviorVariables.protectedRange(), _mvtVariables.position());
     }
     if (debugUiParameters.displayVisibleRange())
@@ -31,7 +34,7 @@ static void handleBehaviors(Fish& actualFish, BehaviorVariables& bhvVariables, F
     actualFish.handleCohesion(otherFish, averagePosition, bhvVariables.visibleRange());
 }
 
-void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes)
+void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food& nearestFood)
 {
     neighboringFishesReset();
 
@@ -77,6 +80,13 @@ void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCen
 
     // Position update
     _mvtVariables.position(_mvtVariables.position() + (_mvtVariables.velocity() / 10.f));
+
+    float biasval        = 0.001f;
+    _nearestFoodLocation = nearestFood.position();
+    _mvtVariables.velocity(_mvtVariables.velocity() + biasval * glm::normalize(_nearestFoodLocation - _mvtVariables.position()));
+    // Food interaction
+    if (glm::length(_mvtVariables.position() - _nearestFoodLocation) < nearestFood.radius())
+        nearestFood.isEaten();
 }
 
 void Fish::drawFish(p6::Context& ctx, p6::Color& color, float radius) const
@@ -156,4 +166,9 @@ unsigned int Fish::neighboringFishes() const
 unsigned int* Fish::neighboringFishesPtr()
 {
     return &_neighboringFishes;
+}
+
+MovementVariables* Fish::mvtVariablesPtr()
+{
+    return &_mvtVariables;
 }

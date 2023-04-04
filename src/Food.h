@@ -1,34 +1,58 @@
 #pragma once
 #include <p6/p6.h>
+#include <string>
 #include <vector>
-#include "FishGang.h"
 #include "glm/fwd.hpp"
+#include "internal.h"
 
 class Food {
 private:
     glm::vec2    _position{};
     float        _maxRadius;
-    float        _currentRadius;
     unsigned int _maxHP;
-    unsigned int _currentHP = _maxHP;
+    float        _currentRadius = _maxRadius;
+    unsigned int _currentHP     = _maxHP;
 
 public:
-    inline void update(std::vector<FishGang>& FishGangs)
+    Food(glm::vec2 maxDistanceFromCenter, unsigned int maxHP, float maxRadius)
+        : _position(internal::randomPosInBoundingBox(maxDistanceFromCenter / 2.f)), _maxRadius(maxRadius), _maxHP(maxHP) {}
+
+    inline void isEaten()
     {
-        // Check for every Boids in radius and increment life;
-        // Does Food look into each BOIDS or each BOID look into all Foods ?
-        unsigned int fishEatingFood = 0;
-        for (auto actualFishGang = FishGangs.begin(); actualFishGang != FishGangs.end(); ++actualFishGang)
-        {
-            for (auto actualFish = *(actualFishGang)->fishesPtr()->begin(); actualFish != *(actualFishGang)->fishesPtr()->end(); actualFish++)
-            {
-                if (glm::length(actualFish.mvtVariablesPtr()->position() - _position) < _currentRadius)
-                {
-                    fishEatingFood += 1;
-                }
-            }
-        }
-        _currentHP -= fishEatingFood;
-        _currentRadius = _maxRadius / std::static_cast<float>(_currentHP) * _maxRadius;
+        if (_currentHP != 0)
+            _currentHP -= 1;
+        _currentRadius = _maxRadius * _currentHP / _maxHP;
+    }
+
+    inline unsigned int currentHP()
+    {
+        return _currentHP;
+    }
+
+    inline glm::vec2 position()
+    {
+        return _position;
+    }
+
+    inline float radius()
+    {
+        return _currentRadius;
+    }
+
+    inline void draw(p6::Context& ctx, p6::Color color, int index)
+    {
+        ctx.push_transform();
+        ctx.translate({_position.x, _position.y});
+        ctx.fill       = color;
+        ctx.use_fill   = true;
+        ctx.use_stroke = false;
+        ctx.circle(
+            p6::Center{.0f, .0f},
+            p6::Radius{_currentRadius}
+        );
+        // ctx.translate({0.03, 0});
+        // const std::u16string indexStr = internal::to_u16string(static_cast<int>(index));
+        // ctx.text(indexStr, p6::Center{}, p6::Rotation{});
+        ctx.pop_transform();
     }
 };

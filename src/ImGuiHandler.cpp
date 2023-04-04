@@ -37,8 +37,8 @@ void ImGuiHandler::displayImGuiManager(Scene& scene)
 {
     for (auto it = scene.fishGangsPtr()->begin(); it != scene.fishGangsPtr()->end(); it++)
     {
-        std::cout << it->name() << std::endl;
-        std::cout << it->bhvVariablesPtr()->avoidFactor() << std::endl;
+        // std::cout << it->name() << std::endl;
+        // std::cout << it->bhvVariablesPtr()->avoidFactor() << std::endl;
         // Show a simple window
 
         ImGui::Begin(it->name().c_str());

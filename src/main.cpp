@@ -35,10 +35,12 @@ int main(int argc, char* argv[])
     Scene scene(ctx.aspect_ratio());
     // Declare your infinite update loop.
     ctx.update = [&]() {
-        if (scene.displayBoundingBox())
-            scene.drawBoundingBox(ctx);
-
+        scene.update();
         scene.draw(ctx);
+        if (scene.displayBoundingBox())
+        {
+            scene.drawBoundingBox(ctx);
+        }
 
         ImGuiHandler::displayImGuiManager(scene);
     };

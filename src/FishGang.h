@@ -5,6 +5,8 @@
 #include "DebugUi.h"
 #include "DebugUiParameters.h"
 #include "Fish.h"
+#include "FoodKind.h"
+
 
 class FishGang {
 private:
@@ -42,8 +44,8 @@ public:
         }
         std::cout << "1.15 -> " << _bhvVariables.avoidFactor() << "<_n";
     };
-    void draw(p6::Context& ctx, glm::vec2 maxDistanceFromCenter);
-
+    void               draw(p6::Context& ctx);
+    void               update(glm::vec2 maxDistanceFromCenter, FoodKind& particularKind);
     inline std::string name()
     {
         return _name;

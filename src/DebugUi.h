@@ -52,7 +52,7 @@
 //         return &_parameters;
 //     }
 // };
-
+void drawLinkToNearestFood(p6::Context& ctx, glm::vec2 fishPosition, glm::vec2 nearestFoodLocation);
 void drawProtectedCircle(p6::Context& ctx, float protectedRange, glm::vec2 mvtVariables);
 void drawVisibleCircle(p6::Context& ctx, float visibleRange, glm::vec2 position);
 void drawVelocityVector(p6::Context& ctx, MovementVariables mvtVariables);

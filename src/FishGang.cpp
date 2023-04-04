@@ -1,5 +1,7 @@
 #include "FishGang.h"
 #include "DebugUiParameters.h"
+#include "FoodKind.h"
+#include "glm/fwd.hpp"
 
 BehaviorVariables* FishGang::bhvVariablesPtr()
 {
@@ -11,15 +13,21 @@ DebugUiParameters* FishGang::debugUiParametersPtr()
     return &_debugUiParameters;
 }
 
-void FishGang::draw(p6::Context& ctx, glm::vec2 maxDistanceFromCenter)
+void FishGang::draw(p6::Context& ctx)
 {
     std::vector<Fish>::iterator it;
 
     for (it = _fishes.begin(); it != _fishes.end(); it++)
     {
         it->draw(ctx, _debugUiParameters, _bhvVariables, _color, _radius);
-        it->update(_bhvVariables, maxDistanceFromCenter, _fishes);
-        // std::cout << "/"<<_fishGangs[0].debugUiPtr()->variables().protectedRange();
-        ;
+    }
+}
+
+void FishGang::update(glm::vec2 maxDistanceFromCenter, FoodKind& particularFoodKind)
+{
+    for (auto it = _fishes.begin(); it != _fishes.end(); it++)
+    {
+        glm::vec2 position = (it->mvtVariablesPtr()->position());
+        it->update(_bhvVariables, maxDistanceFromCenter, _fishes, *(particularFoodKind.nearestFood(position)));
     }
 }

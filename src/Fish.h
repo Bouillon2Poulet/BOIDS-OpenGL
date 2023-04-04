@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Food.h"
 #pragma once
 
 #include <p6/p6.h>
@@ -12,6 +13,7 @@
 class Fish {
 private:
     MovementVariables _mvtVariables;
+    glm::vec2         _nearestFoodLocation;
     // BehaviorVariables _bhvVariables{};
     unsigned int _neighboringFishes = 0;
     // DebugUi      _debugUi;
@@ -30,7 +32,7 @@ public:
     }
     void draw(p6::Context& ctx, DebugUiParameters& templateDebugUi, BehaviorVariables& behaviorVariables, p6::Color& color, float radius) const;
 
-    void update(BehaviorVariables& bvhVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes);
+    void update(BehaviorVariables& bvhVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food& nearestFood);
 
     void drawFish(p6::Context& ctx, p6::Color& color, float radius) const;
 
