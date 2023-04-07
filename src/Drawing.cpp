@@ -1,4 +1,4 @@
-#include "DebugUi.h"
+#include "Drawing.h"
 #include "DebugUiVariable.h"
 #include "MovementVariables.h"
 #include "glm/fwd.hpp"
@@ -74,6 +74,20 @@ void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, glm::vec
         proximityNumber,
         p6::Center{},
         p6::Rotation{}
+    );
+    ctx.pop_transform();
+}
+
+void drawFish(p6::Context& ctx, glm::vec2 position, p6::Color& color, float radius)
+{
+    ctx.push_transform();
+    ctx.translate({position.x, position.y});
+    ctx.fill       = color;
+    ctx.use_fill   = true;
+    ctx.use_stroke = false;
+    ctx.square(
+        p6::Center{.0f, .0f},
+        p6::Radius{radius}
     );
     ctx.pop_transform();
 }

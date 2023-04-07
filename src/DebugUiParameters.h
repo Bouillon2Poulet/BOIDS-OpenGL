@@ -2,13 +2,15 @@
 
 class DebugUiParameters {
 private:
-    bool _displayProtectedRange = false;
-    bool _displayVisibleRange   = false;
-    bool _displayVelocityVector = false;
-    bool _displayProximityNbr   = false;
+    bool _displayProtectedRange    = false;
+    bool _displayVisibleRange      = false;
+    bool _displayVelocityVector    = false;
+    bool _displayProximityNbr      = false;
+    bool _displayLinkToNearestFood = false;
 
 public:
-    void operator()(DebugUiParameters& toCopy);
+    void
+        operator()(DebugUiParameters& toCopy);
 
     void  displayProtectedRange(bool input);
     bool  displayProtectedRange() const;
@@ -25,4 +27,8 @@ public:
     void  displayProximityNbr(bool input);
     bool  displayProximityNbr() const;
     bool* displayProximityNbrPtr();
+
+    void  displayLinkToNearestFood(bool input);
+    bool  displayLinkToNearestFood() const;
+    bool* displayLinkToNearestFoodPtr();
 };

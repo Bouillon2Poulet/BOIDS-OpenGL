@@ -2,11 +2,9 @@
 
 #include <string>
 #include "BehaviorVariables.h"
-#include "DebugUi.h"
 #include "DebugUiParameters.h"
 #include "Fish.h"
 #include "FoodKind.h"
-
 
 class FishGang {
 private:
@@ -29,20 +27,23 @@ public:
             _color  = *new p6::Color(1.f, 0.2f, .0f);
             _radius = 0.01f;
         }
-        else if (_type = 1)
+        else if (_type == 1)
         {
             _name   = "tuna";
             _color  = *new p6::Color(0.f, 0.7f, .5f);
             _radius = 0.03f;
         }
-
-        std::cout << "1.15 -> " << _bhvVariables.avoidFactor() << "<_n";
+        else if (_type == 2)
+        {
+            _name   = "whale";
+            _color  = *new p6::Color(0.f, 1.f, 1.f);
+            _radius = 0.09f;
+        }
 
         for (unsigned int i = 0; i < number; i++)
         {
             _fishes.emplace_back(maxDistanceFromCenter, &_fishes);
         }
-        std::cout << "1.15 -> " << _bhvVariables.avoidFactor() << "<_n";
     };
     void               draw(p6::Context& ctx);
     void               update(glm::vec2 maxDistanceFromCenter, FoodKind& particularKind);

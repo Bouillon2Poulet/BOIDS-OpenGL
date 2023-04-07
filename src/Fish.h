@@ -34,7 +34,7 @@ public:
 
     void update(BehaviorVariables& bvhVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food& nearestFood);
 
-    void drawFish(p6::Context& ctx, p6::Color& color, float radius) const;
+    // void drawFish(p6::Context& ctx, p6::Color& color, float radius) const;
 
     void linkArrayToFish(std::vector<Fish>* array);
 

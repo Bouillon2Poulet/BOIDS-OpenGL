@@ -22,6 +22,7 @@ void ImGuiHandler::setDebugParameters(FishGang& fishGang)
     ImGui::Checkbox("Display protected range", fishGang.debugUiParametersPtr()->displayProtectedRangePtr());
     ImGui::Checkbox("Display velocity vector", fishGang.debugUiParametersPtr()->displayVelocityVectorPtr());
     ImGui::Checkbox("Display proximity number", fishGang.debugUiParametersPtr()->displayProximityNbrPtr());
+    ImGui::Checkbox("Display link to nearest food", fishGang.debugUiParametersPtr()->displayLinkToNearestFoodPtr());
     ImGui::ColorEdit4("Color", &(fishGang.colorPtr()->r()));
 }
 

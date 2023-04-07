@@ -59,3 +59,16 @@ bool* DebugUiParameters::displayProximityNbrPtr()
 {
     return &_displayProximityNbr;
 }
+
+void DebugUiParameters::displayLinkToNearestFood(bool input)
+{
+    _displayLinkToNearestFood = input;
+}
+bool DebugUiParameters::displayLinkToNearestFood() const
+{
+    return _displayLinkToNearestFood;
+}
+bool* DebugUiParameters::displayLinkToNearestFoodPtr()
+{
+    return &_displayLinkToNearestFood;
+}

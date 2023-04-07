@@ -3,14 +3,15 @@
 #include "Fish.h"
 #include "FishGang.h"
 #include "FoodKind.h"
+#include "PlayableFish.h"
 
 class Scene {
 private:
-    // std::vector<Fish>     _fishes{};
     std::vector<FishGang> _fishGangs{};
     std::vector<FoodKind> _allFoods{};
     bool                  _displayBoundingBox = false;
     glm::vec2             _maxDistanceFromCenter{};
+    PlayableFish          _playableFish;
     p6::Color             _backgroundColor = p6::NamedColor::Blue;
 
 public:

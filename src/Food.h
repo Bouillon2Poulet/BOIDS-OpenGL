@@ -22,6 +22,10 @@ public:
         if (_currentHP != 0)
             _currentHP -= 1;
         _currentRadius = _maxRadius * _currentHP / _maxHP;
+        if (_currentRadius < 0.01)
+        {
+            _currentHP = 0;
+        }
     }
 
     inline unsigned int currentHP()

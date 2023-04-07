@@ -45,11 +45,18 @@ public:
             _maxSpeed = 0.05;
             _minSpeed = 0.01;
         }
-        else
+        else if (type == 2)
         {
-            std::cout << "!!1.17\n";
-            // std::abort();
-        };
+            _protectedRange  = 0.3f;
+            _visibleRange    = 0.5f;
+            _avoidFactor     = 0.2f;
+            _matchingFactor  = 0.001;
+            _centeringFactor = 0.001;
+            _turnFactor      = 0.05;
+
+            _maxSpeed = 0.01;
+            _minSpeed = 0.005;
+        }
     };
     BehaviorVariables(const BehaviorVariables& toCopy) = default;
 

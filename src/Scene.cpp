@@ -2,6 +2,7 @@
 #include <string.h>
 #include "Fish.h"
 #include "FishGang.h"
+#include "PlayableFish.h"
 
 void Scene::draw(p6::Context& ctx)
 {
@@ -17,6 +18,8 @@ void Scene::draw(p6::Context& ctx)
     {
         it->draw(ctx);
     }
+    _playableFish.update(ctx);
+    _playableFish.draw(ctx);
 }
 
 void Scene::update()
@@ -29,12 +32,13 @@ void Scene::update()
 }
 
 Scene::Scene(float aspect_ratio)
-    : _maxDistanceFromCenter(*new glm::vec2(aspect_ratio - .3f, 1.f - .2f))
+    : _maxDistanceFromCenter(*new glm::vec2(aspect_ratio - .3f, 1.f - .2f)), _playableFish(_maxDistanceFromCenter)
 {
+    // _playableFish = *new PlayableFish(_maxDistanceFromCenter);
     // Init FishGang and Foods n°1
-    createFishGangAndFoods(0, 50);
-
-    createFishGangAndFoods(1, 50);
+    createFishGangAndFoods(0, 200);
+    createFishGangAndFoods(1, 40);
+    createFishGangAndFoods(2, 4);
 
     // Init allFoods
 }

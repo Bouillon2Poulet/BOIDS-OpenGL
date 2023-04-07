@@ -2,8 +2,8 @@
 #include <cmath>
 #include <string>
 #include "BehaviorVariables.h"
-#include "DebugUi.h"
 #include "DebugUiParameters.h"
+#include "Drawing.h"
 #include "FishGang.h"
 #include "MovementVariables.h"
 #include "glm/ext/quaternion_geometric.hpp"
@@ -12,19 +12,18 @@
 
 void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, BehaviorVariables& behaviorVariables, p6::Color& color, float radius) const
 {
-    drawLinkToNearestFood(ctx, _mvtVariables.position(), _nearestFoodLocation);
+    if (debugUiParameters.displayLinkToNearestFood())
+        drawLinkToNearestFood(ctx, _mvtVariables.position(), _nearestFoodLocation);
     if (debugUiParameters.displayProtectedRange())
-    {
-        // std::cout << "*" << behaviorVariables.protectedRange();
         drawProtectedCircle(ctx, behaviorVariables.protectedRange(), _mvtVariables.position());
-    }
     if (debugUiParameters.displayVisibleRange())
         drawVisibleCircle(ctx, behaviorVariables.visibleRange(), _mvtVariables.position());
     if (debugUiParameters.displayVelocityVector())
         drawVelocityVector(ctx, _mvtVariables);
     if (debugUiParameters.displayProximityNbr())
         drawProximityNbr(_neighboringFishes, ctx, _mvtVariables.position());
-    drawFish(ctx, color, radius);
+
+    drawFish(ctx, _mvtVariables.position(), color, radius);
 }
 
 static void handleBehaviors(Fish& actualFish, BehaviorVariables& bhvVariables, Fish& otherFish, glm::vec2& closeSum, glm::vec2& averageVelocity, glm::vec2& averagePosition)
@@ -89,19 +88,19 @@ void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCen
         nearestFood.isEaten();
 }
 
-void Fish::drawFish(p6::Context& ctx, p6::Color& color, float radius) const
-{
-    ctx.push_transform();
-    ctx.translate({_mvtVariables.position().x, _mvtVariables.position().y});
-    ctx.fill       = color;
-    ctx.use_fill   = true;
-    ctx.use_stroke = false;
-    ctx.square(
-        p6::Center{.0f, .0f},
-        p6::Radius{radius}
-    );
-    ctx.pop_transform();
-}
+// void Fish::drawFish(p6::Context& ctx, p6::Color& color, float radius) const
+// {
+//     ctx.push_transform();
+//     ctx.translate({_mvtVariables.position().x, _mvtVariables.position().y});
+//     ctx.fill       = color;
+//     ctx.use_fill   = true;
+//     ctx.use_stroke = false;
+//     ctx.square(
+//         p6::Center{.0f, .0f},
+//         p6::Radius{radius}
+//     );
+//     ctx.pop_transform();
+// }
 
 void Fish::handleSeparation(Fish& OtherFish, glm::vec2& closeSum, float protectedRange)
 {

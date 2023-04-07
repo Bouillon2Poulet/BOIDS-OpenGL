@@ -9,37 +9,48 @@ class FoodKind {
 private:
     std::vector<Food> _foods;
     int               _type;
-    float             _radius;
+    float             _radius{};
     p6::Color         _color;
     unsigned int      _hp;
 
 public:
     FoodKind(int type, glm::vec2& maxDistanceFromCenter)
-        : _type(type), _radius(0.30f)
+        : _type(type)
     {
-        _color  = (_type == 0) ? p6::Color(1.f, .6, .9f) : p6::Color(.7f, .2, .9f);
-        _radius = (_type == 0) ? 0.01f : 0.5f;
-        _hp     = (_type == 0) ? 10.f : 50.f;
+        if (_type == 0)
+        {
+            _color  = p6::Color(1.f, .6f, .9f);
+            _radius = 0.05f;
+            _hp     = 10.f;
+        }
+        else if (_type == 1)
+        {
+            _color  = p6::Color(.7f, .2, .9f);
+            _radius = 0.1f;
+            _hp     = 50.f;
+        }
+        else if (_type == 2)
+        {
+            _color  = p6::Color(.1f, .8, .3f);
+            _radius = 0.2f;
+            _hp     = 100.f;
+        }
         addFood(maxDistanceFromCenter);
     }
 
     inline void update(glm::vec2& maxDistanceFromCenter)
     {
-        float chanceForNewFood = 0.001;
-        int   index            = 0;
+        float chanceForNewFood = 0.0005;
         for (int i = 0; i < _foods.size(); i++)
         {
             if (_foods[i].currentHP() == 0)
             {
-                std::cout
-                    << "DELETE Num" << i << std::endl;
                 addFood(maxDistanceFromCenter);
                 _foods.erase(_foods.begin() + i);
             }
         }
         if (p6::random::number() < chanceForNewFood)
         {
-            std::cout << "ADD\n";
             addFood(maxDistanceFromCenter);
         }
         // for (auto it = _foods.begin(); it != _foods.end();)
