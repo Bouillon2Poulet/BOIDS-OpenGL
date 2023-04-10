@@ -8,7 +8,7 @@
 class FoodKind {
 private:
     std::vector<Food> _foods;
-    int               _type;
+    int               _type; // TODO use the FishType enum
     float             _radius{};
     p6::Color         _color;
     unsigned int      _hp;
@@ -40,18 +40,20 @@ public:
 
     inline void update(glm::vec2& maxDistanceFromCenter)
     {
-        float chanceForNewFood = 0.0005;
         for (int i = 0; i < _foods.size(); i++)
         {
             if (_foods[i].currentHP() == 0)
             {
                 addFood(maxDistanceFromCenter);
-                _foods.erase(_foods.begin() + i);
+                _foods.erase(_foods.begin() + i); // TODO store the index in a list and erase after the loop
             }
         }
-        if (p6::random::number() < chanceForNewFood)
         {
-            addFood(maxDistanceFromCenter);
+            static constexpr float chanceForNewFood = 0.0005;
+            if (p6::random::number() < chanceForNewFood)
+            {
+                addFood(maxDistanceFromCenter);
+            }
         }
         // for (auto it = _foods.begin(); it != _foods.end();)
         // {
@@ -83,12 +85,12 @@ public:
         // }
     }
 
-    inline void draw(p6::Context& ctx)
+    inline void draw(p6::Context& ctx) const
     {
         int index = 0;
         for (auto it = _foods.begin(); it != _foods.end(); it++)
         {
-            it->draw(ctx, _color, index);
+            it->draw(ctx, _color, index); // TODO remove unused index parameter
             index++;
         }
     }
@@ -96,15 +98,16 @@ public:
     {
         _foods.emplace_back(maxDistanceFromCenter, _hp, _radius);
     }
-    inline void deleteFood(std::vector<Food>::iterator& index)
+    inline void deleteFood(std::vector<Food>::iterator& index) // TODO remove unused function
     {
     }
     inline Food* nearestFood(glm::vec2& position)
     {
-        Food* nearestFood = &*(_foods.begin());
-        if (nearestFood == nullptr)
-            std::cout << "C ICI\n"
-                      << std::endl;
+        // auto nearestFoodIt = _foods.begin(); // TODO remove
+        // if (nearestFoodIt == _foods.end())
+        //     std::cout << "C ICI\n"
+        //               << std::endl;
+        Food* nearestFood = nullptr;
         for (auto it = _foods.begin(); it != _foods.end(); it++)
         {
             if (glm::length(it->position() - position) <= glm::length(nearestFood->position() - position))

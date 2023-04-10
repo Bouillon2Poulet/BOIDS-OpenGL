@@ -12,6 +12,7 @@
 
 void Fish::draw(p6::Context& ctx, DebugUiParameters& debugUiParameters, BehaviorVariables& behaviorVariables, p6::Color& color, float radius) const
 {
+    // TODO move the debug drawing to a separate function
     if (debugUiParameters.displayLinkToNearestFood())
         drawLinkToNearestFood(ctx, _mvtVariables.position(), _nearestFoodLocation);
     if (debugUiParameters.displayProtectedRange())
@@ -33,7 +34,8 @@ static void handleBehaviors(Fish& actualFish, BehaviorVariables& bhvVariables, F
     actualFish.handleCohesion(otherFish, averagePosition, bhvVariables.visibleRange());
 }
 
-void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food& nearestFood)
+// TODO split in smaller functions?
+void Fish::update(BehaviorVariables& bhvVariables, glm::vec2& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food& nearestFood) // TODO take nearestFood by pointer because it could be nullptr
 {
     neighboringFishesReset();
 

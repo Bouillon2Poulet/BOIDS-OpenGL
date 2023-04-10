@@ -15,7 +15,7 @@ private:
     MovementVariables _mvtVariables;
     glm::vec2         _nearestFoodLocation;
     // BehaviorVariables _bhvVariables{};
-    unsigned int _neighboringFishes = 0;
+    unsigned int _neighboringFishes = 0; // TODO make it clear that it is for debug only / Only use it for debugging. In update, use a local variable
     // DebugUi      _debugUi;
 
     std::vector<Fish>* _allFishes{};

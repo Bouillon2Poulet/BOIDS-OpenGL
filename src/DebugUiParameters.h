@@ -1,6 +1,6 @@
 #pragma once
 
-class DebugUiParameters {
+class DebugUiParameters { // TODO struct
 private:
     bool _displayProtectedRange    = false;
     bool _displayVisibleRange      = false;
@@ -10,7 +10,7 @@ private:
 
 public:
     void
-        operator()(DebugUiParameters& toCopy);
+        operator()(DebugUiParameters& toCopy); // TODO use a copy assignment
 
     void  displayProtectedRange(bool input);
     bool  displayProtectedRange() const;

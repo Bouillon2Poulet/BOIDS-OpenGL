@@ -12,7 +12,7 @@ private:
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
     // DebugUi           _debugUi{};
-    int         _type;
+    int         _type; // TODO use an enum instead
     std::string _name;
     p6::Color   _color{};
     float       _radius;
@@ -24,7 +24,7 @@ public:
         if (_type == 0)
         {
             _name   = "koi";
-            _color  = *new p6::Color(1.f, 0.2f, .0f);
+            _color  = *new p6::Color(1.f, 0.2f, .0f); // TODO no need for new / dynamic allocation
             _radius = 0.01f;
         }
         else if (_type == 1)

@@ -32,12 +32,12 @@ int main(int argc, char* argv[])
     auto ctx = p6::Context{{.title = "maxiprogs4"}};
     ctx.maximize_window();
 
-    Scene scene(ctx.aspect_ratio());
+    Scene scene(ctx.aspect_ratio()); // TODO pass the aspect_ratio during update instead of construction
     // Declare your infinite update loop.
     ctx.update = [&]() {
         scene.update();
         scene.draw(ctx);
-        if (scene.displayBoundingBox())
+        if (scene.displayBoundingBox()) // TODO Make a method "displayBoundingBox_ifNecessary"
         {
             scene.drawBoundingBox(ctx);
         }

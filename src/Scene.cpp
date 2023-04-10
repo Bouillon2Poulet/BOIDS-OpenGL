@@ -9,16 +9,16 @@ void Scene::draw(p6::Context& ctx)
     ctx.background(_backgroundColor);
     // First update Fishes
     // Second update Foods
-    for (auto it = _allFoods.begin(); it != _allFoods.end(); it++)
+    for (const auto& food : _allFoods)
     {
-        it->draw(ctx);
+        food.draw(ctx);
     }
 
-    for (auto it = _fishGangs.begin(); it != _fishGangs.end(); it++)
+    for (auto it = _fishGangs.begin(); it != _fishGangs.end(); it++) // TODO range-for
     {
         it->draw(ctx);
     }
-    _playableFish.update(ctx);
+    _playableFish.update(ctx); // Move into Scene::update()
     _playableFish.draw(ctx);
 }
 

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-class BehaviorVariables {
+class BehaviorVariables { // TODO struct
 private:
     float _protectedRange;
     float _visibleRange;

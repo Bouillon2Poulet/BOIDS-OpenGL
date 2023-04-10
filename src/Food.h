@@ -43,7 +43,7 @@ public:
         return _currentRadius;
     }
 
-    inline void draw(p6::Context& ctx, p6::Color color, int index)
+    inline void draw(p6::Context& ctx, p6::Color color, int index) const
     {
         ctx.push_transform();
         ctx.translate({_position.x, _position.y});

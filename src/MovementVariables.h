@@ -3,7 +3,7 @@
 #include <p6/p6.h>
 #include "internal.h"
 
-class MovementVariables {
+class MovementVariables { // TODO can it be a struct ? Or remove setters ?
 private:
     glm::vec2 _position{};
     glm::vec2 _velocity{};
@@ -16,12 +16,6 @@ public:
     }
 
     inline MovementVariables(const MovementVariables& toCopy) = default;
-
-    inline void copy(MovementVariables& toCopy)
-    {
-        _position = toCopy._position;
-        _velocity = toCopy._velocity;
-    }
 
     void       position(glm::vec2 input);
     glm::vec2  position() const;

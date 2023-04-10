@@ -15,7 +15,7 @@ public:
         : _mvtVariables(maxDistanceFromCenter)
     {
     }
-    inline void update(p6::Context& ctx)
+    inline void update(p6::Context& ctx) // Only take ctx.mouse() as a param
     {
         _mvtVariables.velocity((0.08f * (glm::normalize(ctx.mouse() - _mvtVariables.position()))) * glm::length(ctx.mouse() - _mvtVariables.position()));
         _mvtVariables.position(_mvtVariables.position() + _mvtVariables.velocity());

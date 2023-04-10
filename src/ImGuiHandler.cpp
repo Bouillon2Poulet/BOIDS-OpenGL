@@ -5,9 +5,9 @@
 #include "FishGang.h"
 #include "imgui.h"
 
-void ImGuiHandler::setDebugVariables(FishGang& FishGang)
+void ImGuiHandler::setDebugVariables(FishGang& FishGang) // TODO Only pass bhvVariablesPtr to this function
 {
-    ImGui::SliderFloat("Protected range", FishGang.bhvVariablesPtr()->protectedRangePtr(), 0.f, 1.f);
+    ImGui::SliderFloat("Protected range", FishGang.bhvVariablesPtr()->protectedRangePtr(), 0.f, 1.f); // TODO consider having the gui methods inside each class
     ImGui::SliderFloat("Visible range", FishGang.bhvVariablesPtr()->visibleRangePtr(), 0.f, 1.f);
     ImGui::SliderFloat("Avoid factor", FishGang.bhvVariablesPtr()->avoidFactorPtr(), 0.f, 1.f);
     ImGui::SliderFloat("Matching factor", FishGang.bhvVariablesPtr()->matchingFactorPtr(), 0.f, 1.f);
@@ -16,7 +16,7 @@ void ImGuiHandler::setDebugVariables(FishGang& FishGang)
     ImGui::SliderFloat("Max speed", FishGang.bhvVariablesPtr()->maxSpeedPtr(), 0.f, 5.f);
     ImGui::SliderFloat("Min speed", FishGang.bhvVariablesPtr()->minSpeedPtr(), 0.f, 2.f);
 }
-void ImGuiHandler::setDebugParameters(FishGang& fishGang)
+void ImGuiHandler::setDebugParameters(FishGang& fishGang) // TODO Only pass debugUiParametersPtr to this function
 {
     ImGui::Checkbox("Display visible range", fishGang.debugUiParametersPtr()->displayVisibleRangePtr());
     ImGui::Checkbox("Display protected range", fishGang.debugUiParametersPtr()->displayProtectedRangePtr());
@@ -26,7 +26,7 @@ void ImGuiHandler::setDebugParameters(FishGang& fishGang)
     ImGui::ColorEdit4("Color", &(fishGang.colorPtr()->r()));
 }
 
-void ImGuiHandler::setBoundingBox(Scene& scene)
+void ImGuiHandler::setBoundingBox(Scene& scene) // TODO rename
 {
     ImGui::Checkbox("Display bounding box", scene.displayBoundingBoxPtr());
     ImGui::SliderFloat("BoundingBox width", &(scene.maxDistanceFromCenterPtr()->x), 0.f, 2.f);
@@ -36,7 +36,7 @@ void ImGuiHandler::setBoundingBox(Scene& scene)
 
 void ImGuiHandler::displayImGuiManager(Scene& scene)
 {
-    for (auto it = scene.fishGangsPtr()->begin(); it != scene.fishGangsPtr()->end(); it++)
+    for (auto it = scene.fishGangsPtr()->begin(); it != scene.fishGangsPtr()->end(); it++) // TODO range-for
     {
         // std::cout << it->name() << std::endl;
         // std::cout << it->bhvVariablesPtr()->avoidFactor() << std::endl;
