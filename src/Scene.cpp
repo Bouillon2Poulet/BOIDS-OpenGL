@@ -7,28 +7,37 @@
 void Scene::draw(p6::Context& ctx)
 {
     ctx.background(_backgroundColor);
-    // First update Fishes
-    // Second update Foods
+
     for (const auto& food : _allFoods)
     {
         food.draw(ctx);
     }
 
-    for (auto it = _fishGangs.begin(); it != _fishGangs.end(); it++) // TODO range-for
+    for (const auto& fish : _fishGangs)
     {
-        it->draw(ctx);
+        fish.draw(ctx);
     }
-    _playableFish.update(ctx); // Move into Scene::update()
+
+    displayBoundingBoxIfNecessary(ctx);
+
     _playableFish.draw(ctx);
 }
 
-void Scene::update()
+void Scene::displayBoundingBoxIfNecessary(p6::Context& ctx)
+{
+    if (displayBoundingBox())
+    {
+        drawBoundingBox(ctx);
+    }
+}
+void Scene::update(const glm::vec2& mousePosition)
 {
     for (unsigned int i = 0; i < _fishGangs.size(); i++)
     {
         _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i]);
         _allFoods[i].update(_maxDistanceFromCenter);
     }
+    _playableFish.update(mousePosition); // Move into Scene::update()
 }
 
 Scene::Scene(float aspect_ratio)
@@ -36,9 +45,9 @@ Scene::Scene(float aspect_ratio)
 {
     // _playableFish = *new PlayableFish(_maxDistanceFromCenter);
     // Init FishGang and Foods n°1
-    createFishGangAndFoods(0, 200);
-    createFishGangAndFoods(1, 40);
-    createFishGangAndFoods(2, 4);
+    createFishGangAndFoods(FishType::koi, 200);
+    createFishGangAndFoods(FishType::tuna, 40);
+    createFishGangAndFoods(FishType::whale, 4);
 
     // Init allFoods
 }
@@ -83,7 +92,7 @@ glm::vec2 Scene::randomPosInBoundingBox()
     return {p6::random::number(_maxDistanceFromCenter.x, _maxDistanceFromCenter.x), p6::random::number(_maxDistanceFromCenter.y, _maxDistanceFromCenter.y)};
 }
 
-void Scene::createFishGangAndFoods(int type, int nbFishes)
+void Scene::createFishGangAndFoods(FishType type, int nbFishes)
 {
     _fishGangs.emplace_back(type, nbFishes, _maxDistanceFromCenter);
     _allFoods.emplace_back(type, _maxDistanceFromCenter);

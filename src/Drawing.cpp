@@ -1,10 +1,9 @@
 #include "Drawing.h"
-#include "DebugUiVariable.h"
 #include "MovementVariables.h"
 #include "glm/fwd.hpp"
 #include "internal.h"
 
-void drawLinkToNearestFood(p6::Context& ctx, glm::vec2 fishPosition, glm::vec2 nearestFoodLocation)
+void drawLinkToNearestFood(p6::Context& ctx, const glm::vec2& fishPosition, const glm::vec2& nearestFoodLocation)
 {
     ctx.push_transform();
     ctx.stroke        = {.1f, .5f, 0.f, 1.f};
@@ -18,7 +17,7 @@ void drawLinkToNearestFood(p6::Context& ctx, glm::vec2 fishPosition, glm::vec2 n
     ctx.pop_transform();
 }
 
-void drawProtectedCircle(p6::Context& ctx, float protectedRange, glm::vec2 position)
+void drawProtectedCircle(p6::Context& ctx, float protectedRange, const glm::vec2& position)
 {
     ctx.push_transform();
     ctx.translate({position.x, position.y});
@@ -32,7 +31,7 @@ void drawProtectedCircle(p6::Context& ctx, float protectedRange, glm::vec2 posit
     ctx.pop_transform();
 }
 
-void drawVisibleCircle(p6::Context& ctx, float visibleRange, glm::vec2 position)
+void drawVisibleCircle(p6::Context& ctx, float visibleRange, const glm::vec2& position)
 {
     ctx.push_transform();
     ctx.translate({position.x, position.y});
@@ -46,22 +45,22 @@ void drawVisibleCircle(p6::Context& ctx, float visibleRange, glm::vec2 position)
     ctx.pop_transform();
 }
 
-void drawVelocityVector(p6::Context& ctx, MovementVariables mvtVariables)
+void drawVelocityVector(p6::Context& ctx, const MovementVariables& mvtVariables)
 {
     ctx.push_transform();
-    ctx.translate({mvtVariables.position().x, mvtVariables.position().y});
+    ctx.translate({mvtVariables._position.x, mvtVariables._position.y});
     ctx.stroke        = {.1f, .5f, 0.f, 1.f};
     ctx.stroke_weight = .01f;
     ctx.use_fill      = false;
     ctx.use_stroke    = true;
     ctx.line(
         glm::vec2(.0f, .0f),
-        mvtVariables.velocity()
+        mvtVariables._velocity
     );
     ctx.pop_transform();
 }
 
-void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, glm::vec2 position)
+void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, const glm::vec2& position)
 {
     ctx.push_transform();
     ctx.translate({position.x + 0.04f, position.y});
@@ -78,7 +77,7 @@ void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, glm::vec
     ctx.pop_transform();
 }
 
-void drawFish(p6::Context& ctx, glm::vec2 position, p6::Color& color, float radius)
+void drawFish(p6::Context& ctx, const glm::vec2& position, const p6::Color& color, float radius)
 {
     ctx.push_transform();
     ctx.translate({position.x, position.y});

@@ -3,19 +3,18 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-class BehaviorVariables { // TODO struct
-private:
+#include "imgui.h"
+
+struct BehaviorVariables {
     float _protectedRange;
     float _visibleRange;
     float _avoidFactor;
     float _matchingFactor;
     float _centeringFactor;
     float _turnFactor;
-    // unsigned int _neighboringFishes = 0;
     float _maxSpeed;
     float _minSpeed;
 
-public:
     inline BehaviorVariables() = default;
     inline BehaviorVariables(int type)
     {
@@ -58,49 +57,4 @@ public:
             _minSpeed = 0.005;
         }
     };
-    BehaviorVariables(const BehaviorVariables& toCopy) = default;
-
-    inline void copy(const BehaviorVariables& toCopy)
-    {
-        _protectedRange = toCopy._protectedRange;
-        _visibleRange   = toCopy._visibleRange;
-        _avoidFactor    = toCopy._avoidFactor;
-        _matchingFactor = toCopy._matchingFactor, _centeringFactor = toCopy._centeringFactor;
-        _turnFactor = toCopy._turnFactor;
-        //_neighboringFishes = toCopy._neighboringFishes;
-        _maxSpeed = toCopy._maxSpeed;
-        _minSpeed = toCopy._minSpeed;
-    }
-
-    void   protectedRange(float input);
-    float  protectedRange() const;
-    float* protectedRangePtr();
-
-    void   visibleRange(float input);
-    float  visibleRange() const;
-    float* visibleRangePtr();
-
-    void   avoidFactor(float input);
-    float  avoidFactor() const;
-    float* avoidFactorPtr();
-
-    void   matchingFactor(float input);
-    float  matchingFactor() const;
-    float* matchingFactorPtr();
-
-    void   centeringFactor(float input);
-    float  centeringFactor() const;
-    float* centeringFactorPtr();
-
-    void   turnFactor(float input);
-    float  turnFactor() const;
-    float* turnFactorPtr();
-
-    void   maxSpeed(float input);
-    float  maxSpeed() const;
-    float* maxSpeedPtr();
-
-    void   minSpeed(float input);
-    float  minSpeed() const;
-    float* minSpeedPtr();
 };

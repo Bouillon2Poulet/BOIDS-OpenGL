@@ -4,9 +4,7 @@
 #include <cstdlib>
 #include <functional>
 #include <vector>
-// #include "../lib/SimplexNoise/src/SimplexNoise.h"
 #include "Fish.h"
-#include "ImGuiHandler.h"
 #include "Scene.h"
 #include "glm/fwd.hpp"
 #include "imgui.h"
@@ -15,7 +13,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
 
-void imGuiManager(Fish& FishGang, bool* displayBoundingBox);
 
 int main(int argc, char* argv[])
 {
@@ -32,17 +29,13 @@ int main(int argc, char* argv[])
     auto ctx = p6::Context{{.title = "maxiprogs4"}};
     ctx.maximize_window();
 
-    Scene scene(ctx.aspect_ratio()); // TODO pass the aspect_ratio during update instead of construction
+    Scene scene(ctx.aspect_ratio());
     // Declare your infinite update loop.
     ctx.update = [&]() {
-        scene.update();
+        scene.update(ctx.mouse());
         scene.draw(ctx);
-        if (scene.displayBoundingBox()) // TODO Make a method "displayBoundingBox_ifNecessary"
-        {
-            scene.drawBoundingBox(ctx);
-        }
 
-        ImGuiHandler::displayImGuiManager(scene);
+        scene.GUIdisplay();
     };
 
     // Should be done last. It starts the infinite loop.

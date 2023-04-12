@@ -4,6 +4,7 @@
 #include "BehaviorVariables.h"
 #include "DebugUiParameters.h"
 #include "Fish.h"
+#include "FishType.h"
 #include "FoodKind.h"
 
 class FishGang {
@@ -11,32 +12,28 @@ private:
     std::vector<Fish> _fishes{};
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
-    // DebugUi           _debugUi{};
-    int         _type; // TODO use an enum instead
-    std::string _name;
-    p6::Color   _color{};
-    float       _radius;
+
+    FishType  _type;
+    p6::Color _color{};
+    float     _radius;
 
 public:
-    inline FishGang(const unsigned int type, const unsigned int number, glm::vec2 maxDistanceFromCenter)
-        : _bhvVariables(type), _type(type)
+    inline FishGang(const FishType type, const unsigned int number, glm::vec2 maxDistanceFromCenter)
+        : _bhvVariables(static_cast<unsigned int>(type)), _type(type)
     {
-        if (_type == 0)
+        if (_type == FishType::koi)
         {
-            _name   = "koi";
-            _color  = *new p6::Color(1.f, 0.2f, .0f); // TODO no need for new / dynamic allocation
+            _color  = p6::Color(1.f, 0.2f, .0f);
             _radius = 0.01f;
         }
-        else if (_type == 1)
+        else if (_type == FishType::tuna)
         {
-            _name   = "tuna";
-            _color  = *new p6::Color(0.f, 0.7f, .5f);
+            _color  = p6::Color(0.f, 0.7f, .5f);
             _radius = 0.03f;
         }
-        else if (_type == 2)
+        else if (_type == FishType::whale)
         {
-            _name   = "whale";
-            _color  = *new p6::Color(0.f, 1.f, 1.f);
+            _color  = p6::Color(0.f, 1.f, 1.f);
             _radius = 0.09f;
         }
 
@@ -45,16 +42,11 @@ public:
             _fishes.emplace_back(maxDistanceFromCenter, &_fishes);
         }
     };
-    void               draw(p6::Context& ctx);
-    void               update(glm::vec2 maxDistanceFromCenter, FoodKind& particularKind);
-    inline std::string name()
+    void            draw(p6::Context& ctx) const;
+    void            update(glm::vec2 maxDistanceFromCenter, FoodKind& particularKind);
+    inline FishType type()
     {
-        return _name;
-    }
-
-    inline void printName()
-    {
-        std::cout << _name;
+        return _type;
     }
 
     inline p6::Color* colorPtr()
@@ -65,4 +57,31 @@ public:
     inline std::vector<Fish>* fishesPtr();
     BehaviorVariables*        bhvVariablesPtr();
     DebugUiParameters*        debugUiParametersPtr();
+
+    void GUIdisplayFishGangDebugParameters()
+    {
+        ImGui::Checkbox("Display visible range", &(_debugUiParameters._displayVisibleRange));
+        ImGui::Checkbox("Display protected range", &(_debugUiParameters._displayProtectedRange));
+        ImGui::Checkbox("Display velocity vector", &(_debugUiParameters._displayVelocityVector));
+        ImGui::Checkbox("Display proximity number", &(_debugUiParameters._displayProximityNbr));
+        ImGui::Checkbox("Display link to nearest food", &(_debugUiParameters._displayLinkToNearestFood));
+        ImGui::ColorEdit4("Color", &(_color.r()));
+    }
+
+    void GUIdisplayFishGangBehaviorVariables()
+    {
+        ImGui::SliderFloat("Protected range", &(_bhvVariables._protectedRange), 0.f, 1.f);
+        ImGui::SliderFloat("Visible range", &(_bhvVariables._visibleRange), 0.f, 1.f);
+        ImGui::SliderFloat("Avoid factor", &(_bhvVariables._avoidFactor), 0.f, 1.f);
+        ImGui::SliderFloat("Matching factor", &(_bhvVariables._matchingFactor), 0.f, 1.f);
+        ImGui::SliderFloat("Centering factor", &(_bhvVariables._centeringFactor), 0.f, 1.f);
+        ImGui::SliderFloat("Turn factor", &(_bhvVariables._turnFactor), 0.f, 1.f);
+        ImGui::SliderFloat("Max speed", &(_bhvVariables._maxSpeed), 0.f, 5.f);
+        ImGui::SliderFloat("Min speed", &(_bhvVariables._minSpeed), 0.f, 2.f);
+    }
+
+    std::string name()
+    {
+        return fishTypeToString(_type);
+    }
 };
