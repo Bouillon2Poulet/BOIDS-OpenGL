@@ -15,7 +15,7 @@ private:
     unsigned int      _hp;
 
 public:
-    FoodKind(FishType type, glm::vec2& maxDistanceFromCenter)
+    FoodKind(FishType type, const glm::vec3& maxDistanceFromCenter)
         : _type(type)
     {
         switch (_type)
@@ -41,7 +41,7 @@ public:
         addFood(maxDistanceFromCenter);
     }
 
-    inline void update(glm::vec2& maxDistanceFromCenter)
+    inline void update(const glm::vec3& maxDistanceFromCenter)
     {
         std::vector<int> indexArray;
         for (int i = 0; i < _foods.size(); i++)
@@ -77,12 +77,12 @@ public:
             index++;
         }
     }
-    inline void addFood(glm::vec2 maxDistanceFromCenter)
+    inline void addFood(const glm::vec3& maxDistanceFromCenter)
     {
         _foods.emplace_back(maxDistanceFromCenter, _hp, _radius);
     }
 
-    inline Food* nearestFood(const glm::vec2& position)
+    inline Food* nearestFood(const glm::vec3& position)
     {
         if (_foods.empty())
         {

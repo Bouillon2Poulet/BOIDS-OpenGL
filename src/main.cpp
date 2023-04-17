@@ -1,3 +1,4 @@
+#include <math.h>
 #include <p6/p6.h>
 #include <vcruntime.h>
 #include <cmath>
@@ -11,8 +12,9 @@
 #include "internal.h"
 
 #define DOCTEST_CONFIG_IMPLEMENT
+#include <stdlib.h> /* srand, rand */
+#include <time.h>   /* time */
 #include "doctest/doctest.h"
-
 
 int main(int argc, char* argv[])
 {
@@ -28,11 +30,13 @@ int main(int argc, char* argv[])
     // Actual app
     auto ctx = p6::Context{{.title = "maxiprogs4"}};
     ctx.maximize_window();
+    glEnable(GL_DEPTH_TEST);
 
-    Scene scene(ctx.aspect_ratio());
+    Scene scene(ctx);
     // Declare your infinite update loop.
     ctx.update = [&]() {
-        scene.update(ctx.mouse());
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        scene.update(ctx);
         scene.draw(ctx);
 
         scene.GUIdisplay();

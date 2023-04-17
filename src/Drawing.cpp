@@ -60,9 +60,9 @@ void drawVelocityVector(p6::Context& ctx, const MovementVariables& mvtVariables)
     ctx.pop_transform();
 }
 
-void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, const glm::vec2& position)
+void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, const glm::vec4& position)
 {
-    ctx.push_transform();
+    // ctx.push_transform();
     ctx.translate({position.x + 0.04f, position.y});
     ctx.stroke                           = {.1f, .5f, 0.f};
     ctx.stroke_weight                    = .01f;
@@ -74,7 +74,7 @@ void drawProximityNbr(unsigned int neighboringFishes, p6::Context& ctx, const gl
         p6::Center{},
         p6::Rotation{}
     );
-    ctx.pop_transform();
+    // ctx.pop_transform();
 }
 
 void drawFish(p6::Context& ctx, const glm::vec2& position, const p6::Color& color, float radius)

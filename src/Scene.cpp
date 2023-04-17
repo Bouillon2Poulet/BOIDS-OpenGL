@@ -1,70 +1,76 @@
 #include "Scene.h"
 #include <string.h>
+#include <vector>
+#include "Arpenteur.h"
 #include "Fish.h"
 #include "FishGang.h"
-#include "PlayableFish.h"
+#include "Vertices3D.h"
 
 void Scene::draw(p6::Context& ctx)
 {
-    ctx.background(_backgroundColor);
+    // ctx.background(_backgroundColor);
 
-    for (const auto& food : _allFoods)
+    _program.m_Program.use();
+
+    sendOpacityToShader(1.);
+    // for (const auto& food : _allFoods)
+    // {
+    //     food.draw(ctx);
+    // }
+
+    for (auto& fish : _fishGangs)
     {
-        food.draw(ctx);
+        std::cout << fish.name() << std::endl;
+        fish.draw(ctx, _program, _projMatrix);
     }
+    // for (std::vector<FishGang>::iterator i = _fishGangs.begin(); i != _fishGangs.end() - 1; i++) // Without last fishGang
+    // {
+    //     std::cout << i->name() << std::endl;
+    //     i->draw(ctx, _program, _projMatrix);
+    // }
+    _arpenteur.draw(_program, _projMatrix);
 
-    for (const auto& fish : _fishGangs)
-    {
-        fish.draw(ctx);
-    }
-
-    displayBoundingBoxIfNecessary(ctx);
-
-    _playableFish.draw(ctx);
+    sendOpacityToShader(0.3);
+    displayBoundingBoxIfNecessary();
 }
 
-void Scene::displayBoundingBoxIfNecessary(p6::Context& ctx)
+void Scene::displayBoundingBoxIfNecessary()
 {
     if (displayBoundingBox())
     {
-        drawBoundingBox(ctx);
+        drawBoundingBox();
     }
 }
-void Scene::update(const glm::vec2& mousePosition)
+void Scene::update(p6::Context& ctx)
 {
     for (unsigned int i = 0; i < _fishGangs.size(); i++)
     {
-        _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i]);
-        _allFoods[i].update(_maxDistanceFromCenter);
+        _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i], _camera.getViewMatrix());
+        // _allFoods[i].update(_maxDistanceFromCenter);
     }
-    _playableFish.update(mousePosition); // Move into Scene::update()
+    _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter);
+    _camera.handleDeplacement(ctx);
+    _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
 }
 
-Scene::Scene(float aspect_ratio)
-    : _maxDistanceFromCenter(*new glm::vec2(aspect_ratio - .3f, 1.f - .2f)), _playableFish(_maxDistanceFromCenter)
+Scene::Scene(const p6::Context& ctx)
+    : _maxDistanceFromCenter(glm::vec3(10)), _arpenteur(_maxDistanceFromCenter), _projMatrix(glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f)), _boundingBox(ShapeType::cube)
 {
-    // _playableFish = *new PlayableFish(_maxDistanceFromCenter);
     // Init FishGang and Foods n°1
-    createFishGangAndFoods(FishType::koi, 200);
-    createFishGangAndFoods(FishType::tuna, 40);
-    createFishGangAndFoods(FishType::whale, 4);
+
+    createFishGangAndFoods(FishType::tuna, 3);
+    createFishGangAndFoods(FishType::koi, 3);
+    // createFishGangAndFoods(FishType::whale, 4);
 
     // Init allFoods
 }
 
-void Scene::drawBoundingBox(p6::Context& ctx)
+void Scene::drawBoundingBox()
 {
-    // Bounding box
-    ctx.push_transform();
-    ctx.use_fill   = false;
-    ctx.use_stroke = true;
-    ctx.stroke     = p6::Color{1.f, 1.f, 0.f};
-    ctx.rectangle(
-        p6::Center{.0f, .0f},
-        p6::Radii{_maxDistanceFromCenter.x, _maxDistanceFromCenter.y},
-        p6::Rotation{}
-    );
-    ctx.pop_transform();
+    _boundingBoxMatrices.sendMatricesToShader(_program, _projMatrix);
+    _boundingBox.bindVertexArrayVAO();
+    glDrawArrays(GL_TRIANGLES, 0, _boundingBox.size());
+    glBindVertexArray(0);
 }
 
 bool Scene::displayBoundingBox()
@@ -82,14 +88,14 @@ bool* Scene::displayBoundingBoxPtr()
     return &_displayBoundingBox;
 }
 
-glm::vec2* Scene::maxDistanceFromCenterPtr()
+glm::vec3* Scene::maxDistanceFromCenterPtr()
 {
     return &_maxDistanceFromCenter;
 }
 
-glm::vec2 Scene::randomPosInBoundingBox()
+glm::vec3 Scene::randomPosInBoundingBox()
 {
-    return {p6::random::number(_maxDistanceFromCenter.x, _maxDistanceFromCenter.x), p6::random::number(_maxDistanceFromCenter.y, _maxDistanceFromCenter.y)};
+    return {p6::random::number(-_maxDistanceFromCenter.x, _maxDistanceFromCenter.x), p6::random::number(-_maxDistanceFromCenter.y, _maxDistanceFromCenter.y), p6::random::number(-_maxDistanceFromCenter.z, _maxDistanceFromCenter.z)};
 }
 
 void Scene::createFishGangAndFoods(FishType type, int nbFishes)

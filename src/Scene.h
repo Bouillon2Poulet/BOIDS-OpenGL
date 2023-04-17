@@ -1,38 +1,46 @@
 #pragma once
 
+#include "Arpenteur.h"
 #include "Fish.h"
 #include "FishGang.h"
 #include "FishType.h"
 #include "FoodKind.h"
-#include "PlayableFish.h"
+#include "Program.h"
+#include "TrackballCamera.hpp"
+#include "Vertices3D.h"
 
 class Scene {
 private:
     std::vector<FishGang> _fishGangs{};
     std::vector<FoodKind> _allFoods{};
-    bool                  _displayBoundingBox = false;
-    glm::vec2             _maxDistanceFromCenter{};
-    PlayableFish          _playableFish;
-    p6::Color             _backgroundColor = p6::NamedColor::Blue;
+    bool                  _displayBoundingBox = true;
+    glm::vec3             _maxDistanceFromCenter{};
+    Arpenteur             _arpenteur;
+    p6::Color             _backgroundColor = p6::NamedColor::Black;
+    Program               _program{};
+    TrackballCamera       _camera{};
+    glm::mat4             _projMatrix;
+    Vertices3D            _boundingBox;
+    Matrices              _boundingBoxMatrices;
 
 public:
-    Scene(float aspect_ratio);
+    Scene(const p6::Context& ctx);
 
-    void drawBoundingBox(p6::Context& ctx);
+    void drawBoundingBox();
 
     void createFishGangAndFoods(FishType type, int nbFishes);
 
     void                   draw(p6::Context& ctx);
-    void                   update(const glm::vec2& mousePosition);
+    void                   update(p6::Context& ctx);
     bool                   displayBoundingBox();
     std::vector<FishGang>* fishGangsPtr();
     bool*                  displayBoundingBoxPtr();
 
-    void       displayBoundingBoxIfNecessary(p6::Context& ctx);
-    glm::vec2* maxDistanceFromCenterPtr();
-    glm::vec2  randomPosInBoundingBox();
+    void       displayBoundingBoxIfNecessary();
+    glm::vec3* maxDistanceFromCenterPtr();
+    glm::vec3  randomPosInBoundingBox();
 
-    inline glm::vec2 maxDistanceFromCenter()
+    inline glm::vec3 maxDistanceFromCenter()
     {
         return _maxDistanceFromCenter;
     }
@@ -62,5 +70,10 @@ public:
         ImGui::SliderFloat("BoundingBox width", &(maxDistanceFromCenterPtr()->x), 0.f, 2.f);
         ImGui::SliderFloat("BoundingBox height", &(maxDistanceFromCenterPtr()->y), 0.f, 2.f);
         ImGui::ColorEdit4("Color", &(backgroundColorPtr()->r()));
+    }
+
+    inline void sendOpacityToShader(float opacity)
+    {
+        glUniform1f(_program.uOpacity, opacity);
     }
 };

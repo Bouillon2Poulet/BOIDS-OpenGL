@@ -6,20 +6,22 @@
 #include "Fish.h"
 #include "FishType.h"
 #include "FoodKind.h"
+#include "Vertices3D.h"
 
 class FishGang {
 private:
     std::vector<Fish> _fishes{};
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
+    Vertices3D        _vertices3D;
 
     FishType  _type;
     p6::Color _color{};
     float     _radius;
 
 public:
-    inline FishGang(const FishType type, const unsigned int number, glm::vec2 maxDistanceFromCenter)
-        : _bhvVariables(static_cast<unsigned int>(type)), _type(type)
+    inline FishGang(const FishType type, const unsigned int number, const glm::vec3& maxDistanceFromCenter)
+        : _bhvVariables(static_cast<unsigned int>(type)), _type(type), _vertices3D(ShapeType::cone)
     {
         if (_type == FishType::koi)
         {
@@ -42,8 +44,9 @@ public:
             _fishes.emplace_back(maxDistanceFromCenter, &_fishes);
         }
     };
-    void            draw(p6::Context& ctx) const;
-    void            update(glm::vec2 maxDistanceFromCenter, FoodKind& particularKind);
+
+    void            draw(p6::Context& ctx, const Program& program, const glm::mat4& projMatrix);
+    void            update(const glm::vec3& maxDistanceFromCenter, FoodKind& particularFoodKind, const glm::mat4& viewMatrix);
     inline FishType type()
     {
         return _type;

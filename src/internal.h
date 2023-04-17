@@ -23,8 +23,8 @@ inline std::u16string to_u16string(int const& i)
     return conv.from_bytes(std::to_string(i));
 }
 
-inline glm::vec2 randomPosInBoundingBox(glm::vec2 maxDistanceFromCenter)
+inline glm::vec3 randomPosInBoundingBox(const glm::vec3& maxDistanceFromCenter)
 {
-    return {p6::random::number(-maxDistanceFromCenter.x, maxDistanceFromCenter.x), p6::random::number(-maxDistanceFromCenter.y, maxDistanceFromCenter.y)};
+    return glm::vec3(p6::random::number(-maxDistanceFromCenter.x, maxDistanceFromCenter.x), p6::random::number(-maxDistanceFromCenter.y, maxDistanceFromCenter.y), p6::random::number(-maxDistanceFromCenter.z, maxDistanceFromCenter.z)) / 2.f;
 }
 } // namespace internal
