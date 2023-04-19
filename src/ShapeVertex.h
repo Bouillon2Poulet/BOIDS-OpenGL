@@ -208,4 +208,4 @@ inline std::vector<ShapeVertex> cube_vertices(float sideLength)
 
     return data;
 }
-} // namespace glimac
+}; // namespace glimac

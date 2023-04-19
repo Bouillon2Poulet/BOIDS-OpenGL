@@ -6,7 +6,9 @@
 #include <functional>
 #include <vector>
 #include "Fish.h"
+#include "Mesh.h"
 #include "Scene.h"
+#include "assimp/aabb.h"
 #include "glm/fwd.hpp"
 #include "imgui.h"
 #include "internal.h"
@@ -32,6 +34,8 @@ int main(int argc, char* argv[])
     ctx.maximize_window();
     glEnable(GL_DEPTH_TEST);
 
+    // Mesh meshTest;
+    // meshTest.LoadMesh("coral");
     Scene scene(ctx);
     // Declare your infinite update loop.
     ctx.update = [&]() {

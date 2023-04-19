@@ -43,6 +43,9 @@ public:
         {
             _fishes.emplace_back(maxDistanceFromCenter, &_fishes);
         }
+        // std::cout << fishTypeToString(_type) << " initialisation - vertices.size : " << _vertices3D.size();
+        // int a;
+        // std::cin >> a;
     };
 
     void            draw(p6::Context& ctx, const Program& program, const glm::mat4& projMatrix);
@@ -86,5 +89,10 @@ public:
     std::string name()
     {
         return fishTypeToString(_type);
+    }
+
+    inline int vertices3DSize()
+    {
+        return _vertices3D.size();
     }
 };

@@ -18,9 +18,10 @@ void FishGang::draw(p6::Context& ctx, const Program& program, const glm::mat4& p
     int count = 0;
     for (const auto& fish : _fishes)
     {
-        std::cout << _vertices3D.vao() << "\n";
+        // std::cout << _vertices3D.vao() << "\n";
         // count++;
         _vertices3D.bindVertexArrayVAO();
+        std::cout << _vertices3D.size() << std::endl;
         fish.draw(program, projMatrix, _vertices3D, ctx, _debugUiParameters, _bhvVariables);
         glBindVertexArray(0);
     }

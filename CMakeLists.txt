@@ -43,3 +43,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE doctest::doctest)
 # ---Add p6 library---
 add_subdirectory(lib/p6)
 target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
+
+# ---Add p6 library---
+add_subdirectory(lib/assimp)
+target_link_libraries(${PROJECT_NAME} PRIVATE assimp::assimp)

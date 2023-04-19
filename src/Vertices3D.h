@@ -72,6 +72,18 @@ public:
     //     glDeleteBuffers(1, &_vbo);
     // }
 
+    inline void addVertex(const glimac::ShapeVertex& vertex)
+    {
+        _vertices.push_back(vertex);
+    }
+
+    // inline void addIndex(GLuint index)
+    // {
+    //     _vbo.push_back(index);
+    // }
+
+    
+
     Vertices3D(const Vertices3D& toCopy)
     {
         _vao      = toCopy._vao;

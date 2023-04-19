@@ -33,8 +33,9 @@ void Fish::draw(const Program& program, const glm::mat4& projMatrix, Vertices3D&
 
 void Fish::drawFish(const Program& program, const glm::mat4& projMatrix, Vertices3D& vertices) const
 {
-    // std::cout << _mvtVariables._position.x << "//" << _mvtVariables._position.y << "\n";
+    std::cout << _mvtVariables._position.x << "//" << _mvtVariables._position.y << "//" << _mvtVariables._position.z << "\n";
     _matrices.sendMatricesToShader(program, projMatrix);
+    std::cout << vertices.shapeVertices().size() << std::endl;
     glDrawArrays(GL_TRIANGLES, 0, vertices.shapeVertices().size());
     // glBindVertexArray(0);
 }

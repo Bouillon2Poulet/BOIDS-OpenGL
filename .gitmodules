@@ -4,3 +4,6 @@
 [submodule "lib/SimplexNoise"]
 	path = lib/SimplexNoise
 	url = https://github.com/SRombauts/SimplexNoise.git
+[submodule "assimp"]
+	path = assimp
+	url = https://github.com/assimp/assimp.git

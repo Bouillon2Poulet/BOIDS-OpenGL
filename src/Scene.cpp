@@ -43,6 +43,11 @@ void Scene::displayBoundingBoxIfNecessary()
 }
 void Scene::update(p6::Context& ctx)
 {
+    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
+    std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
+    int a;
+    std::cin >> a;
+
     for (unsigned int i = 0; i < _fishGangs.size(); i++)
     {
         _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i], _camera.getViewMatrix());
@@ -51,6 +56,11 @@ void Scene::update(p6::Context& ctx)
     _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter);
     _camera.handleDeplacement(ctx);
     _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
+
+    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
+    std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
+    // int a;
+    // std::cin >> a;
 }
 
 Scene::Scene(const p6::Context& ctx)
@@ -58,8 +68,13 @@ Scene::Scene(const p6::Context& ctx)
 {
     // Init FishGang and Foods n°1
 
+    std::cout << "CONSTRUCTEUR SCENE\n";
     createFishGangAndFoods(FishType::tuna, 3);
-    createFishGangAndFoods(FishType::koi, 3);
+    std::cout << "Tuna.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
+    createFishGangAndFoods(FishType::koi, 9);
+    std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
+    // int a;
+    // std::cin >> a;
     // createFishGangAndFoods(FishType::whale, 4);
 
     // Init allFoods
