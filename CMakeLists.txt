@@ -47,3 +47,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
 # ---Add p6 library---
 add_subdirectory(lib/assimp)
 target_link_libraries(${PROJECT_NAME} PRIVATE assimp::assimp)
+
+# Shaders
+p6_copy_folder(${PROJECT_NAME} shaders)

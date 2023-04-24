@@ -15,9 +15,10 @@ private:
     GLuint                           _vao{};
     GLuint                           _vbo{};
     std::vector<glimac::ShapeVertex> _vertices{};
-    ShapeType                        _shapetype;
+    ShapeType                        _shapetype{};
 
 public:
+    Vertices3D() = default;
     Vertices3D(ShapeType type)
         : _shapetype(type)
     {
@@ -82,14 +83,13 @@ public:
     //     _vbo.push_back(index);
     // }
 
-    
-
-    Vertices3D(const Vertices3D& toCopy)
-    {
-        _vao      = toCopy._vao;
-        _vbo      = toCopy._vbo;
-        _vertices = _vertices;
-    }
+    // Vertices3D(const Vertices3D& toCopy)
+    // {
+    //     _vao      = toCopy._vao;
+    //     _vbo      = toCopy._vbo;
+    //     _vertices = _vertices;
+    //     _shapetype = toCop
+    // }
 
     inline GLuint vao() const
     {

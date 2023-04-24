@@ -45,8 +45,10 @@ void Scene::update(p6::Context& ctx)
 {
     std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
     std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
-    int a;
-    std::cin >> a;
+    // int a;
+    // std::cin >> a;
+
+    _camera.updateArpenteurPosition(_arpenteur.position());
 
     for (unsigned int i = 0; i < _fishGangs.size(); i++)
     {
@@ -70,8 +72,10 @@ Scene::Scene(const p6::Context& ctx)
 
     std::cout << "CONSTRUCTEUR SCENE\n";
     createFishGangAndFoods(FishType::tuna, 3);
-    std::cout << "Tuna.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
+    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
     createFishGangAndFoods(FishType::koi, 9);
+    // ERREUR
+    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
     std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
     // int a;
     // std::cin >> a;

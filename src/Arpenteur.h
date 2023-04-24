@@ -40,13 +40,13 @@ public:
         }
         if (ctx.key_is_pressed(GLFW_KEY_S))
         {
-            _mvtVariables._position.z -= 0.1;
+            _mvtVariables._position.z += 0.1;
             if (_mvtVariables._position.z - _width / 2 < -maxDistanceFromCenter.z / 2)
                 _mvtVariables._position.z = (-maxDistanceFromCenter.z + _width) / 2;
         }
         if (ctx.key_is_pressed(GLFW_KEY_W))
         {
-            _mvtVariables._position.z += 0.1;
+            _mvtVariables._position.z -= 0.1;
             if (_mvtVariables._position.z + _width / 2 > maxDistanceFromCenter.z / 2)
                 _mvtVariables._position.z = (maxDistanceFromCenter.z - _width) / 2;
         }
@@ -60,5 +60,10 @@ public:
         _vertices3D.bindVertexArrayVAO();
         glDrawArrays(GL_TRIANGLES, 0, _vertices3D.shapeVertices().size());
         glBindVertexArray(0);
+    }
+
+    inline glm::vec3 position()
+    {
+        return _mvtVariables._position;
     }
 };

@@ -13,7 +13,7 @@ private:
     std::vector<Fish> _fishes{};
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
-    Vertices3D        _vertices3D;
+    Vertices3D        _vertices3D{};
 
     FishType  _type;
     p6::Color _color{};
@@ -21,8 +21,9 @@ private:
 
 public:
     inline FishGang(const FishType type, const unsigned int number, const glm::vec3& maxDistanceFromCenter)
-        : _bhvVariables(static_cast<unsigned int>(type)), _type(type), _vertices3D(ShapeType::cone)
+        : _bhvVariables(static_cast<unsigned int>(type)), _type(type)
     {
+        _vertices3D = Vertices3D(ShapeType::cone);
         if (_type == FishType::koi)
         {
             _color  = p6::Color(1.f, 0.2f, .0f);

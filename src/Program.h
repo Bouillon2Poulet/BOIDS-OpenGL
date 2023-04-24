@@ -10,7 +10,7 @@ struct Program {
     GLint uOpacity;
 
     Program()
-        : m_Program{p6::load_shader(std::filesystem::current_path().string() + "./../src/shaders/3D.vs.glsl", std::filesystem::current_path().string() + "./../src/shaders/normals.fs.glsl")}
+        : m_Program{p6::load_shader("shaders/3D.vs.glsl", "shaders/normals.fs.glsl")}
     {
         uMVPMatrix    = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
