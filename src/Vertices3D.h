@@ -7,7 +7,8 @@
 enum class ShapeType {
     sphere,
     cone,
-    cube
+    cube,
+    model
 };
 
 class Vertices3D {
@@ -19,9 +20,11 @@ private:
 
 public:
     Vertices3D() = default;
-    Vertices3D(ShapeType type)
+    Vertices3D(ShapeType type, std::string modelName = "")
         : _shapetype(type)
     {
+            std::cout<<"??"<<std::endl;
+
         switch (_shapetype)
         {
         case ShapeType::cone:
@@ -33,7 +36,11 @@ public:
         case ShapeType::cube:
             _vertices = glimac::cube_vertices(1.);
             break;
+        case ShapeType::model:
+            _vertices = glimac::load3DModel(modelName);
+            break;
         }
+
         const GLuint SHADER_VERTEX_POS      = 0;
         const GLuint SHADER_VERTEX_NORM     = 1;
         const GLuint SHADER_VERTEX_TEXCOORD = 2;

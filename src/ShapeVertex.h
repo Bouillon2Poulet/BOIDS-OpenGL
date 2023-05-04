@@ -1,8 +1,12 @@
 #include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
+#include <string>
 #include <vector>
 #include "glm/fwd.hpp"
+#include "p6/p6.h"
+#include "tiny_obj_loader.h"
+
 
 namespace glimac {
 
@@ -207,5 +211,69 @@ inline std::vector<ShapeVertex> cube_vertices(float sideLength)
     data.push_back({{-halfSide, halfSide, halfSide}, {0.f, 0.f, 1.f}, {0.f, 1.f}});
 
     return data;
+}
+
+inline std::vector<ShapeVertex> load3DModel(const std::string modelName)
+{
+    std::cout << "!!" << std::endl;
+
+    // Loading
+    tinyobj::attrib_t                attrib;
+    std::vector<tinyobj::shape_t>    shapes;
+    std::vector<tinyobj::material_t> materials;
+
+    std::cout << "!!!" << std::endl;
+
+    std::string err;
+    std::string warn;
+    std::string path = "models/" + modelName+"/"+modelName+".obj";
+    bool        ret  = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &warn, path.c_str());
+    if (!ret)
+    {
+        std::cout << "ERREUR CHARGEMENT MODELE" << std::endl;
+    }
+    // -> ShapeVertex
+
+    std::vector<ShapeVertex> vertices;
+    std::cout << "!!!!" << std::endl;
+
+    // Pour chaque forme dans le fichier .obj
+    for (const auto& shape : shapes)
+    {
+        // Pour chaque face dans la forme
+        for (const auto& index : shape.mesh.indices)
+{
+    ShapeVertex vertex;
+    const auto posIndex = 3 * index.vertex_index;
+    const auto normIndex = 3 * index.normal_index;
+    const auto texCoordIndex = 2 * index.texcoord_index;
+
+    if (posIndex + 2 < attrib.vertices.size()) {
+        vertex.position = {
+            attrib.vertices[posIndex + 0],
+            attrib.vertices[posIndex + 1],
+            attrib.vertices[posIndex + 2]
+        };
+    }
+    if (normIndex + 2 < attrib.normals.size()) {
+        vertex.normal = {
+            attrib.normals[normIndex + 0],
+            attrib.normals[normIndex + 1],
+            attrib.normals[normIndex + 2]
+        };
+    }
+    if (texCoordIndex + 1 < attrib.texcoords.size()) {
+        vertex.texCoords = {
+            attrib.texcoords[texCoordIndex + 0],
+            attrib.texcoords[texCoordIndex + 1]
+        };
+    }
+    vertices.push_back(vertex);
+}
+
+
+        std::cout << "!!!!!!" << std::endl;
+    }
+    return vertices;
 }
 }; // namespace glimac

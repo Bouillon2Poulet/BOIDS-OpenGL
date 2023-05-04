@@ -8,7 +8,6 @@
 #include "Fish.h"
 // #include "Mesh.h"
 #include "Scene.h"
-#include "assimp/aabb.h"
 #include "glm/fwd.hpp"
 #include "imgui.h"
 #include "internal.h"

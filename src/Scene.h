@@ -8,20 +8,22 @@
 #include "Program.h"
 #include "TrackballCamera.hpp"
 #include "Vertices3D.h"
+#include "my3DModel.h"
 
 class Scene {
 private:
-    std::vector<FishGang> _fishGangs{};
-    std::vector<FoodKind> _allFoods{};
-    bool                  _displayBoundingBox = true;
-    glm::vec3             _maxDistanceFromCenter{};
-    Arpenteur             _arpenteur;
-    p6::Color             _backgroundColor = p6::NamedColor::Black;
-    Program               _program{};
-    TrackballCamera       _camera{};
-    glm::mat4             _projMatrix;
-    Vertices3D            _boundingBox;
-    Matrices              _boundingBoxMatrices;
+    std::vector<FishGang>  _fishGangs{};
+    std::vector<FoodKind>  _allFoods{};
+    bool                   _displayBoundingBox = true;
+    glm::vec3              _maxDistanceFromCenter{};
+    Arpenteur              _arpenteur;
+    p6::Color              _backgroundColor = p6::NamedColor::Black;
+    Program                _program{};
+    TrackballCamera        _camera{};
+    glm::mat4              _projMatrix;
+    Vertices3D             _boundingBox;
+    Matrices               _boundingBoxMatrices;
+    std::vector<my3DModel> _environment;
 
 public:
     Scene(const p6::Context& ctx);

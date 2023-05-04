@@ -5,6 +5,8 @@
 #include "Fish.h"
 #include "FishGang.h"
 #include "Vertices3D.h"
+#include "my3DModel.h"
+
 
 void Scene::draw(p6::Context& ctx)
 {
@@ -29,6 +31,11 @@ void Scene::draw(p6::Context& ctx)
     //     i->draw(ctx, _program, _projMatrix);
     // }
     _arpenteur.draw(_program, _projMatrix);
+
+    for (auto& obstacle : _environment)
+    {
+        obstacle.draw(_program, _projMatrix);
+    }
 
     sendOpacityToShader(0.3);
     displayBoundingBoxIfNecessary();
@@ -59,10 +66,10 @@ void Scene::update(p6::Context& ctx)
     _camera.handleDeplacement(ctx);
     _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
 
-    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
-    std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
-    // int a;
-    // std::cin >> a;
+    for (auto& obstacle : _environment)
+    {
+        obstacle.update(_camera.getViewMatrix());
+    }
 }
 
 Scene::Scene(const p6::Context& ctx)
@@ -71,16 +78,13 @@ Scene::Scene(const p6::Context& ctx)
     // Init FishGang and Foods n°1
 
     std::cout << "CONSTRUCTEUR SCENE\n";
-    createFishGangAndFoods(FishType::tuna, 3);
-    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
-    createFishGangAndFoods(FishType::koi, 9);
-    // ERREUR
-    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
-    std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
-    // int a;
-    // std::cin >> a;
-    // createFishGangAndFoods(FishType::whale, 4);
+    // createFishGangAndFoods(FishType::tuna, 3);
+    createFishGangAndFoods(FishType::koi, 50);
+    // createFishGangAndFoods(FishType::shark, 4);
 
+    _environment.push_back(my3DModel("coral", {0, -3, 0.2}, 1));
+    _environment.push_back(my3DModel("ground", {0.5, -4, -0.7}, 0.29f));
+    // my3DModel coralTest("coral.obj");
     // Init allFoods
 }
 

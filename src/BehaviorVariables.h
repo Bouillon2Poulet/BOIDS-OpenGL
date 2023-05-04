@@ -21,15 +21,15 @@ struct BehaviorVariables {
         std::cout << "!!1.15 : 1\n";
         if (type == 0)
         {
-            _protectedRange  = 0.03f;
-            _visibleRange    = 0.2f;
-            _avoidFactor     = 0.1f;
+            _protectedRange  = 0.3f;
+            _visibleRange    = 0.5f;
+            _avoidFactor     = 0.05f;
             _matchingFactor  = 0.05;
             _centeringFactor = 0.001;
-            _turnFactor      = 0.05;
+            _turnFactor      = 0.5;
 
-            _maxSpeed = 0.1;
-            _minSpeed = 0.05;
+            _maxSpeed = 0.32;
+            _minSpeed = 0.3;
         }
         else if (type == 1)
         {

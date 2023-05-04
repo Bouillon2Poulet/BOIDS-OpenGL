@@ -27,17 +27,21 @@ public:
         if (_type == FishType::koi)
         {
             _color  = p6::Color(1.f, 0.2f, .0f);
-            _radius = 0.01f;
+            _radius = 0.1f;
+            _vertices3D = Vertices3D(ShapeType::model, "koi");
+
         }
         else if (_type == FishType::tuna)
         {
             _color  = p6::Color(0.f, 0.7f, .5f);
             _radius = 0.03f;
         }
-        else if (_type == FishType::whale)
+        else if (_type == FishType::shark)
         {
             _color  = p6::Color(0.f, 1.f, 1.f);
-            _radius = 0.09f;
+            _radius = 0.9f;
+            _vertices3D = Vertices3D(ShapeType::model, "shark");
+
         }
 
         for (unsigned int i = 0; i < number; i++)

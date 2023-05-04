@@ -30,7 +30,7 @@ public:
             _radius = 0.1f;
             _hp     = 50.f;
             break;
-        case FishType::whale:
+        case FishType::shark:
             _color  = p6::Color(.1f, .8, .3f);
             _radius = 0.2f;
             _hp     = 100.f;

@@ -4,7 +4,7 @@
 enum class FishType {
     koi,
     tuna,
-    whale
+    shark
 };
 
 inline std::string fishTypeToString(FishType type)
@@ -15,8 +15,8 @@ inline std::string fishTypeToString(FishType type)
         return "koi";
     case FishType::tuna:
         return "tuna";
-    case FishType::whale:
-        return "whale";
+    case FishType::shark:
+        return "shark";
     default:
         return "unknown";
     }
