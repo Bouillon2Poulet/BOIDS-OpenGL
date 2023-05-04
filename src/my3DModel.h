@@ -9,11 +9,21 @@ private:
     glm::vec3  _position{};
     float      _radius;
     Matrices   _matrices;
+    GLuint      _texture;
 
 public:
     my3DModel(const std::string& modelName, const glm::vec3& position, const float radius)
         : _vertices(ShapeType::model, modelName), _position(position), _radius(radius)
     {
+        auto textureImage = p6::load_image_buffer("./assets/"+modelName+"/"+modelName+".jpg");
+        glGenTextures(1, &_texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, _texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImage.width(), textureImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.data());
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void draw(const Program& program, const glm::mat4& projMatrix)

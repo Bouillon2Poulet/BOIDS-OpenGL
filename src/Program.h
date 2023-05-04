@@ -8,6 +8,7 @@ struct Program {
     GLint uMVMatrix;
     GLint uNormalMatrix;
     GLint uOpacity;
+    GLint uTexture;
 
     Program()
         : m_Program{p6::load_shader("shaders/3D.vs.glsl", "shaders/normals.fs.glsl")}
@@ -16,5 +17,6 @@ struct Program {
         uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
         uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
         uOpacity      = glGetUniformLocation(m_Program.id(), "uOpacity");
+        uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
     }
 };

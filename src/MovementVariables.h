@@ -17,11 +17,31 @@ struct MovementVariables {
 
     inline void update(const glm::vec3& closeSum, glm::vec3& averageVelocity, const unsigned int neighboringFishes, const BehaviorVariables& bhvVariables, const glm::vec3& maxDistanceFromCenter)
     {
+        // glm::vec3 inertie = _velocity * 0.3f;
+        glm::vec3 lastVelocity = _velocity;
         velocityUpdate(closeSum, averageVelocity, neighboringFishes, bhvVariables._avoidFactor, bhvVariables._matchingFactor);
         handleScreenBorders(maxDistanceFromCenter);
         handleSpeedLimit(bhvVariables._minSpeed, bhvVariables._maxSpeed);
+        handleTurningForce(lastVelocity); //BOF
+        // _velocity += inertie; //BOF
         _position += (_velocity / 10.f);
         handleOutOfBorders(maxDistanceFromCenter / 2.f);
+    }
+
+    inline void handleTurningForce(const glm::vec3& lastVelocity)
+    {
+        glm::vec3 error     = glm::normalize(_velocity) - glm::normalize(lastVelocity);
+        float     magnitude = glm::length(error);
+
+        // Si la magnitude de l'erreur est nulle, retourne une force nulle
+        if (magnitude == 0)
+        {
+            return;
+        }
+
+        // Calcule la force de virage en utilisant une fonction sigmoïde pour adoucir la transition
+        float turningForce = .0001f * (1 / (1 + exp(-10 * (magnitude - 0.5))));
+        _velocity += glm::normalize(error) * turningForce;
     }
 
     inline void velocityUpdate(const glm::vec3& closeSum, glm::vec3& averageVelocity, const unsigned int neighboringFishes, const float avoidFactor, const float matchingFactor)
@@ -58,7 +78,7 @@ struct MovementVariables {
         float           zForce                = -1.f * internal::sign(_position.z) / (std::pow(maxDistanceFromCenter.z - std::abs(_position.z), 2.f));
 
         glm::vec3 bordersForces = {xForce, yForce, zForce};
-        _velocity += (bordersForces / 1000.f);
+        _velocity += (bordersForces / 10000.f);
     }
 
     void handleOutOfBorders(const glm::vec3& maxDistanceFromCenter)

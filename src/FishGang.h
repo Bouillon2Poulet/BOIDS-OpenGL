@@ -39,7 +39,7 @@ public:
         else if (_type == FishType::shark)
         {
             _color  = p6::Color(0.f, 1.f, 1.f);
-            _radius = 0.9f;
+            _radius = 0.5f;
             _vertices3D = Vertices3D(ShapeType::model, "shark");
 
         }

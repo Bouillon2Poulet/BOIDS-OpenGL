@@ -79,8 +79,8 @@ Scene::Scene(const p6::Context& ctx)
 
     std::cout << "CONSTRUCTEUR SCENE\n";
     // createFishGangAndFoods(FishType::tuna, 3);
-    createFishGangAndFoods(FishType::koi, 50);
-    // createFishGangAndFoods(FishType::shark, 4);
+    createFishGangAndFoods(FishType::koi, 100);
+    // createFishGangAndFoods(FishType::shark, 3);
 
     _environment.push_back(my3DModel("coral", {0, -3, 0.2}, 1));
     _environment.push_back(my3DModel("ground", {0.5, -4, -0.7}, 0.29f));

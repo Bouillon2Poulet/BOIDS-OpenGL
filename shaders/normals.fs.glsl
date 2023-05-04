@@ -4,10 +4,13 @@ in vec3 vPosition_vs; // Position du sommet transformée dans l'espace View (vs)
 in vec3 vNormal_vs; // Normale du sommet transformée dans l'espace View (vs)
 in vec2 vTexCoords; // Coordonnées de texture du sommet
 
+
 out vec4 fFragColor;
 
 uniform float uOpacity;
+uniform sampler2D uTexture;
 
 void main() {
-    fFragColor = vec4(normalize(vNormal_vs),uOpacity);
+    //   fFragColor = vec4(normalize(vNormal_vs),uOpacity);
+    fFragColor = texture(uTexture, vTexCoords) * uOpacity;
 }
