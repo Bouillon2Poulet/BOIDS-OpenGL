@@ -82,8 +82,8 @@ Scene::Scene(const p6::Context& ctx)
     createFishGangAndFoods(FishType::koi, 100);
     // createFishGangAndFoods(FishType::shark, 3);
 
-    _environment.push_back(my3DModel("coral", {0, -3, 0.2}, 1));
-    _environment.push_back(my3DModel("ground", {0.5, -4, -0.7}, 0.29f));
+    _environment.push_back(my3DModel("coral", {0, -1.2, 0.9}, .7));
+    _environment.push_back(my3DModel("ground", {0., -5., -0.}, 0.31f));
     // my3DModel coralTest("coral.obj");
     // Init allFoods
 }

@@ -7,6 +7,7 @@
 #include "FishType.h"
 #include "FoodKind.h"
 #include "Vertices3D.h"
+#include "my3DModel.h"
 
 class FishGang {
 private:
@@ -14,6 +15,8 @@ private:
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
     Vertices3D        _vertices3D{};
+    // my3DModel _3Dmodel;
+    // GLuint _texture;
 
     FishType  _type;
     p6::Color _color{};
@@ -53,7 +56,7 @@ public:
         // std::cin >> a;
     };
 
-    void            draw(p6::Context& ctx, const Program& program, const glm::mat4& projMatrix);
+    void            draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix);
     void            update(const glm::vec3& maxDistanceFromCenter, FoodKind& particularFoodKind, const glm::mat4& viewMatrix);
     inline FishType type()
     {

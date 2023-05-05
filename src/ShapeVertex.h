@@ -7,7 +7,6 @@
 #include "p6/p6.h"
 #include "tiny_obj_loader.h"
 
-
 namespace glimac {
 
 struct ShapeVertex {
@@ -224,10 +223,14 @@ inline std::vector<ShapeVertex> load3DModel(const std::string modelName)
 
     std::cout << "!!!" << std::endl;
 
+    std::string objPath = "models/" + modelName + "/" + modelName + ".obj";
+
     std::string err;
     std::string warn;
-    std::string path = "models/" + modelName+"/"+modelName+".obj";
-    bool        ret  = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &warn, path.c_str());
+    bool        ret;
+
+    ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &warn, objPath.c_str());
+
     if (!ret)
     {
         std::cout << "ERREUR CHARGEMENT MODELE" << std::endl;
@@ -242,38 +245,39 @@ inline std::vector<ShapeVertex> load3DModel(const std::string modelName)
     {
         // Pour chaque face dans la forme
         for (const auto& index : shape.mesh.indices)
-{
-    ShapeVertex vertex;
-    const auto posIndex = 3 * index.vertex_index;
-    const auto normIndex = 3 * index.normal_index;
-    const auto texCoordIndex = 2 * index.texcoord_index;
+        {
+            ShapeVertex vertex;
+            const auto  posIndex      = 3 * index.vertex_index;
+            const auto  normIndex     = 3 * index.normal_index;
+            const auto  texCoordIndex = 2 * index.texcoord_index;
 
-    if (posIndex + 2 < attrib.vertices.size()) {
-        vertex.position = {
-            attrib.vertices[posIndex + 0],
-            attrib.vertices[posIndex + 1],
-            attrib.vertices[posIndex + 2]
-        };
-    }
-    if (normIndex + 2 < attrib.normals.size()) {
-        vertex.normal = {
-            attrib.normals[normIndex + 0],
-            attrib.normals[normIndex + 1],
-            attrib.normals[normIndex + 2]
-        };
-    }
-    if (texCoordIndex + 1 < attrib.texcoords.size()) {
-        vertex.texCoords = {
-            attrib.texcoords[texCoordIndex + 0],
-            attrib.texcoords[texCoordIndex + 1]
-        };
-    }
-    vertices.push_back(vertex);
-}
-
+            if (posIndex + 2 < attrib.vertices.size())
+            {
+                vertex.position = {
+                    attrib.vertices[posIndex + 0],
+                    attrib.vertices[posIndex + 1],
+                    attrib.vertices[posIndex + 2]};
+            }
+            if (normIndex + 2 < attrib.normals.size())
+            {
+                vertex.normal = {
+                    attrib.normals[normIndex + 0],
+                    attrib.normals[normIndex + 1],
+                    attrib.normals[normIndex + 2]};
+            }
+            if (texCoordIndex + 1 < attrib.texcoords.size())
+            {
+                vertex.texCoords = {
+                    attrib.texcoords[texCoordIndex + 0],
+                    attrib.texcoords[texCoordIndex + 1]};
+            }
+            vertices.push_back(vertex);
+        }
 
         std::cout << "!!!!!!" << std::endl;
     }
     return vertices;
 }
+
+
 }; // namespace glimac

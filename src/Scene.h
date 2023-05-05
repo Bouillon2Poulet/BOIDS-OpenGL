@@ -5,7 +5,7 @@
 #include "FishGang.h"
 #include "FishType.h"
 #include "FoodKind.h"
-#include "Program.h"
+#include "myProgram.h"
 #include "TrackballCamera.hpp"
 #include "Vertices3D.h"
 #include "my3DModel.h"
@@ -18,7 +18,7 @@ private:
     glm::vec3              _maxDistanceFromCenter{};
     Arpenteur              _arpenteur;
     p6::Color              _backgroundColor = p6::NamedColor::Black;
-    Program                _program{};
+    myProgram                _program{};
     TrackballCamera        _camera{};
     glm::mat4              _projMatrix;
     Vertices3D             _boundingBox;

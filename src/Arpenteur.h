@@ -3,7 +3,7 @@
 #include "Drawing.h"
 #include "Matrices.h"
 #include "MovementVariables.h"
-#include "Program.h"
+#include "myProgram.h"
 #include "Vertices3D.h"
 #include "glm/ext/quaternion_geometric.hpp"
 #include "glm/fwd.hpp"
@@ -53,7 +53,7 @@ public:
 
         _matrices.updateArpenteur(viewMatrix, _mvtVariables._position);
     }
-    inline void draw(const Program& program, const glm::mat4& projMatrix)
+    inline void draw(const myProgram& program, const glm::mat4& projMatrix)
     {
         _matrices.sendMatricesToShader(program, projMatrix);
         std::cout << _mvtVariables._position.x << "," << _mvtVariables._position.y << "," << _mvtVariables._position.z << std::endl;

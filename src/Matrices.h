@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Program.h"
+#include "myProgram.h"
 #include "glm/fwd.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/transform.hpp"
@@ -54,7 +54,7 @@ struct Matrices {
         _NormalMatrix = glm::transpose(glm::inverse(_MVMatrixFish));
     }
 
-    inline void sendMatricesToShader(const Program& program, const glm::mat4& projMatrix) const
+    inline void sendMatricesToShader(const myProgram& program, const glm::mat4& projMatrix) const
     {
         glUniformMatrix4fv(program.uMVPMatrix, 1, false, glm::value_ptr(projMatrix * _MVMatrixFish));
         glUniformMatrix4fv(program.uMVMatrix, 1, false, glm::value_ptr(_MVMatrixFish));

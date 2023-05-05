@@ -25,13 +25,13 @@ void Fish::drawDebugFishIfNecessary(p6::Context& ctx, const DebugUiParameters& d
         drawProximityNbr(_debugUiNeighboringFishes, ctx, (glm::vec4(_mvtVariables._position, 1)) * projMatrix);
 }
 
-void Fish::draw(const Program& program, const glm::mat4& projMatrix, Vertices3D& vertices, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const
+void Fish::draw(const myProgram& program, const glm::mat4& projMatrix, Vertices3D& vertices, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const
 {
     drawDebugFishIfNecessary(ctx, debugUiParameters, behaviorVariables, projMatrix);
     drawFish(program, projMatrix, vertices);
 }
 
-void Fish::drawFish(const Program& program, const glm::mat4& projMatrix, Vertices3D& vertices) const
+void Fish::drawFish(const myProgram& program, const glm::mat4& projMatrix, Vertices3D& vertices) const
 {
     // std::cout << _mvtVariables._position.x << "//" << _mvtVariables._position.y << "//" << _mvtVariables._position.z << "\n";
     _matrices.sendMatricesToShader(program, projMatrix);

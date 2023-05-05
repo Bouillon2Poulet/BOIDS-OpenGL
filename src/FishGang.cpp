@@ -13,7 +13,7 @@ DebugUiParameters* FishGang::debugUiParametersPtr()
     return &_debugUiParameters;
 }
 
-void FishGang::draw(p6::Context& ctx, const Program& program, const glm::mat4& projMatrix)
+void FishGang::draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix)
 {
     int count = 0;
     for (const auto& fish : _fishes)
