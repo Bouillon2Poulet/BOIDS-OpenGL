@@ -53,8 +53,8 @@ void Scene::update(p6::Context& ctx)
     // int a;
     // std::cin >> a;
 
-    _sun.update(ctx.time(), _camera.getViewMatrix(), _program);
-
+    _pointLight.update(ctx.time(), _camera.getViewMatrix(), _program);
+    _directionalLight.update(ctx.time(), _camera.getViewMatrix(), _program);
     _camera.updateArpenteurPosition(_arpenteur.position());
 
     for (unsigned int i = 0; i < _fishGangs.size(); i++)

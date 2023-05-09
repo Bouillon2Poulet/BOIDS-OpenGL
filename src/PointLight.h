@@ -10,7 +10,7 @@ private:
     // glm::vec3 _position = {10.f, .0f, .0f};
     // float     radius = 10.f;
     // glm::vec3 _direction{-1.f, .0f, .0f};
-    glm::vec3 _lightIntensity = {0.f, 4.f, 1.f};
+    glm::vec3 _lightIntensity = {0.f, 1.f, 1.f};
     // glm::vec3 _lightPosition  = {1.f, 0.f, 0.f};
 
 public:
@@ -18,8 +18,8 @@ public:
     {
         // glm::vec3 lightDir = (glm::rotate(glm::mat4(1), time, glm::vec3(0., 0., 1.)) * glm::vec4(1) * viewMatrix);
        
-        glm::mat4 rotationTime        = viewMatrix * glm::rotate(glm::mat4(1), time, glm::vec3(.0, 0., 1.));
-        glm::vec3 lightPosXViewMatrix = rotationTime * glm::vec4(3.,0., 0.0, 1.0);
+        glm::mat4 rotationTime        = viewMatrix * glm::translate(glm::rotate(glm::translate(glm::mat4(1),glm::vec3(0.,3.,0.)), time, glm::vec3(.0, 0., 1.)),glm::vec3(0.,1.,0.));
+        glm::vec3 lightPosXViewMatrix = rotationTime*glm::vec4(1);
         // glm::vec3 lightPosXViewMatrix = glm::vec4(0., 5.0, 0.0, 1.0);
 
         program.m_Program.use();

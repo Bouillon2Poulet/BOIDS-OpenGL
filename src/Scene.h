@@ -11,6 +11,7 @@
 #include "Vertices3D.h"
 #include "my3DModel.h"
 #include "myProgram.h"
+#include "DirectionalLight.h"
 
 
 class Scene {
@@ -27,7 +28,8 @@ private:
     Vertices3D            _boundingBox;
     Matrices              _boundingBoxMatrices;
     std::vector<Obstacle> _obstacles;
-    PointLight            _sun;
+    PointLight            _pointLight;
+    DirectionalLight _directionalLight;
 
 public:
     Scene(const p6::Context& ctx);

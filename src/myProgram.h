@@ -20,6 +20,8 @@ struct myProgram {
 
     GLint uLight1Position;
     GLint uLight1Intensity;
+    GLint uLight2Direction;
+    GLint uLight2Intensity;
 
     myProgram()
         : m_Program{p6::load_shader("shaders/3D.vs.glsl", "shaders/normals.fs.glsl")}
@@ -35,7 +37,9 @@ struct myProgram {
         uMaterial.uSpecular  = glGetUniformLocation(m_Program.id(), "uSpecular");
         uMaterial.uShininess = glGetUniformLocation(m_Program.id(), "uShininess");
 
-        uLight1Position      = glGetUniformLocation(m_Program.id(), "uLight1Position");
+        uLight1Position  = glGetUniformLocation(m_Program.id(), "uLight1Position");
         uLight1Intensity = glGetUniformLocation(m_Program.id(), "uLight1Intensity");
+        uLight2Direction = glGetUniformLocation(m_Program.id(), "uLight2Direction");
+        uLight2Intensity = glGetUniformLocation(m_Program.id(), "uLight2Intensity");
     }
 };
