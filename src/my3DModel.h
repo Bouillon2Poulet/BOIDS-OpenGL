@@ -1,6 +1,10 @@
 #pragma once
 
 #include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 #include "Matrices.h"
 #include "Vertices3D.h"
 #include "glm/fwd.hpp"
@@ -8,26 +12,24 @@
 #include "myTexture.h"
 #include "tiny_obj_loader.h"
 
+struct Material {
+    std::string name;
+    float       shininess;
+    glm::vec3   ambientColor;
+    glm::vec3   diffuseColor;
+    glm::vec3   specularColor;
+};
+
 class my3DModel {
 private:
     // MODEL
-    GLuint _diffuseTexture;
-    // tinyobj::attrib_t                _attrib;
-    std::vector<Vertices3D>          _shapes;
+    GLuint                  _diffuseTexture;
+    std::vector<Vertices3D> _shapes;
     std::vector<tinyobj::material_t> _materials;
-    GLuint                           _vao{};
-    GLuint                           _vbo{};
-
-    // Vertices3D _vertices;
-
-    glm::vec3 _position{};
-    float     _radius;
-    Matrices  _matrices;
-    // myTexture _texture; // Material
+    // std::vector<Material> _materials;
 
 public:
-    my3DModel(const std::string& modelName, const glm::vec3& position, const float radius)
-        : _position(position), _radius(radius)
+    my3DModel(const std::string& modelName)
     {
         loadObj(modelName);
         for (auto& shape : _shapes)
@@ -37,39 +39,25 @@ public:
         // loadVAOVBO();
     }
 
-    void draw(const myProgram& program, const glm::mat4& projMatrix)
+    void draw(const myProgram& program) const
     {
-        std::cout << _position.x << "//" << _position.y << "//" << _position.z << std::endl;
-        _matrices.sendMatricesToShader(program, projMatrix);
-        // bindVertexArrayVAO();
-        activateTexture(program);
-
         for (int i = 0; i < _shapes.size(); i++)
         {
-            std::cout << "!" << std::endl;
-            const tinyobj::material_t& material = _materials[i];
-            std::cout << "!!" << std::endl;
+            const tinyobj::material_t material = _materials[i];
+            std::cout << "DRAW" << std::endl;
 
             // // glUniform3fv(program.uMaterial.uAmbient, 1, &material.ambient[0]);
-            glUniform3fv(program.uMaterial.uDiffuse, 1, &material.diffuse[0]);
-            glUniform3fv(program.uMaterial.uSpecular, 1, &material.specular[0]);
-            glUniform1f(program.uMaterial.uShininess, material.shininess);
+            glUniform3fv(program.uMaterial.uDiffuse, 1, _materials[i].diffuse);
+            glUniform3fv(program.uMaterial.uSpecular, 1,_materials[i].specular);
+            glUniform1f(program.uMaterial.uShininess, _materials[i].shininess);
 
             _shapes[i].bindVertexArrayVAO();
             glDrawArrays(GL_TRIANGLES, 0, _shapes[i].shapeVertices().size());
             // glDrawArrays(GL_TRIANGLES, 0, _vertices.shapeVertices().size());
             glBindVertexArray(0);
+            // int a;
+            // std::cin>>a;
         }
-    }
-
-    void update(const glm::mat4& viewMatrix)
-    {
-        _matrices.updateEnvironment(viewMatrix, _position, _radius);
-    }
-
-    inline void bindVertexArrayVAO()
-    {
-        glBindVertexArray(_vao);
     }
 
     inline void activateTexture(const myProgram& program)
@@ -79,70 +67,9 @@ public:
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture);
     }
 
-    // inline void loadVAOVBO()
-    // {
-    //     const GLuint SHADER_VERTEX_POS      = 0;
-    //     const GLuint SHADER_VERTEX_NORM     = 1;
-    //     const GLuint SHADER_VERTEX_TEXCOORD = 2;
-
-    //     std::vector<tinyobj::real_t> allDatas;
-    //     for (size_t i = 0; i < _attrib.vertices.size() / 3; i++)
-    //     {
-    //         Vertices
-    //         allDatas.push_back(_attrib.vertices[3 * i + 0]);
-    //         allDatas.push_back(_attrib.vertices[3 * i + 1]);
-    //         allDatas.push_back(_attrib.vertices[3 * i + 2]);
-
-    //         Normals
-    //         allDatas.push_back(_attrib.normals[3 * i + 0]);
-    //         allDatas.push_back(_attrib.normals[3 * i + 1]);
-    //         allDatas.push_back(_attrib.normals[3 * i + 2]);
-
-    //         Texcoords
-    //         allDatas.push_back(_attrib.texcoords[2 * i + 0]);
-    //         allDatas.push_back(_attrib.texcoords[2 * i + 1]);
-    //     }
-
-    //     VBO
-    //     glGenBuffers(1, &_vbo);
-    //     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    //     glBufferData(GL_ARRAY_BUFFER, sizeof(tinyobj::real_t) * allDatas.size(), allDatas.data(), GL_STATIC_DRAW);
-    //     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    //     VAO
-    //     glGenVertexArrays(1, &_vao);
-    //     glBindVertexArray(_vao);
-
-    //     glEnableVertexAttribArray(SHADER_VERTEX_POS);
-    //     glEnableVertexAttribArray(SHADER_VERTEX_NORM);
-    //     glEnableVertexAttribArray(SHADER_VERTEX_TEXCOORD);
-
-    //     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-
-    //     glVertexAttribPointer(SHADER_VERTEX_POS, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(tinyobj::real_t), allDatas.data());
-    //     glVertexAttribPointer(SHADER_VERTEX_NORM, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(tinyobj::real_t), allDatas.data() + 3);
-    //     glVertexAttribPointer(SHADER_VERTEX_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(tinyobj::real_t), allDatas.data() + 6);
-
-    //     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //     glBindVertexArray(0);
-    // }
-
     void loadObj(const std::string& modelName)
     {
-        // Loading
-        // std::string objPath = "models/" + modelName + "/" + modelName + ".obj";
-        // std::string mtlPath = "models/" + modelName + "/";
-
-        // std::string       err, warn;
-        // tinyobj::attrib_t attribTemp;
-
         load3DModel(modelName);
-        // bool        ret = tinyobj::LoadObj(&attribTemp, &_shapes, &_materials, &err, &warn, objPath.c_str(), mtlPath.c_str());
-
-        // if (!ret)
-        // {
-        //     std::cerr << "ERREUR CHARGEMENT MODELE : " << err << std::endl;
-        // }
 
         // Load diffuse texture
         auto textureImage = p6::load_image_buffer("./models/" + modelName + "/" + modelName + ".jpg");
@@ -161,8 +88,9 @@ public:
     {
         // Loading
         tinyobj::attrib_t                attribTemp;
-        std::vector<tinyobj::material_t> materialsTemp;
-        std::vector<tinyobj::shape_t>    shapesTemp;
+        std::vector<tinyobj::material_t> materialTemp;
+
+        std::vector<tinyobj::shape_t> shapesTemp;
 
         std::string objPath = "models/" + modelName + "/" + modelName + ".obj";
         std::string mtlPath = "models/" + modelName + "/";
@@ -217,5 +145,61 @@ public:
             temp.vertices(vertices);
             _shapes.push_back(temp);
         }
+        // loadMtlFile(mtlPath.c_str(), _materials);
+    }
+
+    void loadMtlFile(const char* filePath, std::vector<Material>& materials)
+    {
+        std::FILE* file = std::fopen(filePath, "r");
+        if (!file)
+        {
+            std::fprintf(stderr, "Failed to open file %s\n", filePath);
+            std::exit(EXIT_FAILURE);
+        }
+
+        Material currentMaterial;
+
+        char line[1024];
+        while (std::fgets(line, sizeof(line), file))
+        {
+            char prefix[256];
+            std::sscanf(line, "%255s", prefix);
+
+            if (std::strcmp(prefix, "newmtl") == 0)
+            {
+                // Start a new material
+                if (!currentMaterial.name.empty())
+                {
+                    materials.push_back(currentMaterial);
+                }
+                currentMaterial = Material();
+                std::sscanf(line, "%*s %s", &currentMaterial.name[0]);
+            }
+            else if (std::strcmp(prefix, "Ns") == 0)
+            {
+                std::sscanf(line, "%*s %f", &currentMaterial.shininess);
+            }
+            else if (std::strcmp(prefix, "Ka") == 0)
+            {
+                std::sscanf(line, "%*s %f %f %f", &currentMaterial.ambientColor.x, &currentMaterial.ambientColor.y, &currentMaterial.ambientColor.z);
+            }
+            else if (std::strcmp(prefix, "Kd") == 0)
+            {
+                std::sscanf(line, "%*s %f %f %f", &currentMaterial.diffuseColor.x, &currentMaterial.diffuseColor.y, &currentMaterial.diffuseColor.z);
+            }
+            else if (std::strcmp(prefix, "Ks") == 0)
+            {
+                std::sscanf(line, "%*s %f %f %f", &currentMaterial.specularColor.x, &currentMaterial.specularColor.y, &currentMaterial.specularColor.z);
+            }
+            // Ignore all other prefixes
+        }
+
+        // Add the last material
+        if (!currentMaterial.name.empty())
+        {
+            materials.push_back(currentMaterial);
+        }
+
+        std::fclose(file);
     }
 };

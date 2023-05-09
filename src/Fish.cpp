@@ -25,19 +25,17 @@ void Fish::drawDebugFishIfNecessary(p6::Context& ctx, const DebugUiParameters& d
         drawProximityNbr(_debugUiNeighboringFishes, ctx, (glm::vec4(_mvtVariables._position, 1)) * projMatrix);
 }
 
-void Fish::draw(const myProgram& program, const glm::mat4& projMatrix, Vertices3D& vertices, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const
+void Fish::draw(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const
 {
     drawDebugFishIfNecessary(ctx, debugUiParameters, behaviorVariables, projMatrix);
-    drawFish(program, projMatrix, vertices);
+    drawFish(program, model, projMatrix);
 }
 
-void Fish::drawFish(const myProgram& program, const glm::mat4& projMatrix, Vertices3D& vertices) const
+void Fish::drawFish(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix) const
 {
-    // std::cout << _mvtVariables._position.x << "//" << _mvtVariables._position.y << "//" << _mvtVariables._position.z << "\n";
     _matrices.sendMatricesToShader(program, projMatrix);
-    // std::cout << vertices.shapeVertices().size() << std::endl;
-    glDrawArrays(GL_TRIANGLES, 0, vertices.shapeVertices().size());
-    // glBindVertexArray(0);
+    // std::cout<<_mvtVariables._position.x<<"/"<<_mvtVariables._position.y<<"/"<<_mvtVariables._position.z<<std::endl;
+    model.draw(program);
 }
 
 static void handleBehaviors(Fish& actualFish, BehaviorVariables& bhvVariables, Fish& otherFish, glm::vec3& closeSum, glm::vec3& averageVelocity, glm::vec3& averagePosition, int& neighboringFishes)
@@ -84,9 +82,9 @@ void Fish::handleScreenBorders(const glm::vec3& maxDistanceFromCenterBig)
 {
     // std::cout << "1.3 - maxDistanceFromCenter.x : " << maxDistanceFromCenter.x << "\n";
     const glm::vec3& maxDistanceFromCenter = maxDistanceFromCenterBig;
-    glm::vec3 bordersForces{};
-    float     rightBorderForce = -1.f / (std::pow(maxDistanceFromCenter.x - _mvtVariables._position.x, 2.f));
-    float     leftBorderForce  = 1.f / (std::pow(-maxDistanceFromCenter.x - _mvtVariables._position.x, 2.f));
+    glm::vec3        bordersForces{};
+    float            rightBorderForce = -1.f / (std::pow(maxDistanceFromCenter.x - _mvtVariables._position.x, 2.f));
+    float            leftBorderForce  = 1.f / (std::pow(-maxDistanceFromCenter.x - _mvtVariables._position.x, 2.f));
 
     float topBorderForce = -1.f / ((maxDistanceFromCenter.y - _mvtVariables._position.y) * (maxDistanceFromCenter.y - _mvtVariables._position.y));
     float botBorderForce = 1.f / ((-maxDistanceFromCenter.y - _mvtVariables._position.y) * (-maxDistanceFromCenter.y - _mvtVariables._position.y));

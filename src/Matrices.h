@@ -35,7 +35,7 @@ struct Matrices {
         _NormalMatrix = glm::transpose(glm::inverse(_MVMatrixFish));
     }
 
-    inline void updateEnvironment(const glm::mat4 viewMatrix, const glm::vec3& position, const float radius)
+    inline void updateObstacle(const glm::mat4 viewMatrix, const glm::vec3& position, const float radius)
     {
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(radius));
         _MVMatrixFish = viewMatrix * modelMatrix;

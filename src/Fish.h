@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Food.h"
-#include "myProgram.h"
 #include "Vertices3D.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "my3DModel.h"
+#include "myProgram.h"
+
 #pragma once
 
 #include <p6/p6.h>
@@ -33,9 +35,9 @@ public:
     {
         return this == &other;
     }
-    void draw(const myProgram& program, const glm::mat4& projMatrix, Vertices3D& vertices, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const;
+    void draw(const myProgram& program,  const my3DModel& model, const glm::mat4& projMatrix, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const;
 
-    void drawFish(const myProgram& program, const glm::mat4& projMatrix, Vertices3D& vertices) const;
+    void drawFish(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix) const;
     void drawDebugFishIfNecessary(p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables, const glm::mat4& projMatrix) const;
 
     void update(BehaviorVariables& bvhVariables, float radius, const glm::vec3& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food* nearestFood, const glm::mat4& viewMatrix);

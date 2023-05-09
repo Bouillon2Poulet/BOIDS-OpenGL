@@ -4,6 +4,7 @@
 #include "Arpenteur.h"
 #include "Fish.h"
 #include "FishGang.h"
+#include "Obstacle.h"
 #include "Vertices3D.h"
 #include "my3DModel.h"
 
@@ -13,6 +14,7 @@ void Scene::draw(p6::Context& ctx)
     // ctx.background(_backgroundColor);
 
     _program.m_Program.use();
+
 
     sendOpacityToShader(1.);
     // for (const auto& food : _allFoods)
@@ -25,14 +27,10 @@ void Scene::draw(p6::Context& ctx)
         std::cout << fish.name() << std::endl;
         fish.draw(ctx, _program, _projMatrix);
     }
-    // for (std::vector<FishGang>::iterator i = _fishGangs.begin(); i != _fishGangs.end() - 1; i++) // Without last fishGang
-    // {
-    //     std::cout << i->name() << std::endl;
-    //     i->draw(ctx, _program, _projMatrix);
-    // }
+
     _arpenteur.draw(_program, _projMatrix);
 
-    for (auto& obstacle : _environment)
+    for (auto& obstacle : _obstacles)
     {
         obstacle.draw(_program, _projMatrix);
     }
@@ -50,10 +48,12 @@ void Scene::displayBoundingBoxIfNecessary()
 }
 void Scene::update(p6::Context& ctx)
 {
-    std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
-    std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
+    // std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
+    // std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
     // int a;
     // std::cin >> a;
+
+    _sun.update(ctx.time(), _camera.getViewMatrix(), _program);
 
     _camera.updateArpenteurPosition(_arpenteur.position());
 
@@ -66,7 +66,7 @@ void Scene::update(p6::Context& ctx)
     _camera.handleDeplacement(ctx);
     _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
 
-    for (auto& obstacle : _environment)
+    for (auto& obstacle : _obstacles)
     {
         obstacle.update(_camera.getViewMatrix());
     }
@@ -79,12 +79,11 @@ Scene::Scene(const p6::Context& ctx)
 
     std::cout << "CONSTRUCTEUR SCENE\n";
     // createFishGangAndFoods(FishType::tuna, 3);
-    createFishGangAndFoods(FishType::koi, 100);
+    createFishGangAndFoods(FishType::koi, 100, 1.f);
     // createFishGangAndFoods(FishType::shark, 3);
 
-    _environment.push_back(my3DModel("coral", {0, -1.2, 0.9}, .7));
-    _environment.push_back(my3DModel("ground", {0., -5., -0.}, 0.31f));
-    // my3DModel coralTest("coral.obj");
+    _obstacles.push_back(Obstacle("coral", {0, -1.2, 0.9}, .7));
+    _obstacles.push_back(Obstacle("ground", {0., -5., -0.}, 0.31f));
     // Init allFoods
 }
 
@@ -121,8 +120,8 @@ glm::vec3 Scene::randomPosInBoundingBox()
     return {p6::random::number(-_maxDistanceFromCenter.x, _maxDistanceFromCenter.x), p6::random::number(-_maxDistanceFromCenter.y, _maxDistanceFromCenter.y), p6::random::number(-_maxDistanceFromCenter.z, _maxDistanceFromCenter.z)};
 }
 
-void Scene::createFishGangAndFoods(FishType type, int nbFishes)
+void Scene::createFishGangAndFoods(FishType type, int nbFishes, float radius)
 {
-    _fishGangs.emplace_back(type, nbFishes, _maxDistanceFromCenter);
+    _fishGangs.emplace_back(type, nbFishes, _maxDistanceFromCenter, radius);
     _allFoods.emplace_back(type, _maxDistanceFromCenter);
 }

@@ -98,7 +98,7 @@ public:
         glBindVertexArray(0);
     }
 
-    inline void bindVertexArrayVAO()
+    inline void bindVertexArrayVAO() const
     {
         glBindVertexArray(_vao);
     }

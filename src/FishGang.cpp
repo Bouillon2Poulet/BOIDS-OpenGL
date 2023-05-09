@@ -16,16 +16,14 @@ DebugUiParameters* FishGang::debugUiParametersPtr()
 void FishGang::draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix)
 {
     int count = 0;
+    _model.activateTexture(program);
+
     for (const auto& fish : _fishes)
     {
-        // std::cout << _vertices3D.vao() << "\n";
-        // count++;
-        _vertices3D.bindVertexArrayVAO();
-        
-        // std::cout << _vertices3D.size() << std::endl;
-        fish.draw(program, projMatrix, _vertices3D, ctx, _debugUiParameters, _bhvVariables);
-        glBindVertexArray(0);
+        fish.draw(program, _model, projMatrix, ctx, _debugUiParameters, _bhvVariables);
+        // glBindVertexArray(0);
     }
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void FishGang::update(const glm::vec3& maxDistanceFromCenter, FoodKind& particularFoodKind, const glm::mat4& viewMatrix)
