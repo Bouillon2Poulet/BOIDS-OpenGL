@@ -4,34 +4,33 @@
 #include <vector>
 #include "FishType.h"
 #include "Food.h"
+#include "Matrices.h"
 #include "glm/fwd.hpp"
+#include "my3DModel.h"
 
 class FoodKind {
 private:
     std::vector<Food> _foods;
     FishType          _type;
     float             _radius{};
-    p6::Color         _color;
     unsigned int      _hp;
+    my3DModel         _model;
 
 public:
     FoodKind(FishType type, const glm::vec3& maxDistanceFromCenter)
-        : _type(type)
+        : _type(type), _model(fishTypeToString(type) + "Food")
     {
         switch (_type)
         {
         case FishType::koi:
-            _color  = p6::Color(1.f, .6f, .9f);
-            _radius = 0.05f;
-            _hp     = 10.f;
+            _radius = .1f;
+            _hp     = 100.f;
             break;
         case FishType::tuna:
-            _color  = p6::Color(.7f, .2, .9f);
             _radius = 0.1f;
             _hp     = 50.f;
             break;
         case FishType::shark:
-            _color  = p6::Color(.1f, .8, .3f);
             _radius = 0.2f;
             _hp     = 100.f;
             break;
@@ -60,7 +59,8 @@ public:
         }
 
         {
-            static constexpr float chanceForNewFood = 0.0005;
+            static constexpr float chanceForNewFood = 0.005;
+
             if (p6::random::number() < chanceForNewFood)
             {
                 addFood(maxDistanceFromCenter);
@@ -68,15 +68,17 @@ public:
         }
     }
 
-    inline void draw(p6::Context& ctx) const
+    inline void draw(myProgram& program, const glm::mat4& projMatrix, const glm::mat4 viewMatrix)
     {
-        int index = 0;
+        _model.activateTexture(program);
+
         for (auto it = _foods.begin(); it != _foods.end(); it++)
         {
-            it->draw(ctx, _color);
-            index++;
+            it->draw(program, projMatrix, _model, viewMatrix);
         }
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
+
     inline void addFood(const glm::vec3& maxDistanceFromCenter)
     {
         _foods.emplace_back(maxDistanceFromCenter, _hp, _radius);

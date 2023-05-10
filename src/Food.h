@@ -2,12 +2,16 @@
 #include <p6/p6.h>
 #include <string>
 #include <vector>
+#include "Matrices.h"
 #include "glm/fwd.hpp"
 #include "internal.h"
+#include "my3DModel.h"
+#include "myProgram.h"
 
 class Food {
 private:
     glm::vec3    _position{};
+    Matrices _matrices;
     float        _maxRadius;
     unsigned int _maxHP;
     float        _currentRadius = _maxRadius;
@@ -22,7 +26,7 @@ public:
         if (_currentHP != 0)
             _currentHP -= 1;
         _currentRadius = _maxRadius * _currentHP / _maxHP;
-        if (_currentRadius < 0.01)
+        if (_currentRadius < 0.03)
         {
             _currentHP = 0;
         }
@@ -43,20 +47,10 @@ public:
         return _currentRadius;
     }
 
-    inline void draw(p6::Context& ctx, p6::Color color) const
+    inline void draw(myProgram& program,const glm::mat4& projMatrix, const my3DModel& model, const glm::mat4& viewMatrix)
     {
-        ctx.push_transform();
-        ctx.translate({_position.x, _position.y});
-        ctx.fill       = color;
-        ctx.use_fill   = true;
-        ctx.use_stroke = false;
-        ctx.circle(
-            p6::Center{.0f, .0f},
-            p6::Radius{_currentRadius}
-        );
-        // ctx.translate({0.03, 0});
-        // const std::u16string indexStr = internal::to_u16string(static_cast<int>(index));
-        // ctx.text(indexStr, p6::Center{}, p6::Rotation{});
-        ctx.pop_transform();
+        _matrices.updateObstacle(viewMatrix,_position, _currentRadius);
+        _matrices.sendMatricesToShader(program, projMatrix);
+        model.draw(program);
     }
 };

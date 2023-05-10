@@ -17,10 +17,10 @@ void Scene::draw(p6::Context& ctx)
 
 
     sendOpacityToShader(1.);
-    // for (const auto& food : _allFoods)
-    // {
-    //     food.draw(ctx);
-    // }
+    for (auto& food : _allFoods)
+    {
+        food.draw(_program, _projMatrix, _camera.getViewMatrix());
+    }
 
     for (auto& fish : _fishGangs)
     {
@@ -28,7 +28,7 @@ void Scene::draw(p6::Context& ctx)
         fish.draw(ctx, _program, _projMatrix);
     }
 
-    _arpenteur.draw(_program, _projMatrix);
+    // _arpenteur.draw(_program, _projMatrix);
 
     for (auto& obstacle : _obstacles)
     {
@@ -60,7 +60,7 @@ void Scene::update(p6::Context& ctx)
     for (unsigned int i = 0; i < _fishGangs.size(); i++)
     {
         _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i], _camera.getViewMatrix());
-        // _allFoods[i].update(_maxDistanceFromCenter);
+        _allFoods[i].update(_maxDistanceFromCenter);
     }
     _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter);
     _camera.handleDeplacement(ctx);
@@ -79,11 +79,11 @@ Scene::Scene(const p6::Context& ctx)
 
     std::cout << "CONSTRUCTEUR SCENE\n";
     // createFishGangAndFoods(FishType::tuna, 3);
-    createFishGangAndFoods(FishType::koi, 100, 1.f);
+    createFishGangAndFoods(FishType::koi, 50, 1.f);
     // createFishGangAndFoods(FishType::shark, 3);
 
-    _obstacles.push_back(Obstacle("coral", {0, -1.2, 0.9}, .7));
-    _obstacles.push_back(Obstacle("ground", {0., -5., -0.}, 0.31f));
+    _obstacles.push_back(Obstacle("coral", {0, -4.2, 0.9}, .7));
+    _obstacles.push_back(Obstacle("ground", {0., -8., -0.}, 0.31f));
     // Init allFoods
 }
 

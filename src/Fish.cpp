@@ -69,9 +69,9 @@ void Fish::update(BehaviorVariables& bhvVariables, const float radius, const glm
     handleBehaviorsWithAllFishes(*this, allFishes, bhvVariables, neighboringFishes, closeSum, averageVelocity, averagePosition);
     // std::cout<<"1"<<_mvtVariables._velocity.x<<"/"<<_mvtVariables._velocity.y<<"/"<<_mvtVariables._velocity.z<<std::endl;
 
-    _mvtVariables.update(closeSum, averageVelocity, neighboringFishes, bhvVariables, maxDistanceFromCenter);
+    handleNearestFoodIfNecessary(nearestFood);
 
-    // handleNearestFoodIfNecessary(nearestFood);
+    _mvtVariables.update(closeSum, averageVelocity, neighboringFishes, bhvVariables, maxDistanceFromCenter);
 
     _matrices.update(_mvtVariables._position, radius, _mvtVariables._velocity, viewMatrix);
 
@@ -101,14 +101,17 @@ void Fish::handleScreenBorders(const glm::vec3& maxDistanceFromCenterBig)
 
 void Fish::handleNearestFoodIfNecessary(Food* nearestFood)
 {
-    float biasval = 0.001f;
+    float biasval = 0.005f;
     if (nearestFood != nullptr)
     {
         _nearestFoodLocation = nearestFood->position();
-        _mvtVariables._velocity += biasval * glm::normalize(_nearestFoodLocation - _mvtVariables._position);
-        // Food interaction
-        if (glm::length(_mvtVariables._position - _nearestFoodLocation) < nearestFood->radius())
-            nearestFood->isEaten();
+        if (std::abs(glm::length(_mvtVariables._position - _nearestFoodLocation)) < 2)
+        {
+            _mvtVariables._velocity += biasval * glm::normalize(_nearestFoodLocation - _mvtVariables._position);
+            // Food interaction
+            if (glm::length(_mvtVariables._position - _nearestFoodLocation) < nearestFood->radius() * 10)
+                nearestFood->isEaten();
+        }
     }
 }
 

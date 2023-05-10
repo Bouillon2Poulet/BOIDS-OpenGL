@@ -38,11 +38,6 @@ public:
         return _type;
     }
 
-    // inline p6::Color* colorPtr()
-    // {
-    //     return &_color;
-    // }
-
     inline std::vector<Fish>* fishesPtr();
     BehaviorVariables*        bhvVariablesPtr();
     DebugUiParameters*        debugUiParametersPtr();

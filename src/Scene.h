@@ -18,7 +18,7 @@ class Scene {
 private:
     std::vector<FishGang> _fishGangs{};
     std::vector<FoodKind> _allFoods{};
-    bool                  _displayBoundingBox = true;
+    bool                  _displayBoundingBox = false;
     glm::vec3             _maxDistanceFromCenter{};
     Arpenteur             _arpenteur;
     p6::Color             _backgroundColor = p6::NamedColor::Black;
