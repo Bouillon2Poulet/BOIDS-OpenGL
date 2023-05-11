@@ -24,8 +24,8 @@ public:
 
     inline void draw(const myProgram& program, const glm::mat4& projMatrix)
     {
-        _matrices.sendMatricesToShader(program, projMatrix);
-        _model.activateTexture(program);
+        // _matrices.sendMatricesToShader(program, projMatrix);
+        // _model.activateTexture(program);
         _model.draw(program);
     }
 };

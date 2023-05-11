@@ -8,10 +8,11 @@
 class DirectionalLight {
 private:
     glm::vec3 _lightIntensity = {1, 0, 0};
-    glm::vec3 _direction      =  {1.f, 1.f, 0.f};
+    glm::vec3 _direction      = {1.f, 1.f, 0.f};
 
-    public : inline void
-             update(float time, const glm::mat4& viewMatrix, const myProgram& program)
+public:
+    inline void
+        update(float time, const glm::mat4& viewMatrix, const myProgram& program)
     {
         // glm::vec3 lightDir = (glm::rotate(glm::mat4(1), time, glm::vec3(0., 0., 1.)) * glm::vec4(1) * viewMatrix);
 
@@ -22,5 +23,10 @@ private:
         program.m_Program.use();
         glUniform3f(program.uLight2Direction, _direction.x, _direction.y, _direction.z);
         glUniform3f(program.uLight2Intensity, _lightIntensity.x, _lightIntensity.y, _lightIntensity.z);
+    }
+
+    glm::vec3 direction()
+    {
+        return _direction;
     }
 };

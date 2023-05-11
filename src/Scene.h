@@ -12,7 +12,7 @@
 #include "my3DModel.h"
 #include "myProgram.h"
 #include "DirectionalLight.h"
-
+#include "ShadowMap.h"
 
 class Scene {
 private:
@@ -30,6 +30,9 @@ private:
     std::vector<Obstacle> _obstacles;
     PointLight            _pointLight;
     DirectionalLight _directionalLight;
+
+    ShadowMap _shadowMap;
+    
 
 public:
     Scene(const p6::Context& ctx);

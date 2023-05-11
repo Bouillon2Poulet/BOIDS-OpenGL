@@ -47,9 +47,9 @@ public:
             std::cout << "DRAW" << std::endl;
 
             // // glUniform3fv(program.uMaterial.uAmbient, 1, &material.ambient[0]);
-            glUniform3fv(program.uMaterial.uDiffuse, 1, _materials[i].diffuse);
-            glUniform3fv(program.uMaterial.uSpecular, 1,_materials[i].specular);
-            glUniform1f(program.uMaterial.uShininess, _materials[i].shininess);
+            // glUniform3fv(program.uMaterial.uDiffuse, 1, _materials[i].diffuse);
+            // glUniform3fv(program.uMaterial.uSpecular, 1,_materials[i].specular);
+            // glUniform1f(program.uMaterial.uShininess, _materials[i].shininess);
 
             _shapes[i].bindVertexArrayVAO();
             glDrawArrays(GL_TRIANGLES, 0, _shapes[i].shapeVertices().size());

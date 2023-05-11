@@ -13,20 +13,20 @@ void Scene::draw(p6::Context& ctx)
 {
     // ctx.background(_backgroundColor);
 
-    _program.m_Program.use();
+    // _program.m_Program.use();
+    _shadowMap.useProgram();
 
+    // sendOpacityToShader(1.);
+    // for (auto& food : _allFoods)
+    // {
+    //     food.draw(_program, _projMatrix, _camera.getViewMatrix());
+    // }
 
-    sendOpacityToShader(1.);
-    for (auto& food : _allFoods)
-    {
-        food.draw(_program, _projMatrix, _camera.getViewMatrix());
-    }
-
-    for (auto& fish : _fishGangs)
-    {
-        std::cout << fish.name() << std::endl;
-        fish.draw(ctx, _program, _projMatrix);
-    }
+    // for (auto& fish : _fishGangs)
+    // {
+    //     std::cout << fish.name() << std::endl;
+    //     fish.draw(ctx, _program, _projMatrix);
+    // }
 
     // _arpenteur.draw(_program, _projMatrix);
 
@@ -35,8 +35,12 @@ void Scene::draw(p6::Context& ctx)
         obstacle.draw(_program, _projMatrix);
     }
 
-    sendOpacityToShader(0.3);
-    displayBoundingBoxIfNecessary();
+    // sendOpacityToShader(0.3);
+    // displayBoundingBoxIfNecessary();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+   
+
+
 }
 
 void Scene::displayBoundingBoxIfNecessary()
@@ -48,23 +52,18 @@ void Scene::displayBoundingBoxIfNecessary()
 }
 void Scene::update(p6::Context& ctx)
 {
-    // std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
-    // std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
-    // int a;
-    // std::cin >> a;
+    // _pointLight.update(ctx.time(), _camera.getViewMatrix(), _program);
+    // _directionalLight.update(ctx.time(), _camera.getViewMatrix(), _program);
+    // _camera.updateArpenteurPosition(_arpenteur.position());
 
-    _pointLight.update(ctx.time(), _camera.getViewMatrix(), _program);
-    _directionalLight.update(ctx.time(), _camera.getViewMatrix(), _program);
-    _camera.updateArpenteurPosition(_arpenteur.position());
-
-    for (unsigned int i = 0; i < _fishGangs.size(); i++)
-    {
-        _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i], _camera.getViewMatrix());
-        _allFoods[i].update(_maxDistanceFromCenter);
-    }
-    _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter);
-    _camera.handleDeplacement(ctx);
-    _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
+    // for (unsigned int i = 0; i < _fishGangs.size(); i++)
+    // {
+    //     _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i], _camera.getViewMatrix());
+    //     _allFoods[i].update(_maxDistanceFromCenter);
+    // }
+    // _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter);
+    // _camera.handleDeplacement(ctx);
+    // _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
 
     for (auto& obstacle : _obstacles)
     {
@@ -73,7 +72,7 @@ void Scene::update(p6::Context& ctx)
 }
 
 Scene::Scene(const p6::Context& ctx)
-    : _maxDistanceFromCenter(glm::vec3(10)), _arpenteur(_maxDistanceFromCenter), _projMatrix(glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f)), _boundingBox(ShapeType::cube)
+    : _maxDistanceFromCenter(glm::vec3(10)), _arpenteur(_maxDistanceFromCenter), _projMatrix(glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f)), _boundingBox(ShapeType::cube), _shadowMap(_directionalLight.direction())
 {
     // Init FishGang and Foods n°1
 
