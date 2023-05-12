@@ -18,7 +18,7 @@ private:
 
 public:
     FoodKind(FishType type, const glm::vec3& maxDistanceFromCenter)
-        : _type(type), _model(fishTypeToString(type) + "Food")
+        : _type(type), _model(fishTypeToString(type) + "Food","")
     {
         switch (_type)
         {

@@ -35,7 +35,7 @@ public:
     {
         return this == &other;
     }
-    void draw(const myProgram& program,  const my3DModel& model, const glm::mat4& projMatrix, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const;
+    void draw(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const;
 
     void drawFish(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix) const;
     void drawDebugFishIfNecessary(p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables, const glm::mat4& projMatrix) const;
@@ -59,6 +59,11 @@ public:
     // void               variables(BehaviorVariables input);
     BehaviorVariables* bhvVariablesPtr();
     MovementVariables* mvtVariablesPtr();
+
+    inline glm::vec3 position() const
+    {
+        return _mvtVariables._position;
+    }
 
     // DebugUi* debugUiPtr();
 };

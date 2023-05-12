@@ -2,6 +2,7 @@
 #include "DebugUiParameters.h"
 #include "FoodKind.h"
 #include "glm/fwd.hpp"
+#include "my3DModel.h"
 
 BehaviorVariables* FishGang::bhvVariablesPtr()
 {
@@ -13,13 +14,14 @@ DebugUiParameters* FishGang::debugUiParametersPtr()
     return &_debugUiParameters;
 }
 
-void FishGang::draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix)
+void FishGang::draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix, const glm::vec3& cameraPosition)
 {
-    _model.activateTexture(program);
+    // _model.activateTexture(program);
 
     for (const auto& fish : _fishes)
     {
-        fish.draw(program, _model, projMatrix, ctx, _debugUiParameters, _bhvVariables);
+        _lods.getRightModel(glm::length(fish.position()-cameraPosition)).activateTexture(program);
+        fish.draw(program, _lods.getRightModel(glm::length(fish.position()-cameraPosition)), projMatrix, ctx, _debugUiParameters, _bhvVariables);
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -6,6 +6,7 @@
 #include "Fish.h"
 #include "FishType.h"
 #include "FoodKind.h"
+#include "Lods.h"
 #include "Vertices3D.h"
 #include "my3DModel.h"
 
@@ -14,24 +15,25 @@ private:
     std::vector<Fish> _fishes{};
     BehaviorVariables _bhvVariables{};
     DebugUiParameters _debugUiParameters{};
-    my3DModel _model;
+    // my3DModel _model;
+    LoDs _lods;
     // GLuint _texture;
 
-    FishType  _type;
-    float _radius;
+    FishType _type;
+    float    _radius;
     // p6::Color _color{};
 
 public:
     inline FishGang(const FishType type, const unsigned int number, const glm::vec3& maxDistanceFromCenter, float radius)
-        : _bhvVariables(static_cast<unsigned int>(type)), _type(type), _model(fishTypeToString(type)), _radius(radius)
-    {    
+        : _bhvVariables(static_cast<unsigned int>(type)), _type(type), /*_model(fishTypeToString(type))*/ _lods(fishTypeToString(type)), _radius(radius)
+    {
         for (unsigned int i = 0; i < number; i++)
         {
             _fishes.emplace_back(maxDistanceFromCenter, &_fishes);
         }
     };
 
-    void            draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix);
+    void            draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix, const glm::vec3& cameraPosition);
     void            update(const glm::vec3& maxDistanceFromCenter, FoodKind& particularFoodKind, const glm::mat4& viewMatrix);
     inline FishType type()
     {

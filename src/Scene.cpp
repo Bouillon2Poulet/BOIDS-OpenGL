@@ -8,31 +8,29 @@
 #include "Vertices3D.h"
 #include "my3DModel.h"
 
-
 void Scene::draw(p6::Context& ctx)
 {
     // ctx.background(_backgroundColor);
 
     _program.m_Program.use();
 
-
     sendOpacityToShader(1.);
-    for (auto& food : _allFoods)
-    {
-        food.draw(_program, _projMatrix, _camera.getViewMatrix());
-    }
+    // for (auto& food : _allFoods)
+    // {
+    //     food.draw(_program, _projMatrix, _camera.getViewMatrix());
+    // }
 
     for (auto& fish : _fishGangs)
     {
         std::cout << fish.name() << std::endl;
-        fish.draw(ctx, _program, _projMatrix);
+        fish.draw(ctx, _program, _projMatrix, _arpenteur.position());
     }
 
-    // _arpenteur.draw(_program, _projMatrix);
+    _arpenteur.draw(_program, _projMatrix);
 
     for (auto& obstacle : _obstacles)
     {
-        obstacle.draw(_program, _projMatrix);
+        obstacle.draw(_program, _projMatrix, _arpenteur.position());
     }
 
     sendOpacityToShader(0.3);
@@ -48,11 +46,6 @@ void Scene::displayBoundingBoxIfNecessary()
 }
 void Scene::update(p6::Context& ctx)
 {
-    // std::cout << "Tuna.vertices.size : " << _fishGangs.front().vertices3DSize() << std::endl;
-    // std::cout << "Koi.vertices.size : " << _fishGangs.back().vertices3DSize() << std::endl;
-    // int a;
-    // std::cin >> a;
-
     _pointLight.update(ctx.time(), _camera.getViewMatrix(), _program);
     _directionalLight.update(ctx.time(), _camera.getViewMatrix(), _program);
     _camera.updateArpenteurPosition(_arpenteur.position());
@@ -60,9 +53,9 @@ void Scene::update(p6::Context& ctx)
     for (unsigned int i = 0; i < _fishGangs.size(); i++)
     {
         _fishGangs[i].update(_maxDistanceFromCenter, _allFoods[i], _camera.getViewMatrix());
-        _allFoods[i].update(_maxDistanceFromCenter);
+        // _allFoods[i].update(_maxDistanceFromCenter);
     }
-    _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter);
+    _arpenteur.update(ctx, _camera.getViewMatrix(), _maxDistanceFromCenter, _camera.getForwardVector());
     _camera.handleDeplacement(ctx);
     _boundingBoxMatrices.updateBB(_camera.getViewMatrix(), _maxDistanceFromCenter);
 

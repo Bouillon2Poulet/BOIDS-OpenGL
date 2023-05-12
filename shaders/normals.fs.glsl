@@ -49,7 +49,7 @@ vec3 ambiantLight()
 
 void main() {
     fFragColor = texture(uTexture, vTexCoords) * uOpacity;
-    fFragColor = vec4(blinnPhongPointLight(),1) + fFragColor;
-    fFragColor = vec4(blinnPhongDirectionalLight(),1)*fFragColor;
-    fFragColor =  vec4(ambiantLight(),1)+fFragColor;
+    // fFragColor = vec4(blinnPhongPointLight(),1) + fFragColor;
+    // fFragColor = vec4(blinnPhongDirectionalLight(),1)*fFragColor;
+    // fFragColor =  vec4(ambiantLight(),1)+fFragColor;
 }

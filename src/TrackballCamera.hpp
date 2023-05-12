@@ -46,19 +46,19 @@ public:
         // KEY
         if (ctx.key_is_pressed(GLFW_KEY_LEFT))
         {
-            rotateLeft(.5);
+            rotateLeft(1.);
         }
         if (ctx.key_is_pressed(GLFW_KEY_RIGHT))
         {
-            rotateLeft(-.5);
+            rotateLeft(-1.);
         }
         if (ctx.key_is_pressed(GLFW_KEY_DOWN))
         {
-            rotateUp(-.5f);
+            rotateUp(-1.f);
         }
         if (ctx.key_is_pressed(GLFW_KEY_UP))
         {
-            rotateUp(.5f);
+            rotateUp(1.f);
         }
 
         // if (ctx.mouse_dragged && ctx.mouse_button_is_pressed(p6::Button(0)))
@@ -68,5 +68,13 @@ public:
         //         rotateUp(drag.delta.y * 100);
         //     };
         // }
+    }
+
+    inline glm::vec3 getForwardVector() const
+    {
+        glm::mat4 rotationX = glm::rotate(glm::mat4(1), (p6::degrees_to_radians(m_AngleX)).value, glm::vec3(0, 1, 0));
+        glm::mat4 rotationY = glm::rotate(glm::mat4(1), (p6::degrees_to_radians(m_AngleY)).value, glm::vec3(1, 0, 0));
+        glm::mat4 rotation  = rotationX * rotationY;
+        return glm::vec3(glm::inverse(rotation) * glm::vec4(0, 0, 1, 0));
     }
 };

@@ -8,6 +8,7 @@
 #include "Matrices.h"
 #include "Vertices3D.h"
 #include "glm/fwd.hpp"
+#include "my3DModel.h"
 #include "myProgram.h"
 #include "myTexture.h"
 #include "tiny_obj_loader.h"
@@ -23,20 +24,18 @@ struct Material {
 class my3DModel {
 private:
     // MODEL
-    GLuint                  _diffuseTexture;
-    std::vector<Vertices3D> _shapes;
+    GLuint                           _diffuseTexture;
+    std::vector<Vertices3D>          _shapes;
     std::vector<tinyobj::material_t> _materials;
-    // std::vector<Material> _materials;
 
 public:
-    my3DModel(const std::string& modelName)
+    my3DModel(const std::string& modelName, const std::string res = "")
     {
-        loadObj(modelName);
+        loadObj(modelName, res);
         for (auto& shape : _shapes)
         {
             shape.initVAOVBO();
         }
-        // loadVAOVBO();
     }
 
     void draw(const myProgram& program) const
@@ -44,11 +43,9 @@ public:
         for (int i = 0; i < _shapes.size(); i++)
         {
             const tinyobj::material_t material = _materials[i];
-            std::cout << "DRAW" << std::endl;
-
             // // glUniform3fv(program.uMaterial.uAmbient, 1, &material.ambient[0]);
             glUniform3fv(program.uMaterial.uDiffuse, 1, _materials[i].diffuse);
-            glUniform3fv(program.uMaterial.uSpecular, 1,_materials[i].specular);
+            glUniform3fv(program.uMaterial.uSpecular, 1, _materials[i].specular);
             glUniform1f(program.uMaterial.uShininess, _materials[i].shininess);
 
             _shapes[i].bindVertexArrayVAO();
@@ -67,9 +64,9 @@ public:
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture);
     }
 
-    void loadObj(const std::string& modelName)
+    void loadObj(const std::string& modelName, const std::string res)
     {
-        load3DModel(modelName);
+        load3DModel(modelName, res);
 
         // Load diffuse texture
         auto textureImage = p6::load_image_buffer("./models/" + modelName + "/" + modelName + ".jpg");
@@ -83,7 +80,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    inline void load3DModel(const std::string modelName)
+    inline void load3DModel(const std::string modelName, const std::string res)
 
     {
         // Loading
@@ -91,8 +88,11 @@ public:
         std::vector<tinyobj::material_t> materialTemp;
 
         std::vector<tinyobj::shape_t> shapesTemp;
+        std::string resString ="";
+        if(!res.empty())
+        std::string resString = "_"+res;
 
-        std::string objPath = "models/" + modelName + "/" + modelName + ".obj";
+        std::string objPath = "models/" + modelName + "/" + modelName + resString + ".obj";
         std::string mtlPath = "models/" + modelName + "/";
 
         std::string err;
