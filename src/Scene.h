@@ -12,6 +12,7 @@
 #include "my3DModel.h"
 #include "myProgram.h"
 #include "DirectionalLight.h"
+#include "shadow_map_fbo.h"
 
 
 class Scene {
@@ -31,6 +32,12 @@ private:
     PointLight            _pointLight;
     DirectionalLight _directionalLight;
 
+    ShadowMapFBO _shadowMapFBO;
+    p6::Shader _shaderSh;
+    p6::Shader _shader;
+    p6::Shader _cam;
+
+
 public:
     Scene(const p6::Context& ctx);
 
@@ -48,6 +55,7 @@ public:
     glm::vec3* maxDistanceFromCenterPtr();
     glm::vec3  randomPosInBoundingBox();
 
+    void drawDepth();
     inline glm::vec3 maxDistanceFromCenter()
     {
         return _maxDistanceFromCenter;

@@ -28,4 +28,8 @@ public:
         _model.activateTexture(program);
         _model.draw(program);
     }
+
+    inline void draw(){
+        _model.draw();
+    }
 };

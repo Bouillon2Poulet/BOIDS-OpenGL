@@ -12,6 +12,7 @@ private:
     glm::vec3 _arpenteurPosition{};
 
 public:
+
     inline void moveFront(float delta)
     {
         m_Distance -= delta;

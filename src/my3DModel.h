@@ -23,8 +23,8 @@ struct Material {
 class my3DModel {
 private:
     // MODEL
-    GLuint                  _diffuseTexture;
-    std::vector<Vertices3D> _shapes;
+    GLuint                           _diffuseTexture;
+    std::vector<Vertices3D>          _shapes;
     std::vector<tinyobj::material_t> _materials;
     // std::vector<Material> _materials;
 
@@ -48,7 +48,7 @@ public:
 
             // // glUniform3fv(program.uMaterial.uAmbient, 1, &material.ambient[0]);
             glUniform3fv(program.uMaterial.uDiffuse, 1, _materials[i].diffuse);
-            glUniform3fv(program.uMaterial.uSpecular, 1,_materials[i].specular);
+            glUniform3fv(program.uMaterial.uSpecular, 1, _materials[i].specular);
             glUniform1f(program.uMaterial.uShininess, _materials[i].shininess);
 
             _shapes[i].bindVertexArrayVAO();
@@ -57,6 +57,18 @@ public:
             glBindVertexArray(0);
             // int a;
             // std::cin>>a;
+        }
+    }
+
+    void draw() const
+    {
+        for (int i = 0; i < _shapes.size(); i++)
+        {
+            const tinyobj::material_t material = _materials[i];
+
+            _shapes[i].bindVertexArrayVAO();
+            glDrawArrays(GL_TRIANGLES, 0, _shapes[i].shapeVertices().size());
+            glBindVertexArray(0);
         }
     }
 
