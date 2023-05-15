@@ -20,7 +20,7 @@ public:
             return _high;
         }
 
-        if (distance < 3.5f)
+        if (distance < 6.f)
         {
             std::cout << "mid" << std::endl;
             return _mid;

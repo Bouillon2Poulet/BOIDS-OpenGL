@@ -27,9 +27,12 @@ private:
     GLuint                           _diffuseTexture;
     std::vector<Vertices3D>          _shapes;
     std::vector<tinyobj::material_t> _materials;
+    std::string                      _name;
+    std::string                      _res;
 
 public:
-    my3DModel(const std::string& modelName, const std::string res = "")
+    my3DModel(const std::string& modelName, const std::string res)
+        : _name(modelName), _res(res)
     {
         loadObj(modelName, res);
         for (auto& shape : _shapes)
@@ -42,6 +45,7 @@ public:
     {
         for (int i = 0; i < _shapes.size(); i++)
         {
+            std::cout << _name << "_" << _res << std::endl;
             const tinyobj::material_t material = _materials[i];
             // // glUniform3fv(program.uMaterial.uAmbient, 1, &material.ambient[0]);
             glUniform3fv(program.uMaterial.uDiffuse, 1, _materials[i].diffuse);
@@ -88,11 +92,14 @@ public:
         std::vector<tinyobj::material_t> materialTemp;
 
         std::vector<tinyobj::shape_t> shapesTemp;
-        std::string resString ="";
-        if(!res.empty())
-        std::string resString = "_"+res;
 
-        std::string objPath = "models/" + modelName + "/" + modelName + resString + ".obj";
+        std::string resString = (res.empty())? "" : "_";
+
+            std::string objPath = "models/" + modelName + "/" + modelName + resString + res + ".obj";
+        std::cout << objPath << std::endl;
+        std::cout << "!" << res << "!" << std::endl;
+        int a;
+        std::cin >> a;
         std::string mtlPath = "models/" + modelName + "/";
 
         std::string err;

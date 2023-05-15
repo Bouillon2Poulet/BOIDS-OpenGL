@@ -34,6 +34,7 @@ private:
 public:
     Scene(const p6::Context& ctx);
 
+
     void drawBoundingBox();
 
     void createFishGangAndFoods(FishType type, int nbFishes, float radius);

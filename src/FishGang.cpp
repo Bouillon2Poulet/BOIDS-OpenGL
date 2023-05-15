@@ -17,10 +17,10 @@ DebugUiParameters* FishGang::debugUiParametersPtr()
 void FishGang::draw(p6::Context& ctx, const myProgram& program, const glm::mat4& projMatrix, const glm::vec3& cameraPosition)
 {
     // _model.activateTexture(program);
+    _lods.getRightModel(4).activateTexture(program);
 
     for (const auto& fish : _fishes)
     {
-        _lods.getRightModel(glm::length(fish.position()-cameraPosition)).activateTexture(program);
         fish.draw(program, _lods.getRightModel(glm::length(fish.position()-cameraPosition)), projMatrix, ctx, _debugUiParameters, _bhvVariables);
     }
     glBindTexture(GL_TEXTURE_2D, 0);

@@ -24,7 +24,7 @@ private:
 
 public:
     Arpenteur(const glm::vec3& maxDistanceFromCenter)
-        : _mvtVariables(maxDistanceFromCenter), _vertices3D(ShapeType::cube), _model("arpenteur")
+        : _mvtVariables(maxDistanceFromCenter), _vertices3D(ShapeType::cube), _model("arpenteur","")
     {
     }
     inline void update(const p6::Context& ctx, const glm::mat4& viewMatrix, const glm::vec3& maxDistanceFromCenter, glm::vec3 cameraDirection) // Only take ctx.mouse() as a param

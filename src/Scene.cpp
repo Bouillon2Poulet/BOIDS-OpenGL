@@ -23,7 +23,7 @@ void Scene::draw(p6::Context& ctx)
     for (auto& fish : _fishGangs)
     {
         std::cout << fish.name() << std::endl;
-        fish.draw(ctx, _program, _projMatrix, _arpenteur.position());
+        fish.draw(ctx, _program, _projMatrix, _camera.position());
     }
 
     _arpenteur.draw(_program, _projMatrix);

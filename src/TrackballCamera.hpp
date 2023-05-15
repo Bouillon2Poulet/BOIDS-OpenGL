@@ -69,6 +69,11 @@ public:
         //     };
         // }
     }
+    glm::vec3 position() const
+    {
+        glm::mat4 viewMatrix = getViewMatrix();
+        return glm::vec3(viewMatrix[3]); // La position de la caméra correspond à la dernière colonne de la matrice de vue.
+    }
 
     inline glm::vec3 getForwardVector() const
     {

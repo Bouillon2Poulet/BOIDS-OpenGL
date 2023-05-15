@@ -32,7 +32,12 @@ public:
     {
         _arpenteurPosition = arpenteurPosition;
     }
-    
+
+    glm::vec3 position()
+    {
+        return m_Position;
+    }
+
     void handleDeplacement(p6::Context& ctx)
     {
         // KEY
@@ -44,6 +49,7 @@ public:
         {
             rotateLeft(-.5);
         }
+
         // if (ctx.key_is_pressed(GLFW_KEY_DOWN))
         // {
         //     moveFront(-.5f);
