@@ -2,8 +2,6 @@
 #include <cmath>
 #include <string>
 #include "BehaviorVariables.h"
-#include "DebugUiParameters.h"
-#include "Drawing.h"
 #include "FishGang.h"
 #include "MovementVariables.h"
 #include "Vertices3D.h"
@@ -11,33 +9,7 @@
 #include "glm/fwd.hpp"
 #include "internal.h"
 
-void Fish::drawDebugFishIfNecessary(p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables, const glm::mat4& projMatrix) const
-{
-    if (debugUiParameters._displayLinkToNearestFood)
-        drawLinkToNearestFood(ctx, _mvtVariables._position, _nearestFoodLocation);
-    if (debugUiParameters._displayProtectedRange)
-        drawProtectedCircle(ctx, behaviorVariables._protectedRange, _mvtVariables._position);
-    if (debugUiParameters._displayVisibleRange)
-        drawVisibleCircle(ctx, behaviorVariables._visibleRange, _mvtVariables._position);
-    if (debugUiParameters._displayVelocityVector)
-        drawVelocityVector(ctx, _mvtVariables);
-    if (debugUiParameters._displayProximityNbr)
-        drawProximityNbr(_debugUiNeighboringFishes, ctx, (glm::vec4(_mvtVariables._position, 1)) * projMatrix);
-}
-
-void Fish::draw(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix, p6::Context& ctx, const DebugUiParameters& debugUiParameters, const BehaviorVariables& behaviorVariables) const
-{
-    drawDebugFishIfNecessary(ctx, debugUiParameters, behaviorVariables, projMatrix);
-    drawFish(program, model, projMatrix);
-}
-
-void Fish::drawFish(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix) const
-{
-    _matrices.sendMatricesToShader(program, projMatrix);
-    // std::cout<<_mvtVariables._position.x<<"/"<<_mvtVariables._position.y<<"/"<<_mvtVariables._position.z<<std::endl;
-    model.draw(program);
-}
-
+// Behaviors
 static void handleBehaviors(Fish& actualFish, BehaviorVariables& bhvVariables, Fish& otherFish, glm::vec3& closeSum, glm::vec3& averageVelocity, glm::vec3& averagePosition, int& neighboringFishes)
 {
     actualFish.handleSeparation(otherFish, closeSum, bhvVariables._protectedRange);
@@ -58,29 +30,8 @@ static void handleBehaviorsWithAllFishes(Fish& actualFish, std::vector<Fish>& al
     }
 }
 
-void Fish::update(BehaviorVariables& bhvVariables, const float radius, const glm::vec3& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food* nearestFood, const glm::mat4& viewMatrix)
-{
-    int       neighboringFishes = 0;
-    glm::vec3 closeSum(.0f);        // Separation variable
-    glm::vec3 averageVelocity(.0f); // Alignment _bhvVariables
-    glm::vec3 averagePosition(.0f); // Cohesion _bhvVariables
-
-    // Behaviors
-    handleBehaviorsWithAllFishes(*this, allFishes, bhvVariables, neighboringFishes, closeSum, averageVelocity, averagePosition);
-    // std::cout<<"1"<<_mvtVariables._velocity.x<<"/"<<_mvtVariables._velocity.y<<"/"<<_mvtVariables._velocity.z<<std::endl;
-
-    handleNearestFoodIfNecessary(nearestFood);
-
-    _mvtVariables.update(closeSum, averageVelocity, neighboringFishes, bhvVariables, maxDistanceFromCenter);
-
-    _matrices.update(_mvtVariables._position, radius, _mvtVariables._velocity, viewMatrix);
-
-    _debugUiNeighboringFishes = neighboringFishes;
-}
-
 void Fish::handleScreenBorders(const glm::vec3& maxDistanceFromCenterBig)
 {
-    // std::cout << "1.3 - maxDistanceFromCenter.x : " << maxDistanceFromCenter.x << "\n";
     const glm::vec3& maxDistanceFromCenter = maxDistanceFromCenterBig;
     glm::vec3        bordersForces{};
     float            rightBorderForce = -1.f / (std::pow(maxDistanceFromCenter.x - _mvtVariables._position.x, 2.f));
@@ -105,13 +56,11 @@ void Fish::handleNearestFoodIfNecessary(Food* nearestFood)
     if (nearestFood != nullptr)
     {
         _nearestFoodLocation = nearestFood->position();
-        if (std::abs(glm::length(_mvtVariables._position - _nearestFoodLocation)) < 2)
-        {
-            _mvtVariables._velocity += biasval * glm::normalize(_nearestFoodLocation - _mvtVariables._position);
-            // Food interaction
-            if (glm::length(_mvtVariables._position - _nearestFoodLocation) < nearestFood->radius() * 10)
-                nearestFood->isEaten();
-        }
+
+        _mvtVariables._velocity += biasval * glm::normalize(_nearestFoodLocation - _mvtVariables._position);
+        // Food interaction
+        if (glm::length(_mvtVariables._position - _nearestFoodLocation) < nearestFood->radius() * 10)
+            nearestFood->isEaten();
     }
 }
 
@@ -140,9 +89,42 @@ void Fish::handleCohesion(Fish& OtherFish, glm::vec3& averagePosition, float vis
     }
 }
 
-unsigned int* Fish::neighboringFishesPtr()
+//Constructor
+Fish::Fish(const glm::vec3& maxDistanceFromCenter, std::vector<Fish>* allFishes)
+    : _mvtVariables(maxDistanceFromCenter), _allFishes(allFishes)
 {
-    return &_debugUiNeighboringFishes;
+}
+
+void Fish::update(BehaviorVariables& bhvVariables, const float radius, const glm::vec3& maxDistanceFromCenter, std::vector<Fish>& allFishes, Food* nearestFood, const glm::mat4& viewMatrix)
+{
+    int       neighboringFishes = 0;
+    glm::vec3 closeSum(.0f);        // Separation variable
+    glm::vec3 averageVelocity(.0f); // Alignment _bhvVariables
+    glm::vec3 averagePosition(.0f); // Cohesion _bhvVariables
+
+    // Behaviors
+    handleBehaviorsWithAllFishes(*this, allFishes, bhvVariables, neighboringFishes, closeSum, averageVelocity, averagePosition);
+    handleNearestFoodIfNecessary(nearestFood);
+
+    // Update
+    _mvtVariables.update(closeSum, averageVelocity, neighboringFishes, bhvVariables, maxDistanceFromCenter);
+    _matrices.updateFishOrArpenteur(_mvtVariables._position, radius, _mvtVariables._velocity, viewMatrix);
+}
+
+void Fish::draw(const myProgram& program, const my3DModel& model, const glm::mat4& projMatrix) const
+{
+    _matrices.sendMatricesToShader(program, projMatrix);
+    model.draw(program);
+}
+
+glm::vec3 Fish::position() const
+{
+    return _mvtVariables._position;
+}
+
+bool Fish::operator==(const Fish& other) const
+{
+    return this == &other;
 }
 
 MovementVariables* Fish::mvtVariablesPtr()

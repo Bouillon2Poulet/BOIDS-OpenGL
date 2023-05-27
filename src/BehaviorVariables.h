@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include "FishType.h"
 #include "imgui.h"
 
 struct BehaviorVariables {
@@ -16,10 +17,9 @@ struct BehaviorVariables {
     float _minSpeed;
 
     inline BehaviorVariables() = default;
-    inline BehaviorVariables(int type)
+    inline BehaviorVariables(FishType type)
     {
-        std::cout << "!!1.15 : 1\n";
-        if (type == 0)
+        if (type == FishType::koi)
         {
             _protectedRange  = 0.3f;
             _visibleRange    = 0.5f;
@@ -28,33 +28,20 @@ struct BehaviorVariables {
             _centeringFactor = 0.001;
             _turnFactor      = 0.5;
 
-            _maxSpeed = 0.32;
+            _maxSpeed = 0.35;
             _minSpeed = 0.3;
         }
-        else if (type == 1)
+        else if (type == FishType::shark)
         {
-            std::cout << "!!1.16\n";
-            _protectedRange  = 0.1f;
-            _visibleRange    = 0.2f;
-            _avoidFactor     = 0.2f;
-            _matchingFactor  = 0.001;
+            _protectedRange  = 1.5f;
+            _visibleRange    = 1.7f;
+            _avoidFactor     = 0.005f;
+            _matchingFactor  = 0.005f;
             _centeringFactor = 0.001;
             _turnFactor      = 0.05;
 
-            _maxSpeed = 0.05;
-            _minSpeed = 0.01;
-        }
-        else if (type == 2)
-        {
-            _protectedRange  = 0.3f;
-            _visibleRange    = 0.5f;
-            _avoidFactor     = 0.2f;
-            _matchingFactor  = 0.001;
-            _centeringFactor = 0.001;
-            _turnFactor      = 0.05;
-
-            _maxSpeed = 0.01;
-            _minSpeed = 0.005;
+            _maxSpeed = 0.1;
+            _minSpeed = 0.15;
         }
     };
 };
