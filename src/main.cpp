@@ -37,8 +37,10 @@ int main(int argc, char* argv[])
     // Declare your infinite update loop.
     ctx.update = [&]() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        ctx.background({0});
-        scene.update(ctx);
+        // ctx.background({1});
+        glViewport(0, 0, 1080, 1080);
+
+        // scene.update(ctx);
         scene.draw(ctx);
 
         scene.GUIdisplay();
