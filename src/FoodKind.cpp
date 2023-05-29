@@ -14,7 +14,7 @@ FoodKind::FoodKind(FishType type, const glm::vec3& maxDistanceFromCenter)
     case FishType::shark:
         _radius             = 0.2f;
         _hp                 = 100.f;
-        _chanceForNewFood   = 0.00005;
+        _chanceForNewFood   = 0.0005;
         _minDetectionLength = 3.f;
         break;
     default:

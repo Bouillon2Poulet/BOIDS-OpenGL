@@ -10,7 +10,15 @@ struct myProgram {
         GLint uShininess;
     };
 
+    struct GUILightActivation{
+        GLint uGUIPointLight;
+        GLint uGUIDirectionalLight;
+        GLint uGUIAmbientLight;
+    };
+
     MaterialInfoLocation uMaterial;
+    GUILightActivation uGUILightActivation;
+
     GLint                uMVPMatrix;
     GLint                uMVMatrix;
     GLint                uNormalMatrix;

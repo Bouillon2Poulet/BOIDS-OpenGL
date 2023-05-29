@@ -32,7 +32,6 @@ int main(int argc, char* argv[])
     ctx.maximize_window();
     glEnable(GL_DEPTH_TEST);
 
-    // Mesh meshTest;
     Scene scene(ctx);
     // Declare your infinite update loop.
     ctx.update = [&]() {

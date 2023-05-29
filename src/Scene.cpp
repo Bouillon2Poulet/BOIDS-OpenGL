@@ -6,6 +6,7 @@
 #include "FishGang.h"
 #include "Obstacle.h"
 #include "Vertices3D.h"
+#include "imgui.h"
 #include "my3DModel.h"
 #include "myProgram.h"
 
@@ -77,6 +78,7 @@ void Scene::updateLights(const float time, const glm::mat4& viewMatrix)
 // Draw
 void Scene::draw(p6::Context& ctx)
 {
+    sendLightsActivationToShader();
     _program.m_Program.use();
     sendOpacityToShader(1.);
 
@@ -119,6 +121,12 @@ void Scene::drawBoundingBox()
 void Scene::sendOpacityToShader(float opacity)
 {
     glUniform1f(_program.uOpacity, opacity);
+}
+
+void Scene::sendLightsActivationToShader(){
+    glUniform1i(_program.uGUILightActivation.uGUIPointLight, _activatePointLight);
+    glUniform1i(_program.uGUILightActivation.uGUIDirectionalLight, _activateDirectionalLight);
+    glUniform1i(_program.uGUILightActivation.uGUIAmbientLight, _activateAmbientLight);
 }
 
 // Pointeur
@@ -166,4 +174,7 @@ void Scene::GUIdisplaySceneParameter()
     ImGui::SliderFloat("BoundingBox width", &(maxDistanceFromCenterPtr()->x), 0.f, 20.f);
     ImGui::SliderFloat("BoundingBox depth", &(maxDistanceFromCenterPtr()->z), 0.f, 20.f);
     ImGui::SliderFloat("BoundingBox height", &(maxDistanceFromCenterPtr()->y), 0.f, 20.f);
+    ImGui::Checkbox("PointLight", &_activatePointLight);
+    ImGui::Checkbox("DirectionalLight", &_activateDirectionalLight);
+    ImGui::Checkbox("AmbientLight", &_activateAmbientLight);
 }

@@ -13,6 +13,11 @@ myProgram::myProgram()
         uMaterial.uSpecular  = glGetUniformLocation(m_Program.id(), "uSpecular");
         uMaterial.uShininess = glGetUniformLocation(m_Program.id(), "uShininess");
 
+        uGUILightActivation.uGUIPointLight = glGetUniformLocation(m_Program.id(), "uGUIPointLight");
+        uGUILightActivation.uGUIDirectionalLight = glGetUniformLocation(m_Program.id(), "uGUIDirectionalLight");
+        uGUILightActivation.uGUIAmbientLight = glGetUniformLocation(m_Program.id(), "uGUIAmbientLight");
+
+
         uLight1Position  = glGetUniformLocation(m_Program.id(), "uLight1Position");
         uLight1Intensity = glGetUniformLocation(m_Program.id(), "uLight1Intensity");
         uLight2Direction = glGetUniformLocation(m_Program.id(), "uLight2Direction");

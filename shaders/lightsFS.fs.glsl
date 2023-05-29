@@ -13,6 +13,11 @@ uniform vec3 uLight1Intensity;
 uniform vec3 uLight2Direction;
 uniform vec3 uLight2Intensity;
 
+uniform bool uGUIPointLight;
+uniform bool uGUIDirectionalLight;
+uniform bool uGUIAmbientLight;
+
+
 out vec4 fFragColor;
 
 uniform float uOpacity;
@@ -52,9 +57,24 @@ vec3 ambientLight() {
 
 void main() {
     fFragColor = texture(uTexture, vTexCoords) * uOpacity;
-    vec4 pointLightValue = vec4(clamp(blinnPhongPointLight(),0,1), 1);
-    vec4 directionalLightValue = vec4(clamp(blinnPhongDirectionalLight(),0,1), 1);
-    vec4 ambientLightValue = vec4(clamp(ambientLight(),0,1),1);
+
+    //Lights
+    vec4 pointLightValue = vec4(0);
+    if (uGUIPointLight){
+        pointLightValue = vec4(clamp(blinnPhongPointLight(),0,1), 1);
+    }
+    vec4 directionalLightValue = vec4(0);
+    if (uGUIDirectionalLight){
+        directionalLightValue =  vec4(clamp(blinnPhongDirectionalLight(),0,1), 1);
+    }
+
+    vec4 ambientLightValue = vec4(0);
+    if(uGUIAmbientLight) {
+        ambientLightValue = vec4(clamp(ambientLight(),0,1),1);
+    }
+
+    if(uGUIPointLight || uGUIDirectionalLight || uGUIAmbientLight){
     vec4 lightSum = vec4(clamp(pointLightValue+directionalLightValue+ambientLightValue,0,1));
     fFragColor *= lightSum;
+    }
 }

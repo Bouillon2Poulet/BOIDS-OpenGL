@@ -52,7 +52,7 @@ void Fish::handleScreenBorders(const glm::vec3& maxDistanceFromCenterBig)
 
 void Fish::handleNearestFoodIfNecessary(Food* nearestFood)
 {
-    float biasval = 0.005f;
+    float biasval = 0.05f;
     if (nearestFood != nullptr)
     {
         _nearestFoodLocation = nearestFood->position();
