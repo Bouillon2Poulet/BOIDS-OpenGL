@@ -61,7 +61,7 @@ void Matrices::updateObstacle(const glm::mat4 viewMatrix, const glm::vec3& posit
 
 void Matrices::updateBB(const glm::mat4 viewMatrix, const glm::vec3& maxDistanceFromCenter)
 {
-    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), {}) * glm::scale(glm::mat4(1.0f), maxDistanceFromCenter);
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), {}) * glm::scale(glm::mat4(1.0f), maxDistanceFromCenter/2.f);
     _MVMatrix     = viewMatrix * modelMatrix;
     _NormalMatrix = glm::transpose(glm::inverse(_MVMatrix));
 }

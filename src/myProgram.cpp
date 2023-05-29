@@ -6,7 +6,7 @@ myProgram::myProgram()
         uMVPMatrix    = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
         uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
-        uOpacity      = glGetUniformLocation(m_Program.id(), "uOpacity");
+        // uOpacity      = glGetUniformLocation(m_Program.id(), "uOpacity");
         uTexture      = glGetUniformLocation(m_Program.id(), "uTexture");
 
         uMaterial.uDiffuse   = glGetUniformLocation(m_Program.id(), "uDiffuse");

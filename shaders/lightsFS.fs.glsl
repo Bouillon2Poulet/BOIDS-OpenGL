@@ -1,8 +1,8 @@
 #version 330
 
-in vec3 vPosition_vs; // Position du sommet transformée dans l'espace View (vs)
-in vec3 vNormal_vs; // Normale du sommet transformée dans l'espace View (vs)
-in vec2 vTexCoords; // Coordonnées de texture du sommet
+in vec3 vPosition_vs;
+in vec3 vNormal_vs;
+in vec2 vTexCoords;
 
 uniform vec3 uDiffuse;
 uniform vec3 uSpecular;
@@ -17,10 +17,9 @@ uniform bool uGUIPointLight;
 uniform bool uGUIDirectionalLight;
 uniform bool uGUIAmbientLight;
 
-
 out vec4 fFragColor;
 
-uniform float uOpacity;
+// uniform float uOpacity;
 uniform sampler2D uTexture;
 
 float computeAttenuation(float distance, float constant, float linear, float quadratic) {
@@ -46,35 +45,37 @@ vec3 blinnPhongDirectionalLight() {
 
     vec3 halfVector = normalize(Wo + Wi);
 
-    return uLight2Intensity * (uDiffuse * dot(Wi, vNormal_vs)) + uSpecular * pow(max(dot(halfVector, vNormal_vs),0), uShininess);
+    return uLight2Intensity * (uDiffuse * dot(Wi, vNormal_vs)) + uSpecular * pow(max(dot(halfVector, vNormal_vs), 0), uShininess);
 }
 
 vec3 ambientLight() {
     vec3 color = vec3(0.7, 0.7, 0.5);
     float intensity = 0.6;
-    return color*intensity;
+    return color * intensity;
 }
 
 void main() {
-    fFragColor = texture(uTexture, vTexCoords) * uOpacity;
+    vec3 vColor = texture(uTexture, vTexCoords).xyz;
 
-    //Lights
-    vec4 pointLightValue = vec4(0);
-    if (uGUIPointLight){
-        pointLightValue = vec4(clamp(blinnPhongPointLight(),0,1), 1);
+    // Lights
+    vec3 pointLightValue = vec3(0);
+    if (uGUIPointLight) {
+        pointLightValue = vec3(clamp(blinnPhongPointLight(), 0, 1));
     }
-    vec4 directionalLightValue = vec4(0);
-    if (uGUIDirectionalLight){
-        directionalLightValue =  vec4(clamp(blinnPhongDirectionalLight(),0,1), 1);
-    }
-
-    vec4 ambientLightValue = vec4(0);
-    if(uGUIAmbientLight) {
-        ambientLightValue = vec4(clamp(ambientLight(),0,1),1);
+    vec3 directionalLightValue = vec3(0);
+    if (uGUIDirectionalLight) {
+        directionalLightValue = vec3(clamp(blinnPhongDirectionalLight(), 0, 1));
     }
 
-    if(uGUIPointLight || uGUIDirectionalLight || uGUIAmbientLight){
-    vec4 lightSum = vec4(clamp(pointLightValue+directionalLightValue+ambientLightValue,0,1));
-    fFragColor *= lightSum;
+    vec3 ambientLightValue = vec3(0);
+    if (uGUIAmbientLight) {
+        ambientLightValue = vec3(clamp(ambientLight(), 0, 1));
     }
+
+    if (uGUIPointLight || uGUIDirectionalLight || uGUIAmbientLight) {
+        vec3 lightSum = vec3(clamp(pointLightValue + directionalLightValue + ambientLightValue, 0, 1));
+        vColor *= lightSum;
+    }
+
+    fFragColor = vec4(vColor.rgb, 1);
 }

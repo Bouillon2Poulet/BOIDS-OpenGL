@@ -41,7 +41,14 @@ FetchContent_MakeAvailable(doctest)
 target_link_libraries(${PROJECT_NAME} PRIVATE doctest::doctest)
 
 # ---Add p6 library---
-add_subdirectory(lib/p6)
+include(FetchContent)
+set(P6_RAW_OPENGL_MODE ON CACHE BOOL "")
+FetchContent_Declare(
+    p6
+    GIT_REPOSITORY https://github.com/julesfouchy/p6
+    GIT_TAG 350bf29ec49f43c8600c7e0dbc6099091367c752
+)
+FetchContent_MakeAvailable(p6)
 target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
 
 # ---Add tinyobj library---

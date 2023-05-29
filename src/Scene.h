@@ -35,9 +35,11 @@ private:
     glm::vec3 _maxDistanceFromCenter{};
     glm::mat4 _projMatrix;
 
-    bool _activatePointLight = true;
+    bool _activatePointLight       = true;
     bool _activateDirectionalLight = true;
-    bool _activateAmbientLight = true;
+    bool _activateAmbientLight     = true;
+    bool _displayBoundingBox       = false;
+
 public:
     // Constructor
     Scene(const p6::Context& ctx);
@@ -51,17 +53,14 @@ public:
     void updateLights(const float time, const glm::mat4& viewMatrix);
 
     // Draw
-    void        draw(p6::Context& ctx);
-    void        drawFishGangsAndFoods(p6::Context& ctx);
-    void        drawObstacles();
-    void        drawBoundingBox();
-    void sendOpacityToShader(float opacity);
+    void draw(p6::Context& ctx);
+    void drawFishGangsAndFoods(p6::Context& ctx);
+    void drawObstacles();
+    void drawBoundingBox();
     void sendLightsActivationToShader();
 
     // Pointeur
     std::vector<FishGang>* fishGangsPtr();
-    glm::vec3*             maxDistanceFromCenterPtr();
-    float*                 boundingBoxOpacityPtr();
 
     // Position
     glm::vec3 randomPosInBoundingBox();

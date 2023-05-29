@@ -22,7 +22,7 @@ struct myProgram {
     GLint                uMVPMatrix;
     GLint                uMVMatrix;
     GLint                uNormalMatrix;
-    GLint                uOpacity;
+    // GLint                uOpacity;
     GLint                uTexture;
 
     GLint uLight1Position;

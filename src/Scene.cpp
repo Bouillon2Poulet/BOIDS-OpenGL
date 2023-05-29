@@ -78,15 +78,17 @@ void Scene::updateLights(const float time, const glm::mat4& viewMatrix)
 // Draw
 void Scene::draw(p6::Context& ctx)
 {
-    sendLightsActivationToShader();
     _program.m_Program.use();
-    sendOpacityToShader(1.);
+
+    sendLightsActivationToShader();
 
     drawFishGangsAndFoods(ctx);
     drawObstacles();
     _arpenteur.draw(_program, _projMatrix);
     _cubemap.draw(_program, _projMatrix, _camera.getViewMatrix(_arpenteur.position()), ctx.time());
-    drawBoundingBox();
+
+    if (_displayBoundingBox)
+        drawBoundingBox();
 }
 
 void Scene::drawFishGangsAndFoods(p6::Context& ctx)
@@ -112,18 +114,13 @@ void Scene::drawObstacles()
 
 void Scene::drawBoundingBox()
 {
-    sendOpacityToShader(_boundingBoxOpacity);
     _boundingBox.activateTexture(_program);
     _boundingBoxMatrices.sendMatricesToShader(_program, _projMatrix);
     _boundingBox.draw(_program);
 }
 
-void Scene::sendOpacityToShader(float opacity)
+void Scene::sendLightsActivationToShader()
 {
-    glUniform1f(_program.uOpacity, opacity);
-}
-
-void Scene::sendLightsActivationToShader(){
     glUniform1i(_program.uGUILightActivation.uGUIPointLight, _activatePointLight);
     glUniform1i(_program.uGUILightActivation.uGUIDirectionalLight, _activateDirectionalLight);
     glUniform1i(_program.uGUILightActivation.uGUIAmbientLight, _activateAmbientLight);
@@ -133,16 +130,6 @@ void Scene::sendLightsActivationToShader(){
 std::vector<FishGang>* Scene::fishGangsPtr()
 {
     return &_fishGangs;
-}
-
-glm::vec3* Scene::maxDistanceFromCenterPtr()
-{
-    return &_maxDistanceFromCenter;
-}
-
-float* Scene::boundingBoxOpacityPtr()
-{
-    return &_boundingBoxOpacity;
 }
 
 // Position
@@ -170,10 +157,10 @@ void Scene::GUIdisplay()
 
 void Scene::GUIdisplaySceneParameter()
 {
-    ImGui::SliderFloat("BoundingBox opacity", &_boundingBoxOpacity, 0.f, 1.f);
-    ImGui::SliderFloat("BoundingBox width", &(maxDistanceFromCenterPtr()->x), 0.f, 20.f);
-    ImGui::SliderFloat("BoundingBox depth", &(maxDistanceFromCenterPtr()->z), 0.f, 20.f);
-    ImGui::SliderFloat("BoundingBox height", &(maxDistanceFromCenterPtr()->y), 0.f, 20.f);
+    ImGui::Checkbox("BoundingBox", &_displayBoundingBox);
+    ImGui::SliderFloat("BoundingBox width", &_maxDistanceFromCenter.x, 0.f, 20.f);
+    ImGui::SliderFloat("BoundingBox depth", &_maxDistanceFromCenter.z, 0.f, 20.f);
+    ImGui::SliderFloat("BoundingBox height", &_maxDistanceFromCenter.y, 0.f, 20.f);
     ImGui::Checkbox("PointLight", &_activatePointLight);
     ImGui::Checkbox("DirectionalLight", &_activateDirectionalLight);
     ImGui::Checkbox("AmbientLight", &_activateAmbientLight);
